@@ -1,0 +1,108 @@
+\documentclass[12pt]{article}
+\usepackage{fontspec}
+\setmainfont{Times New Roman} 
+
+
+% PREAMBLE
+\input{preamble2.tex}
+\input{macros.tex}
+\input{letterfonts.tex}
+\usepackage{graphicx}
+\usepackage{setspace}
+\setlength{\parindent}{0pt}
+\DeclareMathOperator{\Cn}{\CC^n}
+\DeclareMathOperator{\Th}{^{th}}
+\DeclareMathOperator{\Fn}{\FF^n}
+\DeclareMathOperator{\ima}{Im}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\Col}{Col}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\colsp}{Colspan}
+\DeclareMathOperator{\Colspan}{Colspan}
+\DeclareMathOperator{\Rowspan}{Rowspan}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nul}{nullity}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Nul}{Nul}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\SSE}{SSE}
+\DeclareMathOperator{\mySS}{SS}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\RSS}{RSS}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\var}{\sigma^2}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\gbh}{\hat{\gb}}
+\newcommand{\adjR}{R_a^2}
+\newcommand{\res}{\hat{\epsilon}}
+\newcommand{\bmgb}{\boldsymbol{\gb}}
+\setstretch{1.15}
+
+\title{Exploring the least squares solver of R and Python}
+\author{Lim Zi Xiang}
+\date{}
+
+\begin{document}
+	%\maketitle
+	\pdfbookmark[section]{\contentsname}{toc}
+	\tableofcontents
+	\pagebreak
+	
+	\section{Introduction}
+	
+	Linear regression is widely used in many applications to model linear relationships between a set of predictors and a response. One of the more common and simpler methods of fitting such a model is known as the ordinary least squares method (OLS), which is found to be a Best Linear Unbiased Estimator (BLUE) by the Gauss-Markov theorem, that is, it gives the unbiased estimates of each regression coefficient with the lowest possible variance, provided that assumptions are satisfied. \\
+	
+	\setlength\parindent{24pt} The motivation for this project arises from one of these assumptions, that is, the data matrix, $\bmX$, is full rank, i.e. none of the predictors are (nearly) perfectly correlated with each other. In cases where this is not true, we find that OLS fails to acquire any results. In such cases, there are several methods we can employ to address this issue, whether to drop one of the correlated variables, or to combine them, etc., based on the discretion of the data analyst. In this project, we investigate how two of the commonly used software for regression analysis, Python (\texttt{statsmodel}) and R each deal with the collinearity problem.\\
+	
+	Furthermore, we embrace this opportunity to explore further on the topic of multicollinearity, such as its impact on the accuracy of model prediction and model interpretation. We have also identified several known methods of detecting collinearity in the data, whether through hypothesis testing, or by using measures such as the variance inflation factor (VIF) and condition numbers/indices. In addition to aforementioned methods of addressing collinearity, shrinkage methods such as ridge regression and lasso were also considered. Another potential pitfall in regression analysis, that is confounding variables, were also briefly explored.\\
+	
+	It should be noted that there are different conventions to what collinearity and multicollinearity mean according to varying sources. In this report, we will use these two terms interchangably.
+	
+	\section{Objectives}
+	
+	There are three main objectives for this project:
+	\subsection{Explore issues that arise from singularity.}
+	
+	In practical settings, it is unlikely to obtain a set of perfectly correlated data due to inevitable noise. However, even near perfect collinearity can lead to singularity and subsequently failure of OLS. 
+	
+	\subsection{Understand singular value decomposition.}
+	
+	
+	
+	\subsection{Investigate how software deals with singularity when building linear models.}
+	
+	\section{Methodology}
+	
+	
+	
+	\section{Results and discussion}
+	\subsection{Python's \texttt{statsmodel} module}
+	(include screenshot of results)
+	\begin{itemize}
+		\item Looks like it evenly distributes weights throughout the correlated predictors.
+		\item Apparently uses pseudoinverse, and that the results obtained don't carry meaning.
+	\end{itemize}
+	
+	\subsection{R's \texttt{lm} function}
+	(include screenshot of results)
+	
+	\begin{itemize}
+		\item Looks like it dropped one collinear column and add the two coefficients together.
+		\item Seems to combine collinear columns.
+		\item Gives a warning when highly correlated variables are detected
+		\item Option available to abort process upon detection of high mutlicollinearity.
+	\end{itemize}
+	
+	\subsection{Impact of multicollinearity}
+	\subsection{Methods to detect collinearity}
+	\subsection{Confounding variables}
+	
+	\section{Conclusion}
+	\section{Future recommendations}
+	\section{References}
+	
+\end{document}

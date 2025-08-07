@@ -1,0 +1,2151 @@
+\documentclass{report}
+
+% PREAMBLE
+\input{preamble.tex}
+\input{macros.tex}
+\input{letterfonts.tex}
+\setlength{\parindent}{0pt}
+\DeclareMathOperator{\Cn}{\CC^n}
+\DeclareMathOperator{\Th}{^{th}}
+\DeclareMathOperator{\Fn}{\FF^n}
+\DeclareMathOperator{\ima}{Im}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\Col}{Col}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\colsp}{Colspan}
+\DeclareMathOperator{\Colspan}{Colspan}
+\DeclareMathOperator{\Rowspan}{Rowspan}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nul}{nullity}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Nul}{Nul}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\Lm}{\mathbf{\Lambda}}
+\newcommand{\Sg}{\mathbf{\Sigma}}
+\renewcommand{\baselinestretch}{1.15} 
+\title{\textbf{{\LARGE Linear Algebra 2 - Notes}}\\ {\small Reference: Linear Algebra Done Right - Sheldon Axler}}
+\author{Lim Zi Xiang}
+\date{}
+
+\begin{document}
+	\setcounter{chapter}{5}
+	\maketitle
+	\pdfbookmark[section]{\contentsname}{toc}
+	\tableofcontents
+	%\pagebreak
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%% Chapter 6: Inner-product spaces %%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\chapter{Inner-product spaces}
+	 In this chapter we discuss the notion of length and angle, which are embedded in the concept of inner products. We let $\FF$ denote $\RR$ or $\CC$, $V$ be a finite-dimensional, nonzero vector space over $\FF$.
+	
+	%=== 6.1: INNER PRODUCTS ===
+	
+	\section{Inner products}
+	
+	%%%%%%%% DEFINITION  %%%%%%%%%%
+	\dfn{Norm and dot product}{
+	Let $\bmx, \bmy\in\Rn$ with $\bmx=(x_1,\ldots,x_n)$ and $\bmy=(y_1,\ldots y_n)$. Then the \textbf{norm} of $\bmx$, $\|\bmx\|$ is given by
+	$$\|\bmx\|=\sqrt{x_1^2+\ldots+x_n^2},$$
+	and the \textbf{dot product} of $\bmx$ and $\bmy$, $\bmx\cdot \bmy$ is given by
+	$$\bmx\cdot\bmy=x_1y_1+\ldots+x_ny_n.$$
+	}
+	
+	\nt{
+	\begin{itemize}
+		\item $\bmx\cdot\bmx=\|\bmx\|^2$;
+		\item $\bmx\cdot\bmx\geq 0\, \forall\bmx\in\Rn$, with equality iif $\bmx=\bzero$;
+		\item $\phi:\Rn\rightarrow\RR; \phi(\bmx)=\bmx\cdot\bmy$ is linear;
+		\item $\bmx\cdot\bmy=\bmy\cdot\bmx$.
+	\end{itemize}
+	}
+	\vspace{1mm}
+	
+	\dfn{Modulus, complex conjugate, complex norm}{
+		Let $\lm=a+bi$ where $a,b\in\RR$, and $\bmz=(z_1,\ldots,z_n)\in\Cn$, then
+	\begin{enumerate}
+		\item the \textbf{absolute value} of $\lm$, $|\lm|=\sqrt{a^2+b^2}$;
+		\item the \textbf{complex conjugate} of $\lm$, $\bar{\lm}=a-bi$;
+		\item the \textbf{norm} of $\bmz$, $\|\bmz\|=\sqrt{|z_1|^2+\ldots+|z_n|^2}$.
+	\end{enumerate}
+	}
+	\vspace{1mm}
+	Using this definition, we have
+	
+	$$\|\bmz\|^2=z_1\overline{z_1}+\ldots+z_n\overline{z_n},$$
+	
+	which we want to think of as the inner product of $\bmz$ with itself like with $\Rn$. So perhaps the inner product of $\bmw=(\bmw_1,\ldots,\bmw_n)\in \Cn$ with $\bmz$ should be
+	\begin{align*}
+		\bmw_1\overline{\bmz_1}+\ldots+\bmw_n\overline{\bmz_n}&=\sum_{j=1}^{n}(a_j+b_ji)(c_j-d_ji)\\
+		&=\sum_{j=1}^{n}(a_jc_j+b_jd_j+i(b_jc_j-a_jd_j))\\
+		&=\sum_{j=1}^{n}(a_jc_j+b_jd_j-i(a_jd_j-b_jc_j))\\
+		&=\sum_{j=1}^{n}(a_jc_j+b_jd_j)-i\sum_{j=1}^{n}(a_jd_j-b_jc_j)\\
+		&=\overline{\lsp\bmz,\bmw\rsp}\\
+	\end{align*}
+	where each $\bmw_j=a_j+b_ji$ and $\bmz_j=c_j+d_ji$ with each $a_j,b_j,c_j,d_j\in\RR$. We now formally define the inner product on $V$.\\
+	
+	\dfn{Inner product}{
+	An \textbf{inner product} on $V$ is a function that takes each ordered pair $(\bmu,\bmv)$ of elements of $V$ toa number $\lsp \bmu,\bmv\rsp\in \FF$ and has the following properties:
+	\begin{enumerate}
+		\item Positivity: $\lsp\bmv,\bmv\rsp\geq 0 \,\forall \bmv\in V$;
+		\item Definiteness: $\lsp\bmv,\bmv\rsp=0\Leftrightarrow\bmv=0$;
+		\item Additivity in first slot: $\lsp\bmu+\bmv,\bmw\rsp=\lsp\bmu,\bmw\rsp+\lsp\bmv,\bmw\rsp\,\forall\bmu,\bmv,\bmw\in V$;
+		\item Homogeneity in first slot: $\lsp a\bmu,\bmw\rsp=a\lsp\bmu,\bmw\rsp\forall a\in\bmF \forall\bmv,\bmw\in V$;
+		\item Conjugate symmetry: $\lsp\bmv,\bmw\rsp=\overline{\lsp\bmw,\bmv\rsp}\,\forall\bmv,\bmw\in V$.
+	\end{enumerate} 
+	}
+	
+	\nt{The complex conjugate of every real number is itself. If $\bmz\in\CC$, $\bmz\geq 0 \,\Rightarrow \,\bmz$ is real and nonnegative.
+	\vspace{1mm}
+	}
+	\vspace{1mm}
+	
+	\dfn{Inner-product space}{
+	An \textbf{inner-product space} is a vector space $V$ along with an inner product on $V$.
+	}
+	\vspace{1mm}
+	\ex{The Euclidean inner product on $\Fn$}{
+	We define the\textbf{ Euclidean inner product} on $\Fn$ by
+	$$\lsp(w_1,\ldots,w_n),(z_1,\ldots,z_n)\rsp=\bmw_1\overline{z_1}+\bmw_n\overline{z_n}$$
+	We show that this definition satisfies our four conditions: Let $\bmz=(z_1,\ldots,z_n)\in\Fn$ where $z_1,\ldots,z_n\in\FF$. Since $\RR\sbst\CC$, $\bmz\in\Cn$, we have
+	\begin{enumerate}
+		\item $\lsp\bmz,\bmz\rsp=z_1\overline{z_1}+\ldots+z_n\overline{z_n}=|z_1|^2+\ldots+|z_n|^2\geq 0$;
+		\pagebreak
+		\item $\lsp\bmz,\bmz\rsp=0$ iif $\bmz=\bzero$ since each $|z_i|^2\geq 0$ since $|z_i|\in\RR$;
+		\item $\lsp\bmv+\bmw,\bmz\rsp=(v_1+w_1)\overline{z_1}+\ldots+(v_n+w_n)\overline{z_n}=(v_1\overline{z_1}+\ldots+v_n\overline{z_n})+(w_1\overline{z_1}+\ldots+w_n\overline{z_n})=\lsp\bmv,\bmz\rsp+\lsp\bmw,\bmz\rsp$;
+		\item $\lsp k\bmw,\bmz\rsp=(kw_1)\overline{z_1}+\ldots+(kw_n)\overline{z_n}=k(w_1\overline{z_1}+\ldots+w_n\overline{z_n})=k\lsp\bmw,\bmz\rsp$
+		\item Shown previously;
+	\end{enumerate}
+	where $\bmv,\bmw\in\Fn$ with $\bmv=(v_1,\ldots,v_n)$ and $\bmw=(w_1,\ldots,w_n)$, $k\in\FF$. We assume by default when $\Fn$ is referred to as an inner-product space, the inner product is the Euclidean inner product.
+	}
+	\ex{Other inner products \label{sec:Ex1}}{
+	For $c_1,\ldots,c_n\in\RR_{>0}$, 
+	$$\lsp(w_1,\ldots,w_n),(z_1,\ldots,z_n)\rsp=c_1w_1\overline{z_1}+\ldots+c_nw_n\overline{z_n}$$
+	is an inner product on $\Fn$ which we can show satisfies the five conditions as well. Another example is an inner product on $\mathcal{P}_m(\FF)$, the vector space of all polynomials with coefficients in $\FF$ and degree at most $m$:
+	$$\lsp\bmp,\bmq\rsp=\int_{0}^{1}\bmp(x)\overline{\bmq(x)}dx.$$
+	}
+	\nt{
+	Personal observations: 
+	\begin{itemize}
+		\item $\lsp\bmw,\bmz\rsp=0$ is not an inner product on $\Fn$ because it violates the second condition.
+		\item $\lsp\bmw,\bmz\rsp=\bmw+\bmz$ is not an inner product on $\Fn$ because it only satisfies the second condition.
+		\item $\lsp(z_1,z_2,z_3),(w_1,w_2,w_3)\rsp=z_1w_2+z_2w_3+z_3w_1$ is not an inner product on $\FF^3$ because it violates the first, second, and fifth condition.\\
+	\end{itemize}
+	}
+	\vspace{1mm}
+	For now onwards, we let $V$ be a finite-dimensional inner-product space over $\FF$.\\
+	
+	We can combine the conditions for additivity and homogeneity in the first slot into a requirement for linearity in the first slot, so for fixed $\bmw\in V$, the function mapping $\bmv$ to $\lsp\bmv,\bmw\rsp$ is a linear map from $V$ to $\FF$ and so we have
+	$$\lsp 0,\bmw\rsp=0, \quad\quad \lsp\bmw,0\rsp=0,$$
+	$\forall\bmw\in V$ with second equality due to the conjugate symmetry property. \\
+	
+	\mprop{}{
+	In an inner-product space, we have additivity and conjugate homogeneity in the second slot, i.e.
+	$$\lsp\bmu,\bmv+\bmw\rsp=\lsp\bmu,\bmv\rsp+\lsp\bmu,\bmw\rsp, \quad\quad \lsp \bmu,k\bmv\rsp =\overline{k}\lsp\bmu,\bmv\rsp,$$
+	where $\bmu,\bmv,\bmw\in V$ and $k\in\FF$.
+	}
+	\begin{myproof}
+		\begin{enumerate}
+			\item \begin{align*}
+				\lsp\bmu,\bmv+\bmw\rsp&=\overline{\lsp\bmv+\bmw,\bmu\rsp}\\
+				&=\overline{\lsp\bmv,\bmu\rsp +\lsp\bmw,\bmu\rsp}\\
+				&=\overline{\lsp\bmv,\bmu\rsp}+\overline{\lsp\bmw,\bmu\rsp}\\
+				&=\lsp\bmu,\bmv\rsp +\lsp\bmu,\bmw\rsp\\				
+			\end{align*}
+			\item \begin{align*}
+				\lsp\bmu,k\bmv\rsp&=\overline{\lsp k\bmv,\bmu\rsp}\\
+				&=\overline{k\lsp\bmv,\bmu\rsp}\\
+				&=\overline{k}\overline{\lsp\bmv,\bmu\rsp}\\
+				&=\overline{k}\lsp\bmu,\bmv\rsp
+			\end{align*}
+		\end{enumerate}
+	\end{myproof}
+	
+	\section{Norms}
+	\dfn{Norm}{
+	For $\bmv\in V$, the \textbf{norm} of $\bmv$, $\|\bmv\|$ is given by
+	$$\|\bmv\|=\sqrt{\lsp\bmv,\bmv\rsp}$$
+	}
+	\ex{Norms}{
+	\begin{enumerate}
+		\item For $(z_1,\ldots,z_n)\in\Fn$ with the Euclidean inner product,
+		\begin{align*}
+			\|(z_1,\ldots,z_n)\|&=\sqrt{z_1\overline{z_1}+\ldots+z_n\overline{z_n}}\\
+			&=\sqrt{|z_1|^2+\ldots+|z_n|^2}
+		\end{align*}
+		\item For $\bmp\in\mathcal{P}_m(\FF)$ with inner product given in \hyperref[sec:Ex1]{Example 6.1.2},
+		$$\|\bmp\|=\sqrt{\int_{0}^{1}|p(x)|^2dx}$$
+	\end{enumerate}
+	}
+	
+	\mprop{}{
+	Let $\bmv\in V$ and $a\in\FF$, then 
+	\begin{enumerate}
+		\item $\|\bmv\|=0$ iif $\bmv=\bzero$;
+		\item $\|a\bmv\|=|a|\|\bmv\|$.
+	\end{enumerate} 
+	}
+	\begin{myproof} 
+		\begin{enumerate}
+			\item Suppose that $\|\bmv\|=0$, so by definition, $\sqrt{\lsp\bmv,\bmv\rsp}=0\Rightarrow \lsp\bmv,\bmv\rsp=0 \Leftrightarrow \bmv=0$ by definiteness of inner products.
+			\item \begin{align*}
+				\|a\bmv\|^2&=\lsp a\bmv,a\bmv\rsp \\
+				&=a\lsp\bmv,a\bmv\rsp \text{ by homogeneity in first slot;}\\
+				&=a\bar{a}\lsp\bmv,\bmv\rsp \text{ by conjugate homogeneity in second slot;}\\
+				&=|a|^2\|\bmv\|^2\\
+				\|a\bmv\|&=|a|\|\bmv\|
+			\end{align*}
+		\end{enumerate}
+	\end{myproof}
+	\nt{It is usually easier to work with norms squared rather than norms directly.}
+	\vspace{1mm}
+	\dfn{Orthogonal}{
+	Let $\bmu,\bmv\in V$. $\bmu$ and $\bmv$ are said to be \textbf{orthogonal} if $\lsp\bmu,\bmv\rsp=0$. 
+	}
+	\vspace{1mm}
+	Note that $\bzero$ is orthogonal to every vector and is the only vector orthogonal to itself. In the following theorem we look at the special case where $V=\RR^2$:
+	%%%% Pythagorean theorem %%%%%
+	\thm{Pythagorean Theorem}{
+	Let $\bmu,\bmv$ be orthogonal vectors in $\RR^2$, then 
+	$$\|\bmu+\bmv\|^2=\|\bmu\|^2+\|\bmv\|^2.$$
+	}
+	\begin{myproof}
+		\begin{align*}
+			\|\bmu+\bmv\|^2&=\lsp\bmu+\bmv,\bmu+\bmv\rsp\\
+			&=\lsp\bmu,\bmu+\bmv\rsp+\lsp\bmv,\bmu+\bmv\rsp\,\text{by additivity in first slot}\\
+			&=\lsp\bmu,\bmu\rsp + \lsp\bmu,\bmv\rsp + \lsp\bmv,\bmu\rsp + \lsp\bmv,\bmv\rsp\,\text{by additivity in second slot}\\
+			&=\|\bmu\|^2+0+0+\|\bmv\|^2=\|\bmu\|^2+\|\bmv\|^2
+		\end{align*}
+	\end{myproof}
+	\nt{The converse of the Pythagorean theorem holds if $\lsp\bmu,\bmv\rsp+\lsp\bmv,\bmu\rsp=0$ which is true in real inner-product spaces.}
+	
+	\subsection{Orthogonal decomposition}
+	Suppose $\bmu,\bmv\in V$. We want to write $\bmu$ as the some of a scalar multiple of $\bmv$ and a vector $\bmw\in V$ orthogonal to $\bmv$, i.e.
+	$$\bmu=k\bmv+\bmw \Rightarrow \bmw=\bmu-k\bmv$$
+	where $k\in\FF$. Since $\bmw$ is orthogonal to $\bmv$, we must have
+	$$\lsp\bmu-k\bmv,\bmv\rsp=\lsp\bmu,\bmv\rsp-k\|\bmv\|^2=0 \Rightarrow k=\frac{\lsp\bmu,\bmv\rsp}{\|\bmv\|^2}.$$ 
+	Hence we can now write (assuming $\bmv\neq\bzero$)
+	$$\bmu=\frac{\lsp\bmu,\bmv\rsp}{\|\bmv\|^2}\bmv+\lt(\bmu-\frac{\lsp\bmu,\bmv\rsp}{\|\bmv\|^2}\bmv\rt).$$
+	\pagebreak
+	
+	\subsection{Important results}
+	%%%% Cauchy-Schwarz inequality %%%%%
+	\thm{Cauchy-Schwarz inequality \label{sec:Thm7}}{
+	If $\bmu,\bmv\in V$, then 
+	$$|\lsp\bmu,\bmv\rsp|\leq \|\bmu\|\|\bmv\|,$$
+	with equality iif $\bmu$ and $\bmv$ are linearly dependent.
+	}
+	\begin{myproof}
+		Suppose $\bmu,\bmv\in V$, if $\bmv=\bzero$ then the inequality holds. If $\bmv\neq\bzero$, consider the orthogonal decomposition
+		$$\bmu=\frac{\lsp\bmu,\bmv\rsp}{\|\bmv\|^2}+\bmw.$$
+		By the Pythagorean theorem, we then have
+		\begin{align*}
+			\|\bmu\|^2&=\lt\|\frac{\lsp\bmu,\bmv\rsp}{\|\bmv\|^2}\bmv\rt\|^2+\|\bmw\|^2\\
+			&=\frac{|\lsp\bmu,\bmv\rsp|^2}{\|\bmv\|^4}\|\bmv\|^2+\|\bmw\|^2=\frac{|\lsp\bmu,\bmv\rsp|^2}{\|\bmv\|^2}+\|\bmw\|^2\\
+			\|\bmu\|^2\|\bmv\|^2&=|\lsp\bmu,\bmv\rsp|^2+\|\bmv\|^2\|\bmw\|^2\geq |\lsp\bmu,\bmv\rsp|^2\\
+			\|\bmu\|\|\bmv\|&\geq |\lsp\bmu,\bmv\rsp|;\\
+		\end{align*}
+		with equality iif $\|\bmw\|^2=0$ iif $\bmu$ and $\bmv$ is linearly dependent. 
+	\end{myproof}
+	\thm{Triangle inequality}{
+	If $\bmu,\bmv\in V$, then 
+	$$\|\bmu+\bmv\|\leq\|\bmu\|+\|\bmv\|.$$
+	with equality iif $\bmu$ and $\bmv$ are nonnegative multiples of each other. 
+	}
+	\begin{myproof}
+		Let $\bmu,\bmv\in V$, then
+		\begin{align*}
+			\|\bmu+\bmv\|^2&=\lsp\bmu+\bmv,\bmu+\bmv\rsp\\
+			&=\lsp\bmu,\bmu\rsp +\lsp\bmu,\bmv\rsp+\lsp\bmv,\bmu\rsp+\lsp\bmv,\bmv\rsp\\
+			&=\|\bmu\|^2+\|\bmv\|^2+\lsp\bmu,\bmv\rsp+\overline{\lsp\bmu,\bmv\rsp}\\
+			&=\|\bmu\|^2+\|\bmv\|^2+2\re\lsp\bmu,\bmv\rsp\\
+			&\leq\|\bmu\|^2+\|\bmv\|^2+2|\lsp\bmu,\bmv\rsp|\\
+			&\leq\|\bmu\|^2+\|\bmv\|^2+2\|\bmu\|\|\bmv\|\text{ by Cauchy-Schwarz}\\
+			&=(\|\bmu\|+\|\bmv\|)^2\\
+			\|\bmu+\bmv\|&\leq \|\bmu\|+\|\bmv\|\\
+		\end{align*}
+		We have equality iif $\re\lsp\bmu,\bmv\rsp=|\lsp\bmu,\bmv\rsp|$ and if we have equality in the Cauchy-Schwarz inequality, both of which implies that $\bmu$ and $\bmv$ are scalar multiples of each other. Let $\bmv=k\bmu$ for some scalar $k\in\FF$, then
+		\begin{align*}
+			\re\lsp\bmu,k\bmu\rsp&=\|\bmu\|\|k\bmu\|\\
+			\re (k\|\bmu\|^2)&=\bar{k}\|\bmu\|^2\\
+			k\|\bmu\|^2&=|k|\|\bmu\|^2\\
+			k&=|k|;
+		\end{align*}
+		so $k$ is nonnegative assuming $\bmu\neq\bzero$. 
+	\end{myproof}
+	\vspace{1mm}
+	\thm{Parallelogram equality}{
+	If $\bmu,\bmv\in V$, then
+	$$\|\bmu+\bmv\|^2+\|\bmu-\bmv\|^2=2(\|\bmu\|^2+\|\bmv\|^2).$$
+	}
+	\begin{myproof}
+		Let $\bmu,\bmv\in V$, then
+		\begin{align*}
+			\|\bmu+\bmv\|^2+\|\bmu-\bmv\|^2&=\lsp\bmu+\bmv,\bmu+\bmv\rsp+\lsp\bmu-\bmv,\bmu-\bmv\rsp\\
+			&=\|\bmu\|^2+\lsp\bmu,\bmv\rsp+\lsp\bmv,\bmu\rsp+\|\bmv\|^2+\|\bmu\|^2-\lsp\bmu,\bmv\rsp-\lsp\bmv,\bmu\rsp+\|\bmv\|^2\\
+			&=2(\|\bmu\|^2+\|\bmv\|^2).
+		\end{align*}
+	\end{myproof}
+	
+	\section{Orthonormal bases}
+	\dfn{Orthonormal list}{
+	A list of vectors is \textbf{orthonormal} if the vectors in the list are pairwise orthorgonal and have a norm of 1, i.e. a list $(\bme_1,\ldots,\bme_m)$ of vectors in $V$ is orthonormal if $\lsp\bme_k,\bme_k\rsp$ equals 0 for $j\neq k$ and equals 1 for $j=k$.
+	}
+
+	\mprop{\label{sec:Prop1}}{
+	If $(\bme_1,\ldots,\bme_m)$ is an orthonormal list of vectors in $V$, then
+	$$\|a_1\bme_1+\ldots+a_m\bme_m\|^2=|a_1|^2+\ldots+|a_m|^2$$
+	$\forall a_1,\ldots,a_m\in\FF.$
+	}
+	\begin{myproof}
+		By the Pythagorean theorem, 
+		$$\|a_1\bme_1+\ldots+a_m\bme_m\|^2=\|a_1\bme_1\|^2+\ldots+\|a_m\bme_m\|^2=|a_1|^2+\ldots+|a_m|^2.$$
+	\end{myproof}
+	\cor{\label{sec:Cor1}}{
+	Every orthonormal list of vectors is linearly independent.
+	}
+	\begin{myproof}
+		Suppose $(\bme_1,\ldots,\bme_m)$ is an orthonormal list of vectors in $V$ and $a_1,\ldots,a_m\in\FF$ such that 
+		$$a_1\bme_1+\ldots+a_m\bme_m=0.$$
+		Then by taking the squared norm of both sides, by \hyperref[sec:Prop1]{Proposition 6.3.1}, we have $|a_1|^2+\ldots+|a_m|^2=0 \Rightarrow a_1=\ldots=a_m=0$ since the modulus of each $a_j$ is nonnegative. 
+	\end{myproof}
+	\vspace{1mm}
+	\dfn{Orthonormal basis}{
+	An \textbf{orthonormal basis} of $V$ is an orthonormal list of vectors in $V$ which is also a basis of $V$. 
+	}
+	\vspace{2mm}
+	
+	One example of such a basis is the standard basis of $\Fn$. By the previous corollary, any orthonormal list of vectors in $V$ with length $\dim V$ must be an orthonormal basis of $V$. The importance of orthonormal bases stems mainly from the following theorem.
+	\thm{\label{sec:Thm4}}{
+	Suppose $(\bme_1,\ldots,\bme_n)$ is an orthonormal basis of $V$, then $\forall \bmv\in V$,
+	$$\bmv=\lsp\bmv,\bme_1\rsp \bme_1+\ldots+\lsp\bmv,\bme_n\rsp \bme_n,$$
+	and
+	$$\|\bmv\|^2=|\lsp\bmv,\bme_1\rsp|^2+\ldots+|\lsp\bmv,\bme_n\rsp|^2.$$
+	}
+	\begin{myproof}
+		Let $\bmv\in V$. Because $(\bme_1,\ldots,\bme_n)$ is a basis of $V$, $\exists a_1,\ldots,a_n$ such that
+		$$\bmv=a_1\bme_1+\ldots+a_n\bme_n.$$
+		By taking the inner product of both sides with $\bme_j$, we obtain $\lsp\bmv,\bme_j\rsp=a_j$ since $\lsp\bme_i,\bme_j\rsp=0$ for $i\neq j$ and $\lsp\bme_i,\bme_j\rsp=1$ for $i=j$. The second equality holds from applying \hyperref[sec:Prop1]{Proposition 6.3.1}.
+	\end{myproof}
+	
+	So instead of doing tedious matrix reductions everytime we want to express a vector in terms of a basis, if we have an orthonormal basis we simply have to compute some inner products to obtain the coefficients. Now to construct an orthonormal basis, we use the following algorithm:
+	\vspace{1mm}
+	\thm{Gram-Schmidt orthorgonalisation \label{sec:Thm1}}{
+	If $(\bmv_1,\ldots,\bmv_m)$ is a linearly independent list of vectors in $V$, then there exists an orthonormal list $(\bme_1,\ldots,\bme_m)$ of vectors in $V$ such that 
+	$$\Span(\bmv_1,\ldots,\bmv_j)=\Span(\bme_1,\ldots,\bme_j)$$
+	for $j=1,\ldots,m$.
+	}
+	\vspace{1mm}
+	\cor{}{
+	Every\textbf{ finite-dimensional} inner-product space has an orthonormal basis. 
+	}
+	\begin{myproof}
+		Choose a basis of $V$. Apply the  \hyperref[sec:Thm1]{Gram-Schmidt} procedure until we have an orthonormal list. This list is linearly independent by \hyperref[sec:Cor1]{Corollary 6.3.1} and spans $V$, so it is an orthonormal basis of $V$.
+	\end{myproof}
+	\vspace{1mm}
+	\cor{\label{sec:Cor4}}{
+	Every orthonormal list of vectors in $V$ can be extended to an orthonormal basis of $V$.
+	}
+	\begin{myproof}
+		Suppose $(\bme_1,\ldots,\bme_m)$ is an orthonormal list of vectors in $V$. Then $(\bme_1,\ldots,\bme_m)$ is linearly independent by \hyperref[sec:Cor1]{Corollary 6.3.1} so it can be extended to a basis $(\bme_1,\ldots,\bme_m,\bmv_1,\ldots,\bmv_n)$ of $V$ by a previously proven result in Y1 Spring. Then we apply the \hyperref[sec:Thm1]{Gram-Schmidt} procedure to the list to obtain an orthonormal list which is linearly independent by \hyperref[sec:Cor1]{Corollary 6.3.1} and spans $V$.
+	\end{myproof}
+	\vspace{1mm}
+	The next result is about linear operators on $V$ (recall the chapter on eigenvalues and eigenvectors).\\
+	\cor{}{
+	Suppose $T\in\mathcal{L}(V)$. If $T$ has an upper-triangular matrix with respect to some basis of $V$, then $T$ has an upper-triangular matrix with respect to some orthonormal basis of $V$.
+	}
+	\begin{myproof}
+		Suppose that $T$ has an upper-triangular matrix with respect to some basis $(\bmv_1,\ldots,\bmv_n)$ of $V$. Thus $\Span(\bmv_1,\ldots,\bmv_j)$ is invariant under $T$ for each $j=1,\ldots,n$. \\
+		
+		Applying the \hyperref[sec:Thm1]{Gram-Schmidt} procedure, we obtain an orthonormal basis $(\bme_1,\ldots,\bme_n)$ of $V$. Since $\Span(\bme_1,\ldots,\bme_j)=\Span(\bmv_1,\ldots,\bmv_j)$ for $j=1,\ldots,n$, we conclude that $\Span(\bme_1,\ldots,\bme_j)$ is invariant under $T$, so $T$ has an upper-triangular matrix with respect to the orthonormal basis $(\bme_1,\ldots,\bme_n)$.
+	\end{myproof}
+	\vspace{1mm}
+	\cor{Schur's theorem \label{sec:Cor2}}{
+	Suppose $V$ is a complex vector space and $T\in\mathcal{L}(V)$. $T$ has an upper-triangular matrix with respect to some orthonormal basis of $V$.
+	}
+	\section{Orthogonal projections and minimisation problems}
+	\dfn{Orthogonal complement}{
+	If $U\sbst V$, then the \textbf{orthogonal complement} of $U$, denoted $U^{\perp}$, is the set of all vectors in $V$ that are orthogonal to every vector in $U$: 
+	$$U^{\perp}=\{\bmv\in V:\lsp\bmv,\bmu\rsp=0 \forall \bmu\in U\}.$$
+	}
+	\nt{
+		Note that:
+	\begin{itemize}
+		\item $U^{\perp}$ is always a subspace of $V$;
+		\item $V^{\perp}=\{\bzero\}$;
+		\item $\{\bzero\}^{\perp}=V$;
+		\item $U_1\sbst U_2\Rightarrow U^{\perp}_2\sbst U_1^{\perp}$.
+	\end{itemize}
+}
+
+	The following theorem shows that every subspace of an inner-product space leads to a natural direct sum decomposition of the whole space.
+	\thm{}{
+		\label{sec:Thm2}
+	If $U$ is a subspace of $V$, then
+	$$V=U\oplus U^{\perp}.$$
+	}
+	\begin{myproof}
+		Suppose that $U$ is a subspace of $V$. 
+		\begin{itemize}
+			\item First we show that $V=U+U^{\perp}$. Let $\bmv\in V$ and $(\bme_1,\ldots,\bme_m)$ be an orthonormal basis of $U$. Then we write 
+			
+			$$\bmv=(\lsp\bmv,\bme_1\rsp\bme_1+\ldots+\lsp\bmv,\bme_m\rsp\bme_m)+(\bmv-\lsp\bmv,\bme_1\rsp\bme_1-\ldots-\lsp\bmv,\bme_m\rsp\bme_m)$$
+			
+			Let $\bmu=\lsp\bmv,\bme_1\rsp\bme_1+\ldots+\lsp\bmv,\bme_m\rsp\bme_m$ and $\bmw=(\bmv-\lsp\bmv,\bme_1\rsp\bme_1-\ldots-\lsp\bmv,\bme_m\rsp\bme_m$. Clearly $\bmu\in U$. By taking the inner product between $\bmw$ and each $\bme_j$, we have
+			
+			$$\lsp\bmw,\bme_j\rsp=\lsp\bmv,\bme\rsp-0-\ldots-0-\lsp\bmv,\bme_j\rsp=0.$$
+			
+			Hence, $\bmw$ is orthogonal to every vector in $U$, so $\bmw\in U^{\perp}$. So we have written $\bmv\in V$ as a sum of a vector in $U$ and $U^{\perp}$, so $V=U+U^{\perp}$.
+			\item Suppose that $\bmv\in U\cap U^{\perp}$. So $\bmv$ is orthogonal to itself, implying that $\bmv=\bzero$, so $U\cap U^{\perp}=\{\bzero\}$. Hence $V=U\oplus U^{\perp}$.
+		\end{itemize}
+	\end{myproof}
+	\cor{}{
+	If $U$ is a subspace of $V$, then $$U=(U^{\perp})^{\perp}.$$
+	}
+	\begin{myproof}
+		Suppose that $U$ is a subspace of $V$. 
+		\begin{itemize}
+			\item Suppose that $\bmu\in U$, then $\lsp\bmu,\bmv\rsp=0\,\forall \bmv\in U^{\perp}$. So $\bmu$ is orthogonal to every vector in $U^{\perp}$, hence $\bmu\in(U^{\perp})^{\perp}\Rightarrow U\sbst(U^{\perp})^{\perp}$.
+			\item Suppose that $\bmu\in (U^{\perp})^{\perp}$, then for some reason I don't understand, we can write $\bmv=\bmu+\bmw$ where $\bmu\in U$ and $\bmw\in U^{\perp}$, even though the previous result requires $\bmv\in V$, idk anymore tbh. Then $\bmw=\bmu-\bmv\in (U^{\perp})^{\perp}$ and $\bmw\in U^{\perp}$ implies that $\bmw=\bzero$, so $\bmu=\bmv$, so $\bmv\in U$. Hence $(U^{\perp})^{\perp}\sbst U$.
+		\end{itemize}
+		Combining both parts, $U=(U^{\perp})^{\perp}$.
+	\end{myproof}
+	\vspace{1mm}
+	From \hyperref[sec:Thm2]{Theorem 6.4.1}, we know that each vector $\bmv\in V$ can be written uniquely as
+	$$\bmv=\bmu+\bmw,$$
+	with $\bmu\in U$ and $\bmw\in U^{\perp}$. We use this decomposition to define the following operator on $V$.\\
+	\dfn{Orthogonal projection}{
+	Let $U$ be a subspace of $V$. The \textbf{orthogonal projection} of $V$ onto $U$, $P_{U}$ is an operator on $V$. For $\bmv\in V$, $P_U\bmv$ is such that
+	$$\bmv=P_U\bmv+\bmw,$$
+	where $\bmw\in U^{\perp}$.
+	}
+
+	\nt{
+		\begin{itemize}
+		\item $\ima P_U=U$;
+		\item $\ker P_U=U^{\perp}$;
+		\item $\bmv-P_U\bmv\in U^{\perp} \,\forall\bmv\in V$;
+		\item $P_U^2=P_U$;
+		\item $\|P_U\bmv\|\leq \|\bmv\|\,\forall\bmv\in V$.
+		\end{itemize}
+	}
+	\vspace{1mm}
+	\mprop{}{
+	Suppose $U$ is a subspace of $V$ and $\bmv\in V$. Then 
+	$$\|\bmv-P_U\bmv\|\leq \|\bmv-\bmu\|$$
+	$\forall \bmu\in U$. Furthermore, if $\bmu\in U$ and the inequality is an equality, then $\bmu=P_U\bmv$.
+	}
+	\begin{myproof}
+		Suppose $\bmu\in U$, then
+		\begin{align*}
+			\|\bmv-P_U\bmv\|^2&\leq\|\bmv-P_U\bmv\|^2+\|P_U\bmv-\bmu\|^2\\
+			&=\|(\bmv-P_U\bmv)+(P_U\bmv-\bmu)\|^2 \text{ by Pythagorean theorem}\\
+			&=\|\bmv-\bmu\|^2\\
+			\|\bmv-P_U\bmv\|^2&\leq \|\bmv-\bmu\|
+		\end{align*}
+		We have equality iif $\|P_U\bmv-\bmu\|=0\Leftrightarrow P_U\bmv=\bmu$.
+	\end{myproof}
+	
+	\section{Linear functionals and adjoints}
+	\dfn{Linear functional}{
+	A \textbf{linear functional} on $V$ is a linear map from $V$ to the scalars $F$. 
+	}
+	\vspace{1mm}
+	\thm{\label{sec:Thm3}}{
+	Suppose $\phi$ is a linear functional on $V$. Then there is a unique vector $\bmv\in V$ such that
+	$$\phi(\bmu)=\lsp\bmu,\bmv\rsp$$
+	$\forall \bmu\in V$.
+	}
+	\begin{myproof}
+		Let $(\bme_1,\ldots,\bme_n)$ be an orthonormal basis of $V$, then
+		\begin{align*}
+			\phi(\bmu)&=\phi(\lsp\bmu,\bme_1\rsp\bme_1+\ldots+\lsp\bmu,\bme_n\rsp\bme_n)\\
+			&=\lsp\bmu,\bme_1\rsp\phi(\bme_1)+\ldots+\lsp\bmu,\bme_n\rsp\phi(\bme_n)\text{ by linearity;}\\
+			&= \lsp\bmu,\overline{\phi(\bme_1)}\bme_1+\ldots+\overline{\phi(\bme_n)}\bme_n\rsp \text{ by conjugate homogeneity in second slot,}
+		\end{align*}
+		$\forall \bmu\in V$. By setting $\bmv=\overline{\phi(\bme_1)}\bme_1+\ldots+\overline{\phi(\bme_n)}\bme_n$, we have $\phi(\bmu)=\lsp\bmu,\bmv\rsp\,\forall \bmu\in V$.\\
+		
+		To show the uniqueness of $\bmv$, suppose we have $\bmv_1,\bmv_2\in V$ such that 
+		$$\phi(\bmu)=\lsp\bmu,\bmv_1\rsp=\lsp\bmu,\bmv_2\rsp$$
+		$\forall \bmu\in V$, then
+		$$0=\lsp\bmu,\bmv_1\rsp-\lsp\bmu,\bmv_2\rsp=\lsp\bmu,\bmv_1-\bmv_2\rsp$$
+		by additivity in second slot. Taking $\bmu=\bmv_1-\bmv_2$ gives $\lsp\bmv_1-\bmv_2,\bmv_1-\bmv_2\rsp=0\Rightarrow \bmv_1=\bmv_2$. 
+	\end{myproof}
+	
+	For here onwards, we let $W$ be a finite-dimensional, nonzero, inner-product space over $\FF$.\\
+	
+	\dfn{Adjoint}{
+	Let $T\in\mathcal{L}(V,W)$. The \textbf{adjoint} of $T$, $T^*$, is the function from $W$ to $V$ such that for $\bmw\in W$, $\bmv\in V$
+	$$\lsp T\bmv,\bmw\rsp=\lsp\bmv,T^*\bmw\rsp.$$
+	}
+	\vspace{1mm}
+	
+	\hyperref[sec:Thm3]{Theorem 6.5.1} guarantees the existence and uniqueness of such a vector. 
+	\pagebreak
+	\ex{Computing adjoints}{
+	Let $T:\RR^3\rightarrow\RR^2$ by
+	$$T(x_1,x_2,x_3)=(x_2+3x_3,2x_1).$$
+	Then $T^*$ will be a function from $\RR^2$ to $\RR^3$. To compute $T^*$, fix a point $(y_1,y_2)\in\RR^2$, then
+	\begin{align*}
+		\lsp(x_1,x_2,x_3),T^*(y_1,y_2)\rsp=\lsp T(x_1,x_2,x_3),(y_1,y_2)\rsp\\
+		&=\lsp(x_2+3x_3,2x_1),(y_1,y_2)\rsp\\
+		&=x_2y_1+3x_3y_1+2x_1y_2\\
+		&=\lsp(x_1,x_2,x_3),(2y_2,y_1,3y_1)\rsp
+	\end{align*}
+	$\forall (x_1,x_2,x_3)\in \RR^3\Rightarrow T^*(y_1,y_2)=(2y_2,y_1,3y_1)$. Note that $T^*$ turns out to be a linear map: this is true in general.
+	}
+	\vspace{1mm}
+	\mprop{}{
+	$T\in\mathcal{L}(V,W)\Rightarrow T^*\in\mathcal{L}(W,V)$.
+	}
+	\begin{myproof} 
+		Suppose $T\in\cL(V,W)$, $\bmw_1,\bmw_2\in W$, $k\in\FF$, then
+		\begin{itemize}
+			\item \begin{align*}
+				\lsp T\bmv,\bmw_1+\bmw_2\rsp&=\lsp T\bmv,\bmw_1\rsp+\lsp T\bmv,\bmw_2\rsp \text{ by additivity on second slot}\\
+				&=\lsp\bmv,T^*\bmw_1\rsp+\lsp\bmv,T^*\bmw_2\rsp\\
+				\lsp\bmv,T^*(\bmw_1+\bmw_2)\rsp&=\lsp\bmv,T^*\bmw_1+T^*\bmw_2\rsp
+			\end{align*}
+			\item \begin{align*}
+				\lsp T\bmv,k\bmw_1\rsp&=\bar{k}\lsp T\bmv,\bmw_1\rsp\text{ by conjugate homogeneity;}\\
+				&=\bar{k}\lsp \bmv,T^*\bmw_1\rsp\\
+				\lsp \bmv,T^*(k\bmw_1)&=\lsp \bmv,kT^*\bmw_1\rsp
+			\end{align*}
+		\end{itemize}
+		Hence $T^*$ is a linear map.
+	\end{myproof}
+	\vspace{1mm}
+	
+	\nt{
+	The function $T\mapsto T^*$ has the following properties (to be verified):
+	\begin{enumerate}
+		\item Additivity: $(S+T)^*=S^*+T^*\,\forall S,T\in\cL(V,W)$;
+		\item Conjugate homogeneity: $(aT)^*=\bar{a}T^*\,\forall a\in\FF, T\in\cL(V,W)$;
+		\item Adjoint of adjoint: $(T^*)^*=T \,\forall T\in\cL(V,W)$;
+		\item Identity: $I^*=I$, where $I$ is the identity operator on $V$;
+		\item Products: $(ST)^*=T^*S^*\,\forall T\in\cL(V,W)$ and $S\in\cL(W,U)$, where $U$ is an inner-product space over $\FF$.
+	\end{enumerate}
+	\vspace{1mm}
+}
+	\pagebreak
+	
+	Verification:
+	\begin{enumerate}
+		\item Let $S,T\in\cL(V,W)$. $\forall \bmv\in V,\bmw\in W$,
+		\begin{align*}
+			\lsp\bmv,(S+T)^*\bmw\rsp&=\lsp(S+T)\bmv,\bmw\rsp\\
+			&=\lsp S\bmv,\bmw\rsp +\lsp T\bmv,\bmw\rsp\\
+			&=\lsp \bmv,S^*\bmw\rsp+\lsp\bmv,T^*\bmw\rsp.
+		\end{align*}
+		\item Let $a\in\FF,T\in\cL(V,W)$, then $\forall\bmv\in V,\bmw\in W$,
+		\begin{align*}
+			\lsp\bmv,(aT)^*\bmw\rsp&=\lsp aT\bmv,\bmw\rsp\\
+			&=a\lsp T\bmv,\bmw\rsp \text{ by homogeneity in first slot;}\\
+			&=a\lsp \bmv, T^*\bmw\rsp\\
+			&=\lsp \bmv,\bar{a}T^*\bmw\rsp \text{ by conjugate homogeneity in second slot.}
+		\end{align*}
+		\item Let $T\in\cL(V,W)$, then $\forall \bmv\in V,\bmw\in W$,
+		\begin{align*}
+			\lsp \bmv,(T^*)^*\bmw\rsp&=\lsp T^*\bmv,\bmw\rsp\\
+			&=\overline{\lsp \bmw,T^*\bmv\rsp}\text{ by conjugate symmetry;}\\
+			&=\overline{\lsp T\bmw,\bmv\rsp}\\
+			&=\lsp \bmv, T\bmw\rsp.\\
+		\end{align*}
+		Hence $T=(T^*)^*$.
+		\item $\forall \bmv\in V$, $\lsp I\bmv,\bmv\rsp=\lsp \bmv, I^*\bmv\rsp=\lsp \bmv,\bmv\rsp=\lsp \bmv,I\bmv\rsp$. Hence $I=I^*$.
+		\item Let $S\in \cL(V,W)$ and $T\in\cL(W,V)$, then $\forall \bmv\in V,\bmw\in W$, we have
+		\begin{align*}
+			\lsp \bmv,(ST)^*\bmw\rsp&=\lsp ST\bmv,\bmw\rsp\\
+			&=\lsp T\bmv,S^*\bmw\rsp\\
+			&=\lsp \bmv,T^*S^*\bmw\rsp.
+		\end{align*}
+		Hence $(ST)^*=T^*S^*$.
+	\end{enumerate}
+	\vspace{1mm}
+	\mprop{}{
+	Suppose $T\in\cL(V,W)$, then
+	\begin{enumerate}
+		\item $\ker T^*=(\ima T)^{\perp}$;
+		\item $\ima T*=(\ker T)^{\perp}$;
+		\item $\ker T=(\ima T^*)^{\perp}$;
+		\item $\ima T=(\ker T^*)^{\perp}$.
+	\end{enumerate}
+	}
+	\begin{myproof}
+		\begin{enumerate}
+			\item Let $\bmw\in W$, then
+			\begin{align*}
+				\bmw\in \ker T^*&\Leftrightarrow T^*\bmw=\bzero\\
+				&\Leftrightarrow \lsp\bmv,T^*\bmw\rsp=0\,\forall \bmv\in V\\
+				&\Leftrightarrow \lsp T\bmv,\bmw\rsp=0\,\forall \bmv\in V\\
+				&\Leftrightarrow \bmw\in (\ima T)^{\perp}
+			\end{align*}
+			So $\ker T^*=(\ima T)^{\perp}$.
+			\item[3.] Let $\bmv\in V$, then
+			\begin{align*}
+				\bmv\in \ker T&\Leftrightarrow T\bmv=\bzero\\
+				&\Leftrightarrow \lsp T\bmv,\bmw\rsp=0 \,\forall \bmw\in W\\
+				&\Leftrightarrow \lsp\bmv,T^*\bmw\rsp=0\,\forall \bmw\in W\\
+				&\Leftrightarrow \bmv\in (\ima T)^{\perp}.
+			\end{align*}
+			So $\ker T=(\ima T^*)^{\perp}$.
+		\end{enumerate}
+		We get (4) and (2) by taking the orthogonal complement of both sides of (1) and (3).
+	\end{myproof}
+	\vspace{1mm}
+	\dfn{Conjugate transpose}{
+	The \textbf{conjugate tranpose} of an $A\in M_{mn}$ is the $n\times m$ matrix obtained by taking the transpose of $A$ and the complex conjugate of each entry.
+	}
+	\vspace{1mm}
+	\mprop{}{
+	Suppose $T\in\cL(V,W)$. If $(\bme_1,\ldots,\bme_n)$ is an orthonormal basis of $V$ and $(\bmf_1,\ldots,\bmf_m)$ is an orthonormal basis of $W$, then
+	$$\cM(T^*,(\bmf_1,\ldots,\bmf_m),(\bme_1,\ldots,\bme_n))$$
+	is the conjugate transpose of 
+	$$\cM(T,(\bme_1,\ldots,\bme_n),(\bmf_1,\ldots,\bmf_m)).$$
+	}
+	\vspace{1mm}
+	\begin{myproof}
+		Suppose that $(\bme_1,\ldots,\bme_n)$ is an orthonormal basis of $V$ and $(\bmf_1,\ldots,\bmf_m)$ is an orthonormal basis of $W$. We abbreviate the two matrices as $\cM(T^*)$ and $\cM(T)$ omitting the bases.\\
+		
+		We can obtain the $k$th column of $\cM(T)$ be writing $T\bme_k$ as a linear combination of $\bmf_i$. Since $(\bmf_1,\ldots,\bmf_m)$ is an orthonormal basis, by \hyperref[sec:Thm4]{Theorem 6.3.1}, we can write $T\bme_k$ as
+		$$T\bme_k=\lsp T\bme_k,\bmf_1\rsp\bmf_1+\ldots+\lsp T\bme_k,\bmf_m\rsp\bmf_m.$$
+		So the $jk$th entry of $\cM(T)$ is $\lsp T\bme_k,\bmf_j\rsp$ (with respect to basis of $W$). Similarly for $\cM(T^*)$, the $jk$th entry is 
+		$$\lsp T^*\bmf_k,\bme_j\rsp=\lsp\bmf_k,T\bme_j\rsp=\overline{\lsp T\bme_j,\bmf_k\rsp}$$
+		by conjugate symmetry of inner products, which is the complex conjugate of the entry in row $k$, column $j$ of $\cM(T)$. Hence $\cM(T^*)$ is the conjugate transpose of $\cM(T)$.
+	\end{myproof}
+	
+	\chapter{Operators on inner-product spaces}
+	\section{Self-adjoint and normal operators}
+	\dfn{Self-adjoint}{
+	An operator $T\in\cL(V)$ is \textbf{self-adjoint} if $T=T^*$.
+	}
+	\vspace{1mm}
+	The sum of two self-adjoint operators is self adjoint since by additivity of adjoints, for self-adjoint operators $S,T\in\cL(V)$, $(S+T)*=S*+T*=S+T$. Also, the product of a real scalar and a self-adjoint operator is self-adjoint, since by conjugate homogeneity of adjoints, for $k\in\RR$, $(kT)*=\bar{k}T^*=kT$.
+	\vspace{1mm}
+	\mprop{}{
+	Every eigenvalue of a self-adjoint operator is real.
+	}
+	\begin{myproof}
+		Suppose $T$ is a self-adjoint operator on $V$. Let $\lm$ be an eigenvalue of $T$ and $\bmv$ be a nonzero vector in $V$ such that $T\bmv=\lm\bmv$, then
+		\begin{align*}
+			\lm\|\bmv\|^2&=\lsp\lm\bmv,\bmv\rsp\text{ by homogeneity in the first slot;}\\
+			&=\lsp T\bmv,\bmv\rsp\\
+			&=\lsp\bmv,T\bmv\rsp \text{ since $T$ is self-adjoint;}\\
+			&=\lsp\bmv,\lm\bmv\rsp\\
+			&=\bar{\lm}\|\bmv\|^2\\
+			\lm&=\bar{\lm}\Rightarrow\lm\in \RR\text{ since }\bmv\neq\bzero.
+		\end{align*}
+	\end{myproof}
+	
+	\mprop{\label{sec:Prop2}}{
+	If $V$ is a complex inner-product space and $T$ is an operator on $V$ such that
+	$$\lsp T\bmv,\bmv\rsp=0$$
+	$\forall \bmv\in V$, then $T=0$.
+	}
+	\begin{myproof}
+		Suppose $V$ is a complex inner-product space and $T\in\cL(V)$, then $\forall \bmu,\bmw\in V$, we have
+		\begin{align*}
+			\lsp T\bmu,\bmw\rsp=&\dfrac{\lsp T(\bmu+\bmw),\bmu+\bmw\rsp-\lsp T(\bmu-\bmw),\bmu-\bmw\rsp}{4}+\dfrac{\lsp T(\bmu+i\bmw),\bmu+i\bmw\rsp-\lsp T(\bmu-i\bmw),\bmu-i\bmw\rsp}{4}i\\
+			=&\frac{1}{4}(\lsp T\bmu,\bmu\rsp+\lsp T\bmw,\bmu\rsp+\lsp T\bmu,\bmw\rsp+\lsp T\bmw,\bmw\rsp-\lsp T\bmu,\bmu\rsp+\lsp T\bmw,\bmu\rsp+\lsp T\bmu,\bmw\rsp-\lsp T\bmw,\bmw\rsp)\\
+			&+\frac{1}{4}i(\lsp T\bmu,\bmu\rsp+i\lsp T\bmw,\bmu\rsp-i\lsp T\bmu,\bmw\rsp-i^2\lsp T\bmw,\bmw\rsp-(\lsp T\bmu,\bmu\rsp-i\lsp T\bmw,\bmu\rsp+i\lsp T\bmu,\bmw\rsp-i^2\lsp T\bmw,\bmw\rsp))\\
+			=&\frac{1}{4}(2\lsp T\bmu,\bmw\rsp+2\lsp T\bmw,\bmu\rsp)+\frac{1}{4}i(2i\lsp T\bmw,\bmu\rsp-2i\lsp T\bmu,\bmw\rsp)\\
+			=&\frac{1}{4}(2\lsp T\bmu,\bmw\rsp+2\lsp T\bmw,\bmu\rsp -2\lsp T\bmw,\bmu\rsp +2\lsp T\bmu,\bmv\rsp)\\
+			=&\frac{1}{4}(4\lsp T\bmu,\bmw\rsp)\\
+			=&\lsp T\bmu,\bmw\rsp
+		\end{align*}
+		as verified. Since each inner product on the RHS is of the form $\lsp T\bmv,\bmv\rsp$, if we have $\lsp T\bmv,\bmv\rsp=0$, then $\lsp T\bmu, \bmw\rsp=0$ for all $\bmu,\bmw\in V$, implying that $T=0$ by taking $\bmw=T\bmu$.
+	\end{myproof}
+	\vspace{3mm}
+	\cor{}{
+	Let $V$ be a complex inner-product space and let $T\in \cL(V)$. $T$ is self-adjoint iif $$\lsp T\bmv,\bmv\rsp\in \RR$$
+	$\forall \bmv\in V$.
+	}
+	\begin{myproof}
+		Let $\bmv\in V$, then
+		\begin{align*}
+			\lsp T\bmv,\bmv\rsp -\overline{\lsp T\bmv,\bmv}&=\lsp T\bmv,\bmv\rsp-\lsp \bmv,T\bmv\rsp\\
+			2\ima\lsp T\bmv,\bmv\rsp&=\lsp T\bmv,\bmv\rsp-\lsp T^*\bmv,\bmv\rsp\\
+			&=\lsp(T-T^*)\bmv,\bmv\rsp
+		\end{align*}
+		\begin{itemize}
+			\item $(\Rightarrow)$ Suppose $\lsp T\bmv,\bmv\rsp\in \RR$, then $\forall \bmv\in V$, $\lsp(T-T^*)\bmv,\bmv\rsp=0\Rightarrow T-T^*=0\Rightarrow T=T^*$ i.e. $T$ is self-adjoint by previous result.
+			\item $(\Leftarrow)$ Suppose that $T$ is self-adjoint, then $2\ima\lsp T\bmv,\bmv\rsp=\lsp 0,\bmv\rsp=0$, so $\lsp T\bmv,\bmv\rsp\in \RR \,\forall \bmv\in V$.
+		\end{itemize}
+	\end{myproof}
+	\vspace{3mm}
+	For \hyperref[sec:Prop2]{Proposition 7.1.1} to hold for real inner-product spaces, we require $T$ to be a self-adjoint operator.
+	\mprop{\label{sec:Prop3}}{
+	$T$ is a self-adjoint operator on $V$ such that
+	$$\lsp T\bmv,\bmv\rsp=0$$
+	$\forall\bmv\in V$ iif $T=0$.
+	}
+	\begin{myproof}
+		Suppose that $T$ is a self-adjoint operator on $V$ such that $\lsp T\bmv,\bmv\rsp=0$ $\forall\bmv\in V$. For $\bmu,\bmw\in V$, we can write $\lsp T\bmu,\bmw\rsp$ as 
+		
+		\begin{align*}
+			&\frac{1}{4}(\lsp T(\bmu+\bmw),\bmu+\bmw\rsp-T\lsp(\bmu-\bmw),\bmu-\bmw\rsp)\\
+			&=\frac{1}{4}(2\lsp T\bmu,\bmw\rsp+2\lsp T\bmw,\bmu\rsp)\\
+			&=\frac{1}{4}(2\lsp T\bmu,\bmw\rsp+2\lsp \bmw,T*\bmu\rsp)\\
+			&=\frac{1}{4}(2\lsp T\bmu,\bmw\rsp+2\lsp \bmw,T\bmu\rsp)\\
+			&=\frac{1}{4}(2\lsp T\bmu,\bmw\rsp+2\lsp T\bmu,\bmw\rsp)\text{ by conjugate symmetry of inner products}\\
+			&=\lsp T\bmu,\bmw\rsp.
+		\end{align*}
+		Since we have $\lsp T\bmv,\bmv\rsp=0$, $\lsp T\bmu,\bmw\rsp=0$. By taking $\bmw=T\bmu$, we have $T=0$. \\
+		For the converse statement, suppose $T=0_V$, then $\lsp T\bmv,\bmv\rsp=\lsp 0_V,\bmv\rsp=0$. Clearly $T$ is self-adjoint since the conjugate transpose of a zero matrix is still the zero matrix. Hence the converse statement holds.
+	\end{myproof}
+	
+	\dfn{Normal operators}{
+	An operator on an inner-product space is \textbf{normal} if it commutes with its adjoint, i.e.
+	$$TT^*=T^*T.$$
+	}
+	\ex{Normal operators}{
+	Every self-adjoint operator is normal, but not all normal operators are self-adjoint. For example, consider the matrix
+	$$A=\begin{pmatrix}
+		2 & -3 \\ 3 & 2
+	\end{pmatrix}\in M_{22}.$$
+	Computing the adjoint of the operator on $\FF^2$ represented by $A$ with respect to the standard basis, that is
+	$$T:\FF^2\rightarrow \FF^2; (x,y)\mapsto(2x+3y,-3x+2y).$$
+	We fix $\bmw=(w_1,w_2)\in \FF^2$, then 
+	\begin{align*}
+		\lsp (x,y), T^*\bmw\rsp&=\lsp T(x,y), \bmw\rsp\\
+		&=\lsp (2x+3y,-3x+2y),(w_1,w_2)\rsp\\
+		&=2xw_1+3yw_1-3xw_2+2yw_2\\
+		&=(2w_1-3w_2)x+(3w_1+2w_2)y\\
+		&=\lsp (x,y), (2w_1-3w_2,3w_1+2w_2)\rsp
+	\end{align*}
+	So $T^*(w_1,w_2)=(2w_1-3w_2,3w_1+2w_2)$ so $T$ is not self-adjoint since $T\neq T^*$. But $T$ is normal since
+	\begin{align*}
+		TT^*(x,y)&=T(2x-3y,3x+2y)\\
+		&=(2(2x-3y)+3(3x+2y),-3(2x-3y)+2(3x+2y))\\
+		&=(4x-6y+9x+6y,-6x+9y+6x+4y)\\
+		&=(13x,13y)\\
+		T^*T(x,y)&=T^*(2x+3y,-3x+2y)\\
+		&=(2(2x-3y)+3(3x+2y),-3(2x-3y)+2(3x+2y))\\
+		&=(4x-6y+9x+6y,-6x+9y+6x+4y)\\
+		&=(13x,13y)=TT^*(x,y)
+	\end{align*}
+	$\forall x,y\in\FF$.
+	}
+	\pagebreak
+	\mprop{\label{sec:Prop4}}{
+	An operator $T\in\cL(V)$ is normal iif 
+	$$\|T\bmv\|=\|T^*\bmv\|$$
+	$\forall \bmv\in V$.
+	}
+	\begin{myproof}
+		Let $T\in\cL(V)$. $T$ is normal iif
+		\begin{align*}
+			T^*T-TT^*=0&\Leftrightarrow \lsp (T^*T-TT^*)\bmv,\bmv\rsp=0\,\forall \bmv\in V \text{ by \hyperref[sec:Prop3]{Proposition 7.1.3}}\\
+			&\Leftrightarrow T^*T\bmv,\bmv\rsp=\lsp TT^*\bmv,\bmv\rsp \,\forall \bmv\in V\\
+			&\Leftrightarrow \lsp T\bmv,T\bmv\rsp=\lsp T^*\bmv,T^*\bmv\rsp\,\forall \bmv\in V\\
+			&\Leftrightarrow \|T\bmv\|^2=\|T^*\bmv\|^2 \,\forall\bmv\in V\\
+			&\Leftrightarrow \|T\bmv\|=\|T^*\bmv\| \,\forall\bmv\in V.
+		\end{align*}
+	\end{myproof}
+	
+	\cor{}{
+	Suppose $T\in\cL(V)$ is normal. If $\bmv\in V$ is an eigenvector of $T$ with eigenvalue $\lm\in\FF$, then $\bmv$ is also an eigenvector of $T^*$ with eigenvalue $\bar{\lm}$.
+	}
+	\begin{myproof}
+		Suppose $\bmv\in V$ is an eigenvector of $T$ with eigenvalue $\lm$. By definition of eigenvectors we have
+		$$(T-\lm I)\bmv=\bzero.$$
+		Since $T$ is normal, $TT^*=T^*T$. Then we consider
+		\begin{align*}
+			(T-\lm I)(T-\lm I)^*&=(T-\lm I)(T^*-\bar{\lm} I^*)\\
+			&=TT^*-T\bar{\lm}I-\lm IT^*+\lm\bar{\lm}II\\
+			&=T^*T-\bar{\lm}T-\lm T^*+\lm\bar{\lm} I\\
+			&=(T^*-\bar{\lm}I^*)(T-\lm I)\\
+			&=(T-\lm I)^*(T-\lm I)
+		\end{align*}
+		so $(T-\lm I)$ is also normal. Then by \hyperref[sec:Prop4]{Proposition 7.1.4}, we have 
+		$$\|(T-\lm I)\bmv\|=\|(T-\lm I)^*\bmv\|=\|(T^*-\bar{\lm}I)\bmv\|=0$$
+		so $\bmv$ is an eigenvector of $T^*$ corresponding to eigenvalue $\bar{\lm}$.
+	\end{myproof}
+	\cor{\label{sec:Cor3}}{
+	If $T\in\cL(V)$ is normal, then eigenvectors of $T$ corresponding to distinct eigenvalues are orthogonal.
+	}
+	\begin{myproof}
+		Suppose $T\in\cL(V)$ is normal and $\alpha,\beta$ are distinct eigenvalues of $T$, with corresponding eigenvectors $\bmu,\bmv\in V$. So we have
+		$$T\bmu=\alpha \quad\quad\text{and}\quad\quad T\bmv=\beta\bmv.$$ 
+		To determine if the eigenvectors are orthogonal, we consider
+		\begin{align*}
+			(\alpha-\beta)\lsp \bmu,\bmv\rsp&=\alpha\lsp\bmu,\bmv\rsp-\beta\lsp\bmu,\bmv\rsp\\
+			&=\lsp\alpha\bmu,\bmv\rsp-\lsp\bmu,\bar{\beta}\bmv\rsp\\
+			&=\lsp T\bmu,\bmv\rsp-\lsp\bmu, T^*\bmv\rsp\\
+			&=0.
+		\end{align*}
+		Since $\alpha\neq\beta$, we have $\lsp\bmu,\bmv\rsp=0$ implying that $\bmu$ and $\bmv$ are orthogonal.
+	\end{myproof}
+	\pagebreak
+	\section{Diagonal matrices}
+	
+	\dfn{}{
+		An operator $T\in\cL(V)$ has a diagonal matrix 
+		$$D=\begin{pmatrix}
+			\lm_1 & 0 & \ldots & 0 \\ 
+			0 & \lm_2 & \ldots & 0 \\
+			\vdots & \vdots & \ddots & \vdots \\
+			0 & 0 &\ldots & \lm_n
+		\end{pmatrix}\in M_{nn}$$
+		\textbf{with respect to a basis} $(\bmv_1,\ldots,\bmv_n)$ of $V$ iif we have
+		\begin{align*}
+			T\bmv_1&=\lm_1\bmv_1\\
+			&\vdots\\
+			T\bmv_n&=\lm_n\bmv_n;
+		\end{align*}
+	}
+	\nt{
+	\vspace{1mm}
+	Recall that we say that $M$ is a matrix of an operator $T$ with respect to a basis of $V$ when the output vector given when applied to a vector (with respect to a basis of $V$) is with respect to the basis. To obtain such a matrix, we perform change of basis:
+	 
+	$$A_B=P^{-1}AP$$
+	where $P$ is the matrix with columns containing the basis vectors from $B$ and $A_B$ is the matrix $A$ with respect to basis $B$. For example, consider the matrix
+	$$A=\begin{pmatrix}
+		1 & 2 \\ 3 & 4
+	\end{pmatrix}\in M_{22}$$ 
+	with respect to the standard basis. Suppose we want to change it so that it is with respect to basis $B=\{(1,1)^T,(1,0)^T\}$, by performing change of basis:
+	$$A_B=\begin{pmatrix}
+		0 & 1 \\ 1 & -1
+	\end{pmatrix}\begin{pmatrix}
+		1 & 2 \\ 3 & 4
+	\end{pmatrix}\begin{pmatrix}
+		1 & 1 \\ 1 & 0
+	\end{pmatrix}=\begin{pmatrix}
+	7 & 3 \\ -4 & -2
+	\end{pmatrix}.$$
+	Now if we apply $A$ and $A_B$ both to $(a,b)^T$, we would obtain $(7a+3b,-4a-2b)^T$ and $(3a+b,7a+3b)^T$ respectively. Note that when applying $A_B$, it takes in $(a,b)^T$ with respect to $B$, so in terms of the standard basis, $(a,b)^T$ really is $(a+b,a)^T$, to which when $A$ is applied, gives $(3a+b,7a+3b)^T$. If we express $B$ in terms of the standard basis, we get
+	
+	$$(7a+3b)(1,1)+(-4a-2b)(1,0)=(7a+3b,7a+3b)+(-4a,-2b,0)=(3a+b,7a+3b).$$
+	
+	Note that after we left-multiply $A$ to $P$, the resulting matrix now treats its \textbf{input vectors} in terms of basis $B$ since when $AP$ is applied to $\bmv$, $P$ is multiplied first, then applying $A$ gives the \textbf{output vector }with respect to the standard basis, so we apply $P^{-1}$ so that this vector is with respect to $B$.\\}
+	\vspace{3mm}
+	Returning to our definition, this makes sense because if the diagonal matrix is with respect to a basis $B=(\bmv_1,\ldots,\bmv_n)$ of $V$, then applying $T$ to any $\bmv_i$ would be equivalent to applying the diagonal matrix to a column vector $\bmu_i\in V$ with entries $u_{ij}=1$ for $i=j$ and zero otherwise, resulting in the definition given. \\
+	
+	Now we happen to notice that those equations imply that $\bmv_i$ are eigenvectors corresponding to eigenvalues $\lm_i$. Hence we can conclude further that \textbf{$T$ has a diagonal matrix $D$ with respect to basis $B$ iif $B$ consists of eigenvectors of $T$ corresponding to entries in $D$}.
+	\vspace{1mm}
+	%%%%% Proposition 7.2.1 %%%%%
+	\mprop{}{
+	If $T\in\cL(V)$ has $\dim V$ distinct eigenvalues, then $T$ has a diagonal matrix with respect to some basis of $V$.
+	}
+	\begin{myproof}
+		Suppose that $T\in\cL(V)$ has $\dim V$ distinct eigenvalues $\lm_1,\ldots,\lm_{\dim V}$. For each $j$, let $\bmv_j\in V$ be a nonzero eigenvector corresponding to distinct eigenvalues $\lm_j$, so $(\bmv_1,\ldots,\bmv_{\dim V})$ is linearly independent. Since this is a list of $\dim V$ linear independent vectors, it is a basis of $V$. By definition, $T$ has a diagonal matrix with diagonal entries equal to eigenvalues corresponding to each $\bmv_j$.
+	\end{myproof}
+	\vspace{1mm}
+	%%%%%% Proposition 7.2.2 %%%%%%%
+	\mprop{\label{sec:Prop5}}{
+	Suppose $T\in \cL(V)$. Let $\lm_1,\ldots,\lm_m$ denote the distinct eigenvalues of $T$, then the following are equivalent:
+	\begin{enumerate}
+		\item $T$ has a diagonal matrix with respect to some basis of $V$;
+		\item $V$ has a basis consisting of eigenvectors of $T$;
+		\item there exist one-dimensional subspaces $U_1,\ldots,U_n$ of $V$, each invariant under $T$, such that
+		$$V=U_1\oplus \ldots\oplus U_n;$$
+		\item $V=\ker(T-\lm_1 I)\oplus\ldots\oplus\ker(T-\lm_m T)$;
+		\item $\dim V=\nul(T-\lm_1 I)+\ldots+\nul(T-\lm_m I).$
+	\end{enumerate}
+	\vspace{1mm}
+	}
+	
+	\begin{myproof} We prove this in 5 directions:
+		\begin{enumerate}
+			\item[($1\Leftrightarrow 2$)] Shown previously.
+			\item[($2\Rightarrow 3$)] Suppose that (2) holds. For each $j$, let $U_j=\Span(\bmv_j)$. Each $U_j$ is a one-dimensional subspace of $V$ that is invariant under $T$. Since $(\bmv_1,\ldots,\bmv_n)$ is a basis of $V$, each vector in $V$ can be written uniquely as a linear combination of $(\bmv_1,\ldots,\bmv_n)$, which can then be written as a sum $\bmu_1+\ldots+\bmu_n$ which each $\bmu_j\in U_j$. So $V=U_1\oplus\ldots\oplus U_n$ since $U_1\cap\ldots\cap U_n=\{\bzero\}$ as $(\bmv_1,\ldots,\bmv_n)$ is linearly independent.
+			\item[($3\Rightarrow 2$)] Suppose that (3) holds. For each $j$, let $\bmv_j$ be a nonzero vector in $U_j$ which are invariant under $T$, so each $\bmv_j$ is an eigenvector of $T$. Each vector in $V$ can be written uniquely as $\bmu_1+\ldots+\bmu_n$ where each $\bmu_j\in U_j$ by our assumption, which is a linear combination of $(\bmv_1,\ldots,\bmv_n)$ since each $\bmu_j$ is a scalar multiple of $\bmv_j$. Hence this list of eigenvectors spans $V$ and is linearly independent, so it is a basis of $V$.
+			\item [$(2\Rightarrow 4)$] Suppose that $(2)$ holds, then every vector in $V$ is a linear combination of eigenvectors of $T$, so we have
+			
+			$$V=\ker(T-\lm_1 I)+\ldots+\ker(T-\lm_m I),$$
+			
+			which makes sense if you consider the definition of sums of subspaces and eigenvectors. Also, by considering
+			
+			$$\bmu_1+\ldots+\bmu_m=\bzero$$
+			
+			for $\bmu_j\in\ker(T-\lm_j I)$. Since nonzero eigenvectors corresponding to distinct eigenvalues are linearly independent, each $\bmu_j=\bzero$, so
+			
+			$$\ker(T-\lm_1I)\cap\ldots\cap\ker(T-\lm_mI)=\{\bzero\}$$
+			
+			since containing any more vectors would imply that every eigenvector is linearly dependent to each other, and so there is only one distinct eigenvalue which is a contradiction. Hence the sum is a direct sum.
+			\item[$(4\Rightarrow 5)$] Suppose that (4) holds, then (5) holds immediately from Proposition 5.3.2 from Spring semester notes.
+			\item[$(5\Rightarrow 2)$] Suppose that (5) holds. We choose a basis of each $\ker(T-\lm_jI)$ and put all these bases together to form a list $(\bmv_1,\ldots,\bmv_n)$ of eigenvectors of $T$, where $n=\dim V$. To show that this list is linearly independent, suppose
+			
+			$$a_1\bmv_1+\ldots+a_n\bmv_n=\bzero$$
+			
+			where $a_1,\ldots,a_n\in\FF$. For each $j=1,\ldots,m$, let $\bmu_j$ denote the sum of all the terms $a_k\bmv_k$ such that $\bmv_k\in \ker(T-\lm_jI)$. Thus each $\bmu_j$ is an eigenvector of $T$ corresponding to eigenvalue $\lm_j$ and we have
+			
+			$$\bmu_1+\ldots+\bmu_m=\bzero.$$
+			
+			Since nonzero eigenvectors corresponding to distinct eigenvalues are linearly independent, this implies that each $\bmu_j=\bzero$, and since each $u_j$ is a linear combination of $\bmv_k$, each $a_k=0$, hence $(\bmv_1,\ldots,\bmv_n)$ is linearly independent and is a basis of $V$.
+		\end{enumerate}
+	\end{myproof}
+	\section{The spectral theorem}
+	%%%%% Complex spectral theorem %%%%%
+	\thm{Complex spectral theorem \label{sec:Thm5}}{
+	Suppose that $V$ is a complex inner-product space and $T\in\cL(V)$. $V$ has an orthonormal basis consisting of eigenvectors of $T$ iif $T$ is normal.
+	}
+	\begin{myproof}
+		We prove this in two directions:
+		\begin{itemize}
+			\item $(\Rightarrow)$ Suppose that $V$ has an orthonormal basis consisting of eigenvectors of $T$. By \hyperref[sec:Prop5]{Proposition 7.2.2}, with respect to this basis, $T$ has a diagonal matrix $\cM(T)$.\\
+
+			Our goal is to show that $T$ is normal, i.e. $TT^*=T^*T$, hence we now consider $T^*$. The matrix of $T^*$ with respect to the same basis can be obtained by taking the conjugate transpose of $\cM(T)$, which is also a diagonal matrix. Since any two diagonal matrices commute, $T$ commutes with $T^*$, hence $T$ is normal.\\
+			\item $(\Leftarrow)$ Suppose that $T$ is normal. There is an orthonormal basis $(\bme_1,\ldots,\bme_n)$ of $V$ such that $T$ has an upper-triangular matrix with respect to this basis by \hyperref[sec:Cor2]{Corollary 6.4.5}. Let
+			$$\cM(T,(\bme_1,\ldots,\bme_n))=\begin{pmatrix}
+				a_{1,1} & \ldots & a_{1,n}\\ & \ddots & \vdots \\ 0 & & a_{n,n}
+			\end{pmatrix}.$$
+			We now want to show that this matrix is actually a diagonal matrix, i.e. $a_{ij}=0$ for $i\neq j$, which by \hyperref[sec:Prop5]{Proposition 7.2.2} implies that $(\bme_1,\ldots,\bme_n)$ consists of eigenvectors of $T$.\\
+			
+			We see from the matrix above that 
+			
+			$$\|T\bme_1\|^2=|a_{1,1}|^2 \quad\quad \text{and}\quad\quad \|T^*\bme_1\|^2=|a_{1,1}|^2+|a_{1,2}|^2+\ldots+|a_{1,n}|^2.$$
+			
+			by considering the matrix $\cM(T^*,(\bme_1,\ldots,\bme_n))$ constructed by taking the conjugate transpose, noting that the modulus of a complex number is equal to its conjugate. Now, since $T$ is normal by our assumption, we must have $\|T\bme_1\|=\|T^*\bme\|$, giving 
+			
+			$$|a_{1,1}|^2=|a_{1,1}|^2+|a_{1,2}|^2+\ldots+|a_{1,n}|^2 \quad\Rightarrow\quad a_{1,2}=\ldots=a_{1,n}=0.$$
+			
+			By considering $\|T\bme_j\|=\|T^*\bme_j\|$ for $j=1,\ldots,n$, we finally obtain each $a_{i,j}=0$ for $i\neq j$, hence the matrix is a diagonal matrix with respect to some basis of $V$, so by \hyperref[sec:Prop5]{Proposition 7.2.2}, $V$ has an orthonormal basis consisting of eigenvectors of $T$. 
+		\end{itemize}
+		
+	\end{myproof}
+	\mlenma{\label{sec:Lem1}}{
+	Suppose that $T\in\cL(V)$ is self-adjoint. If $\ga,\gb\in\RR$ such that $\ga^2<4\gb$, then
+	$$T^2+\ga T+\gb I$$
+	is invertible. (A linear map is invertible if its inverse exists.)
+	}
+	\begin{myproof}
+		Suppose $\alpha,\beta\in\RR$ are such that $\alpha^2<4\beta$. Let $\bmv$ be a nonzero vector, then
+		\begin{align*}
+			\lsp(T^2+\alpha T+\beta I)\bmv,\bmv\rsp&=\lsp T^2\bmv,\bmv\rsp +\alpha\lsp T\bmv,\bmv\rsp +\beta\lsp\bmv,\bmv\rsp \text{ by additivity in first slot;}\\
+			&=\lsp T\bmv,T^*\bmv\rsp+\alpha\lsp T\bmv,\bmv\rsp+\beta\|\bmv\|^2\\
+			&=\lsp T\bmv,T\bmv\rsp+\alpha\lsp T\bmv,\bmv\rsp+\beta\|\bmv\|^2\\
+			&=\| T\bmv\|^2+\alpha\lsp T\bmv,\bmv\rsp+\beta\|\bmv\|^2\\
+			&\geq \| T\bmv\|^2-|\alpha\lsp T\bmv,\bmv\rsp| +\beta\|\bmv\|^2 \text{ with equality if }\alpha\lsp T\bmv,\bmv\rsp<0\\
+			&\geq \| T\bmv\|^2-|\alpha|\| T\bmv\|\|\bmv\| +\beta\|\bmv\|^2 \text{ by the \hyperref[sec:Thm7]{Cauchy-Schwarz inequality;}}\\
+			&=\lt(\| T\bmv\|-\frac{|\alpha|\|\bmv\|}{2}\rt)^2+\lt(\gb-\frac{\ga^2}{4}\rt)\|\bmv\|^2\text{ by completing the square}\\
+			&>0 \text{ since }\beta-{\dfrac{\ga^2}{4}}>0\text{ for }\ga^2<4\gb.
+		\end{align*}
+		Hence $\lsp(T^2+\alpha T+\beta I)\bmv,\bmv\rsp\neq 0$ $\forall \bmv\in V$, so $\ker(T^2+\ga T+\gb I)=\{\bzero\}$, so $T^2+\ga T+\gb I$ is injective, implying that it is invertible.
+	\end{myproof}
+	We now see how this lemma is useful for our purpose by visiting some results from a previous chapter.
+	\vspace{1mm}
+	\mprop{\label{sec:Prop6}}{
+	Suppose $p\in\cP(\FF)$ is a polynomial with degree $m\geq 1$. Let $\lm\in\FF$. Then $\lm$ is a root of $p$ iif there is a polynomial $q\in\cP(\FF)$ with degree $m-1$ such that 
+	$$p(z)=(z-\lm)q(z)$$
+	$\forall z\in\FF$.
+	}
+	\cor{}{
+	Suppose $p\in\cP(\FF)$ is a polynomial with degree $m\geq 0$. Then $p$ has at most $m$ distinct roots in $\FF$.
+	}
+	\cor{}{
+	Suppose $a_0,\ldots,a_m\in\FF$. If 
+	$$a_0+a_1z+a_2z^2+\ldots+a_mz^m=0$$
+	$\forall z\in\FF$, then $a_0=\ldots=a_m=0$.
+	}
+
+	\thm{\label{sec:Thm8}}{
+	If $p\in \cP(\RR)$ is a nonconstant polynomial, then $p$ has a unique factorisation (except for the order of the factors) of the form
+	$$p(x)=c(x-\lm_1)\ldots(x-\lm_m)(x^2+\ga_1x+\gb_1)\ldots(x^2+\ga_Mx+\gb_M),$$
+	where $c,\lm_1,\ldots,\lm_m\in\RR$ and $(\gb_1,\gb_1),\ldots,(\ga_M,\gb_M)\in\RR^2$ with $\ga_j^2<4\gb_j$ for each $j$.
+	}
+	\begin{myproof}
+		Let $p\in\cP(\RR)$ be a nonconstant polynomial. $p\in\cP(\CC)$ since $\RR\sbst\CC$. If the factorisation of $p$ as an element of $\cP(\CC)$ includes terms of the form $(x-\lm)$ with $\lm$ being a nonreal complex number, then $(x-\bar{\lm})$ is also a term in the factorisation, so we obtain the $(x^2+\ga_jx+\gb_j)$ by multiplying these pair of terms together.\\
+		
+		However we need to be careful of the fact that each factor in the pair has no reason to appear the same number of times. To show that this cannot be the case, we prove that after factorising $p(x)=(x^2+\ga_jx+\gb_j)q(x)$, $q(x)$ has real coefficients, so we can apply the same result inductively on the degree of $p$. We need to solve for
+		 
+		$$q(x)=\frac{p(x)}{x^2-2(\re\lm)x+|\lm|^2}$$
+		
+		$\forall x\in\RR$. This implies that $q(x)\in\RR$ since $p\in\cP(\RR)$ and $x^2-2(\re\lm)x+|\lm|^2$, so $\ima q(x)=0$. Let $q(x)=a_0+a_1x+\ldots+a_{n-2}x^{n-2}$, then
+		
+		$$0=(\ima a_0)+(\ima a_1)x+\ldots+(\ima a_{n-2}x^{n-2})$$
+		
+		$\forall x\in\RR$. 
+	\end{myproof}
+	\vspace{1mm}
+	\mlenma{\label{sec:Lem2}}{
+	Suppose $T\in\cL(V)$ is self-adjoint. Then $T$ has an eigenvalue.
+	}
+	\begin{myproof}
+		If $V$ is a complex inner-product space, then $T$ has an eigenvalue regardless of whether $T$ is self-adjoint.\\
+		
+		Assume that $V$ is a real inner-product space. Let $n=\dim V$ and choose $\bmv\in V$ with $\bmv\neq \bzero$. Then
+		
+		$$(\bmv,T\bmv,T^2\bmv,\ldots,T^n\bmv)$$
+		
+		cannot be linearly independent the number of vectors in this list is greater than the dimension of $V$. So there exists $a_0,\ldots,a_n\in \RR$ such that
+		
+		$$a_0\bmv+a_1T\bmv+\ldots+a_nT^n\bmv=\bzero$$
+		
+		where not all $a_j=0$. We then consider the polynomial $a_0+a_1x+\ldots+a_nx^n$ which by \hyperref[sec:Thm8]{Theorem 7.3.2} can be factored as 
+		\begin{align*}
+			c(x^2+\ga_1x+\gb_1)\ldots(x^2+\ga_Mx+\gb_M)(x-\lm_1)\ldots(x-\lm_m),
+		\end{align*}
+		where $c\neq 0$, each $\ga_j,\gb_j,\lm_j\in\RR$, each $\ga_j^2<4\gb_j,m+M\geq 1$, and the equation holds for all real $x$. So by applying this factorisation to the context of linear maps, we have
+		\begin{align*}
+			\bzero&=a_0\bmv+a_1T\bmv+\ldots+a_nT^n\bmv\\
+			&=(a_0I+a_1T+\ldots+a_nT^n)\bmv\\
+			&=c(T^2+\ga_1 T+\gb_1 I)\ldots(T^2+\ga_M T+\gb_MI)(T-\lm_1I)\ldots(T-\lm_mI)\bmv.
+		\end{align*}
+		Since each $\ga_j^2<4\gb_j$ and $T$ is self-adjoint, by \hyperref[sec:Lem1]{Lemma 7.3.1}, each $T^2+\ga_jT+\gb_jI$ is invertible. Since $c\neq 0$, the equation implies that
+		$$(T-\lm_1I\ldots(T-\lm_mI)\bmv)=\bzero.$$
+		Since $\bmv\neq\bzero$, $\bmv$ belongs to the null space of at least one $(T-\lm_jI)$, so $T$ has at least one eigenvalue. 
+	\end{myproof}
+	\vspace{1mm}
+	\thm{Real spectral theorem \label{sec:Thm6}}{
+	Suppose that $V$ is a real inner-product space and $T\in\cL(V)$. $V$ has an orthonormal basis consisting of eigenvectors of $T$ iif $T$ is self-adjoint.
+	}
+	\begin{myproof}
+		\begin{itemize}
+			\item $(\Rightarrow)$ Suppose that $V$ has an orthonormal basis consisting of eigenvectors of $T$. With respect to this basis, $T$ has a diagonal matrix. Diagonal matrices is equal to their conjugate transpose, so $T=T^*$ i.e. $T$ is self-adjoint.
+			\item $(\Leftarrow)$ Suppose $T$ is self-adjoint. If $\dim V$, then every basis of $V$ is an orthonormal basis and every vector is an eigenvector of $T$, so the converse holds trivially.\\
+			
+			Let $\lm$ be any eigenvalue of $T$, which exists by \hyperref[sec:Lem2]{Lemma 7.3.2} since $T$ is self-adjoint. Let $\bmu\in V$ denote a corresponding eigenvector with $\|\bmu\|=1$, $U$ denote the one-dimensional subspace of $V$ consisting of all scalar multiples of $\bmu$. (We can visualise this as the line where all the eigenvectors corresponding to that eigenvalue lies on in the space of $V$), Then a vector $\bmv\in V$ is in $U^{\perp}$ iif $\lsp\bmu,\bmv\rsp=0$.\\
+			
+			Suppose that $\bmv\in U^{\perp}$. Then because $T$ is self-adjoint, we have
+			
+			$$\lsp \bmu,T\bmv\rsp=\lsp T\bmu,\bmv\rsp=\lsp\lm\bmu,\bmv\rsp=\lm\lsp\bmu,\bmv\rsp=0,$$
+			
+			so $T\bmv\in U^{\perp} \forall \bmv\in U^{\perp}$, i.e. $U^{\perp}$ is invariant under $T$. So we can define an operator $S\in\cL(U^{\perp})$ by $S=T|_{U^{\perp}}$. If $\bmv,\bmw\in U^{\perp}$, then
+			
+			$$\lsp S\bmv,\bmw\rsp=\lsp T\bmv,\bmw\rsp=\lsp\bmv,T\bmw\rsp=\lsp\bmv,S\bmw\rsp,$$
+			
+			which shows that $S$ is self-adjoint. Thus by our inductive hypothesis, there is an orthonormal basis of $U^{\perp}$ consisting of eigenvectors of $S$. Every eigenvector of $S$ is an eigenvector of $T$, so adjoining $\bmu$ to an orthonormal basis of $U^{\perp}$ consisting of eigenvectors of $S$ gives an orthonormal basis of $V$ consisting of eigenvectors of $T$.  
+		\end{itemize}
+	\end{myproof}
+	\cor{\label{sec:Cor5}}{
+	Suppose that $T\in\cL(V)$ is self-adjoint (or that $\FF=\CC$ and that $T\in\cL(V)$ is normal.) Let $\lm_1,\ldots,\lm_m$ denote distinct eigenvalues of $T$. Then
+	$$V=\ker(T-\lm_1 I)$$
+	}
+	\begin{myproof}
+		If $T$ is self-adjoint, by the \hyperref[sec:Thm6]{real spectral theorem}, $V$ has an orthonormal basis consisting of eigenvectors of $T$. The same conclusion is reached if we assume $T$ is normal for $\FF=\CC$ by the \hyperref[sec:Thm5]{complex spectral theorem}. Then by \hyperref[sec:Prop5]{Proposition 7.2.2}, this decomposition holds. \\
+		
+		If $T$ is self-adjoint, then it is also normal. Hence by \hyperref[sec:Cor3]{Corollary 7.1.3}, each vector in each $\ker(T-\lm_jI)$ is orthogonal to all vectors in the other subspaces of this decomposition since they corresponding to distinct eigenvalues as defined.
+	\end{myproof}
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% 7.4 Normal operators on real inner-product spaces %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Normal operators on real inner-product spaces}
+	The \hyperref[sec:Thm5]{complex spectral theorem} describes completely normal operators on complex inner-product spaces. We will do the same for real inner-product spaces in this section.
+	
+	%%%% Lemma 7.4.1 %%%%
+	\mlenma{\label{sec:Lem3}}{
+	Suppose $V$ is a\textbf{ two-dimensional} real inner-product space and $T\in\cL(V)$. Then the following are equivalent:
+	\begin{enumerate}
+		\item $T$ is normal but not self-adjoint;
+		\item the matrix of $T$ with respect to every orthonormal basis of $V$ has the form
+		$$\begin{pmatrix}
+			a & -b \\ b & a
+		\end{pmatrix},$$
+		with $b\neq 0$;
+		\item the matrix of $T$ with respect to some orthonormal basis of $V$ has the form
+		$$\begin{pmatrix}
+			a & -b \\ b & a
+		\end{pmatrix},$$
+		with $b>0$; 
+	\end{enumerate}
+	}
+	% proof
+	\begin{myproof}
+		We prove this in three directions:
+		\begin{enumerate}
+			\item[(1$\Rightarrow$ 2)] Suppose that (1) holds. Let $(\bme_1,\bme_2)$ be an orthonormal basis of $V$. Suppose we have
+			$$A=\cM(T,(\bme_1,\bme_2))=\begin{pmatrix}
+				a & c\\b & d
+			\end{pmatrix}.$$
+			This matrix is with respect to $(\bme_1,\bme_2)$, so we have 
+			
+			$$\|T\bme_1\|^2=a^2+b^2 \quad\quad\text{ and }\quad\quad \|T^*\bme_1\|^2=a^2+c^2$$
+			
+			recalling that $A^*=\cM(T^*,(\bme_1,\bme_2))$ is the conjugate transpose of $\cM(T,(\bme_1,\bme_2))$. Since $T$ is normal, by \hyperref[sec:Prop4]{Proposition 7.1.4}, we also have $\|T\bme_1\|=\|T^*\bme_1\|\Rightarrow b^2=c^2 \Rightarrow c=\pm b$. If $c=b$ then $T$ is self adjoint since $A=A^*$ (we are dealing with real inner-product spaces), so $c=-b$.\\
+			
+			Since $T$ is normal, we must have 
+			\begin{align*}
+				AA^*&=A^*A\\
+				\begin{pmatrix}
+					a & -b \\ b & d
+				\end{pmatrix}\begin{pmatrix}
+				a & b \\ -b & d
+				\end{pmatrix}&=\begin{pmatrix}
+				a & b \\ -b & d
+				\end{pmatrix}\begin{pmatrix}
+				a & -b \\ b & d
+				\end{pmatrix}\\
+			=\begin{pmatrix}
+			a^2+b^2 & ab-bd \\ ab-bd & b^2+d^2
+			\end{pmatrix}&=\begin{pmatrix}
+			a^2+b^2 & -ab+bd \\ -ab+bd & b^2+d^2
+			\end{pmatrix}\\
+			ab-bd&=-ab+bd\\
+			2ab-2bd&=0\\
+			2b(a-d)&=0\\
+			a&=d \,\because b\neq 0\\
+			\end{align*}
+			\item[$(2\Rightarrow 3)$] Suppose that (2) holds. We choose an orthonormal basis $(\bme_1,\bme_2)$ of $V$. The matrix of $T$ with respect to this basis has the form given, with $b\neq 0$. If $b>0$, then (3) holds. If $b<0$, then we can choose $(\bme_1,-\bme_2)$ to be the basis, then we obtain a matrix in the same form with $-b>0$, so (3) holds.\\
+			
+			\item[$(3\Rightarrow 1)$] Suppose that (3) holds. The matrix of $T$ is clearly not equal to its transpose so $T$ is not self-adjoint. By computing matrices of $TT^*$ and $T^*T$, we obtain the same matrices (in the first section we constructed that matrix by forcing the two to be equal), so $T$ is normal and (1) holds.
+		\end{enumerate}
+	\end{myproof}
+	
+	%%%% Proposition 7.4.1 %%%%
+	\mprop{\label{sec:Prop7}}{
+	Suppose $T\in \cL(V)$ is normal and $U$ is a subspace of $V$ that is invariant under $T$, then
+	\begin{enumerate}
+		\item $U^{\perp}$ is invariant under $T$;
+		\item $U$ is invariant under $T^*$;
+		\item $(T|_U)^*=(T^*)|_U$;
+		\item $T|_U$ is a normal operator on $U$;
+		\item $T|_{U^{\perp}}$ is a normal operator on $U^{\perp}$;
+	\end{enumerate}
+	where $T|_U$ denotes the restriction of the operator $T$ to the subspace $U$.
+	\vspace{1mm}
+	}
+	% proof
+	\begin{myproof} 
+		\begin{enumerate}
+			\item Let $(\bme_1,\ldots,\bme_m)$ be an orthonormal basis of $U$. Extend to an orthonormal basis $(\bme_1,\ldots,\bme_m,\bmf_1,\ldots,\bmf_n)$ of $V$, which we know we can do by \hyperref[sec:Cor4]{Corollary 6.3.3}. Since $U$ is invariant under $T$, each $T\bme_j\in U$ can be expressed as a linear combination of $(\bme_1,\ldots,\bme_m)$. We write the matrix of $T$ with respect to the basis $(\bme_1,\ldots,\bme_m,\bmf_1,\ldots,\bmf_n)$ as
+			
+			$$\cM(T)=\begin{pmatrix}
+				A & B \\ 0 & C
+			\end{pmatrix};$$ 
+			
+			where $A\in M_{mm}$, $B\in M_{mn}$, $C\in M_{nn}$, and $0\in M_{nm}$ and is a zero matrix because $U$ is invariant under $T$. For each $j\in\{1,\ldots,m\}$, $\|T\bme_j\|^2$ is the sum of squares of the absolute values of the entries in the $j\Th$ column of $A$, so 
+			
+			$$\sum_{j=1}^{m}\|T\bme_j\|^2$$
+			
+			is the sum of squares of the absolute values of the entries of $A$ (Noting that we also take the squares of the zero matrix, but it adds no ). Similar for $T^*$,
+		
+			$$\sum_{j_1}^{m}\|T^*\bme_j\|^2$$
+			
+			is the sum of the squares of the absolute values of the entries of $A$ and $B$, noting that the matrix represented by $T^*$ is the conjugate transpose of $T$. $C$ is not included because we are only applying $T^*$ to each $\bme_j$ and not $\bme_f$.\\
+			
+			Now, since $T$ is normal, by \hyperref[sec:Prop4]{Proposition 7.1.4}, we have
+		
+			$$\sum_{j=1}^{m}\|T\bme_j\|^2=\sum_{j_1}^{m}\|T^*\bme_j\|^2$$
+			
+			which implies that $B$ must be a zero matrix. So we have
+			
+			$$\cM(T)=\begin{pmatrix}
+				A & 0 \\ 0 & C
+			\end{pmatrix},$$
+			
+			which shows that $T\bmf_k\in\Span(\bmf_1,\ldots,\bmf_n)$ for each $k$. Since $(\bmf_1,\ldots,\bmf_n)$ is a basis of $U^{\perp}$ ($U\oplus U^{\perp}=V$), so $T\bmv\in U^{\perp}$ when $\bmv\in U^{\perp}$, i.e. $U^{\perp}$ is invariant under $T$.\\
+			\item Note that we now have 
+			$$\cM(T)=\begin{pmatrix}
+				C & 0 \\ 0 & A
+			\end{pmatrix},$$
+			which shows that $T^*\bme_j\in\Span (\bme_1,\ldots,\bme_m)\Rightarrow T\bmu\in U$ for $\bmu\in U$, $U$ is invariant under $T^*$.\\
+			\item Let $S=T|_U$. Fix $\bmv\in U$, then
+			\begin{align*}
+				\lsp S\bmu,\bmv\rsp=\lsp T\bmu,\bmv\rsp\\
+				\lsp \bmu, S^*\bmv\rsp&=\lsp \bmu,T^*\bmv\rsp
+			\end{align*}
+			$\forall \bmu\in U$. Then since $T^*\bmv$ by (2), we have $S^*\bmv=T^*\bmv$, so $(T|_U)^*=(T^*)|_U$.\\
+			\item Since $T$ is normal, $TT^*=T^*T$. By (3), we have $(T|_U)^*=(T^*)|_U$. Then,
+			$$(T|_U)(T|_U)^*=(T|_U)(T^*)|_U=(TT^*)|_U=(T^*T)|_U=(T^*)|_U(T|_U)=(T|_U)^*(T|_U).$$
+			
+			\item In (4) we showed that the restriction of $T$ to any invariant subspace is normal. Since $U^T$ is invariant under $T$, $T|_{U^{\perp}}$ is normal.
+		\end{enumerate}
+	\end{myproof}
+	%%% Defintion 7.4.1: block diagonal matrix %%%
+	\dfn{Block diagonal matrix}{
+	A \textbf{block diagonal matrix} is a square matrix of the form 
+	$$\begin{pmatrix}
+		A_1 & & 0 \\ & \ddots & \\ 0 & & A_m
+	\end{pmatrix},$$
+	where $A_1,\ldots,A_m$ are square matrices lying along the diagonal and all the other entries of the matrix equal 0.
+	}
+	\vspace{2mm}
+	If $A$ and $B$ are block diagonal matrices of the form
+	$$A=\begin{pmatrix}
+		A_1 &&0\\&\ddots&\\0&&A_m
+	\end{pmatrix}, \quad B=\begin{pmatrix}
+	B_1&&0\\&\ddots&\\0&&B_m
+	\end{pmatrix},$$
+	where $A_j$ and $B_j$ both has the same size for $j=1,\ldots,m$, then $AB$ is a block diagonal matrix with 
+	$$AB=\begin{pmatrix}
+		A_1B_1 & & 0 \\ & \ddots & \\ 0 & & A_mB_m
+	\end{pmatrix}.$$
+	We can view diagonal matrices as a special case of block diagonal matrices by letting each matrix have size $1\times 1$, or some other funky configuration like taking the entire matrix to be one block. Hence, saying that an operator has a block diagonal matrix with respect to some basis doesn't tell us much unless we know the size of the blocks. \\
+	%%% Theorem 7.4.1 (result from Chapter 5) %%%
+	\thm{Invariant subspaces on real vector spaces \label{sec:Thm9}}{
+		Every operator on a finite-dimensional, nonzero, real vector space has an invariant subspace of dimension 1 or 2.
+	}
+	\vspace{1mm}
+	%%% Theorem 7.4.2 %%%
+	\thm{\label{sec:Thm742}}{
+	Suppose that $V$ has a real inner-product space and $T\in\cL(V)$. Then $T$ is normal iif there is an orthonormal basis of $V$ with respect to which $T$ has a block diagonal matrix where each block is a $1\times 1$ or $2\times 2$ matrix with the form
+	$$\begin{pmatrix}
+		a & -b \\ b & a
+	\end{pmatrix},$$
+	with $b>0$.
+	}
+	% proof
+	\begin{myproof} We prove the statement from both directions:
+		\begin{itemize}
+			\item $(\Leftarrow)$ Suppose that there is an orthonormal basis of $V$ such that the matrix of $T$ is a block diagonal matrix where each block is a $1\times 1$ matrix or a $2\times 2$ matrix with the given form. With respect to this basis, the matrix of $T$ commutes with the matrix of $T^*$ (the transpose), so $T$ commutes with $T^*$, so $T$ is normal.
+			\item $(\Rightarrow)$ Suppose that $T$ is normal. We will prove the converse statement inductively on the dimension of $V$. The base case holds if $\dim V=1$ trivially or if $\dim V=2$ (if $T$ is self-adjoint, use the real spectral theorem, else use \hyperref[sec:Lem3]{Lemma 7.4.1}.)\\
+			
+			Assume that $\dim V>2$ and that the result holds on vector space with smaller dimension. Let $U$ be a subspace of $V$ of dimension $1$ that is invariant under $T$ is such a subspace exists (i.e. if $T$ has a nonzero eigenvector, let $U$ be the span of this eigenvector). \\
+			
+			\begin{enumerate}
+				\item Let $U$ be a subspace of $V$ of dimension $1$ that is invariant under $T$ is such a subspace exists (i.e. if $T$ has a nonzero eigenvector, let $U$ be the span of this eigenvector), then choose a vector in $U$ with norm 1 to be an orthonormal basis of $U$, and the matrix of $T|_U$ is a $1\times 1$ matrix. 
+				\item If no such subspace exists, let $U$ be a subspace of $V$ of dimension 2 that is invariant under $T$ (an invariant subspace of dimension 1 or 2 always exists by \hyperref[sec:Thm9]{Theorem 7.5.1}), then $T|_U$ is normal by \hyperref[sec:Prop7]{Proposition 7.4.1} but not self-adjoint otherwise $T|_U$ and subsequently $T$ will havee a nonzero eigenvector by \hyperref[sec:Lem2]{Lemma 7.3.2}. Then, by \hyperref[sec:Lem3]{Lemma 7.4.1} we can choose an orthonormal basis of $U$ with respect to which the matrix of $T|_U$ has the form 
+				
+				$$\begin{pmatrix}
+					a & -b \\ b & a
+				\end{pmatrix}$$
+				
+				for all $b>0$.
+			\end{enumerate}
+			By \hyperref[sec:Prop7]{Proposition 7.4.1}, $U^{\perp}$ is also invariant under $T$ and $T|_{U^{\perp}}$, and is a normal operator on $U^{\perp}$. Hence by out induction hypothesis, there is an orthonormal basis of $U^{\perp}$ with respect to which the matrix of $T|_{U^{\perp}}$ has the desired form. Adjoin this basis to the basis of $U$, we obtain an orthonormal basis of $V$ with respect to which the matrix of $T$ has the desired form.
+		\end{itemize} 
+	\end{myproof}
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%% 7.5 Positive operators %%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Positive operators}
+	% Definition 7.5.1: Positive operators
+	\dfn{Positive operators}{
+	An operator $T\in\cL(V)$ is \textbf{positive} if $T$ is self-adjoint and 
+	$$\lsp T\bmv,\bmv\rsp\geq 0$$
+	$\forall \bmv\in V$. If $V$ is a complex vector space, then the condition that $T$ be self-adjoint can be dropped.}
+
+	\nt{
+	Every orthogonal projection is positive (TBV).
+	\vspace{1mm}}
+	\vspace{1mm}
+	% Definition 7.5.2: Square root operators
+	\dfn{Square root operators}{
+	An operator $S$ is a \textbf{square root} of an operator if $S^2=T$. 
+	}
+	\vspace{1mm}
+	% Example (square root operators)
+	\ex{Square root operators}{
+	Let $T\in\cL(\FF^3)$ such that $T(z_1,z_2,z_3)=(z_3,0,0)$, then the operator $S\in\cL(\FF^3)$ such that $S(z_1,z_2,z_3)=(z_2,z_3,0)$ is a square root of $T$, which can verify:
+	$$S^2(z_1,z_2,z_3)=S(z_2,z_3,0)=(z_3,0,0)=T(z_1,z_2,z_3).$$ 
+	}
+	\vspace{1mm}
+	% Theorem 7.5.1
+	\thm{\label{sec:Thm751}}{
+	Let $T\in\cL(V)$. The following are equivalent:
+	\begin{enumerate}
+		\item $T$ is positive;
+		\item $T$ is self-adjoint and all the eigenvalues of $T$ are nonnegative;
+		\item $T$ has a positive square root;
+		\item $T$ has a self-adjoint square root;
+		\item there exists an operator $S\in\cL(V)$ such that $T=S^*S$.
+	\end{enumerate}
+	}
+	% proof
+	\begin{myproof}
+		We will prove $(1)\Rightarrow (2)\Rightarrow (3)\Rightarrow (4)\Rightarrow (5)\Rightarrow (1).$
+		\begin{enumerate}
+			\item[$(1\Rightarrow 2)$] Suppose that (1) holds, so by definition $\lsp T\bmv,\bmv\rsp\geq 0$ for all $\bmv\in V$ and $T$ is self-adjoint. All that remains is to show that all eigenvalues of $T$ are nonnegative. Suppose $\lm$ is an eigenvalue of $T$ and $\bmu\in V$ be a nonzero corresponding eigenvector of $T$. Then,
+			\begin{align*}
+				\lsp T\bmu,\bmu\rsp&\geq 0\\
+				\lsp \lm\bmu,\bmu\rsp&\geq 0\\
+				\lm\lsp \bmu,\bmu\rsp&\geq 0\\
+				\lm\|\bmu\|^2&\geq 0
+			\end{align*}
+			So $\lm\geq 0$ since $\|\bmu\|^2\geq 0$.
+			\item[$(2\Rightarrow 3)$] Suppose that (2) holds, then by the \hyperref[sec:Thm5]{complex} and \hyperref[sec:Thm6]{real spectral theorem}, there is an orthogonal basis $(\bme_1,\ldots,\bme_n)$ of $V$ consisting of eigenvectors of $T$. Let $\lm_1,\ldots,\lm_n$ be the eigenvalues of $T$ corresponding to $\bme_1,\ldots,\bme_n$, such that each $\lm_j$ is a nonnegative number. Set $S\in\cL(V)$ as
+			
+			$$S\bme_j=\sqrt{\lm_j}\bme_j,$$
+			
+			for $j=1,\ldots,n$. We observe that $S$ is a positive operator:
+			\begin{align*}
+				\lsp S\bme_j,\bme_j\rsp &= \lsp\sqrt{\lm_j}\bme_j,\bme_j\rsp\\
+				\lsp \bme_j,S^*\bme_j\rsp &= \sqrt{\lm_j}\lsp\bme_j,\bme_j\rsp\\
+				&=\lsp\bme_j,\sqrt{\lm_j}\bme_j\rsp=\lsp\bme_j,S\bme_j\rsp
+			\end{align*}
+			So $S=S^*$, $S$ is adjoint, and $\lsp S\bme_j,\bme_j\rsp \geq 0$ since $\sqrt{\lm_j}\geq 0$. Furthermore, $S^2\bme_j=\lm_j\bme_j=T\bme_j$ for each $j$, implying that $S^2=T$, so $S$ is a positive square root of $T$, so (3) holds.
+			\item[$(3\Rightarrow 4)$] Suppose that (3) holds, so $T$ has a positive square root, which must be self-adjoint since all positive operators are self-adjoint by definition.
+			\item[$(4\Rightarrow 5)$] Suppose that (4) holds, let $S\in\cL(V)$ be the self-adjoint square root. So $T=S^2=SS=SS^*$, so (5) holds.
+			\item[$(5\Rightarrow 1)$] Suppose that (5) holds, then 
+			\begin{align*}
+				\lsp T\bmv,\bmv\rsp&=\lsp S^*S\bmv,\bmv\rsp\\
+				&=\lsp S\bmv,S\bmv\rsp = \lsp \bmv,S^*S\bmv\rsp =\lsp \bmv,T\bmv\rsp\\
+				&= \|S\bmv\|^2\geq 0
+			\end{align*}
+		\end{enumerate}
+	\end{myproof}
+	
+	The following proposition is anologous to how every nonnegative number has a unique nonnegative square root, which allows us extend the notation of square roots to operators.
+	\vspace{1mm}
+	% Proposition 7.5.1
+	\mprop{\label{sec:Prop751}}{
+	Every positive operator on $V$ has a unique positive square root.
+	}
+	% proof
+	\begin{myproof}
+		By \hyperref[sec:Thm751]{Theorem 7.5.1}, we already have that every positive operator on $V$ has a positive square root. All that remains is to show uniqueness.\\
+		
+		Suppose $T\in\cL(V)$ is positive. Let $\lm_1,\ldots,\lm_m$ denote the distinct eigenvalues of $T$, by \hyperref[sec:Thm751]{Theorem 7.5.1}, all these numbers are nonnegative. Since $T$ is positive, $T$ is self-adjoint, so we have
+		
+		$$V=\ker(T-\lm_1I)\oplus\ldots\oplus\ker(T-\lm_mI);$$
+		
+		by \hyperref[sec:Cor5]{Corollary 7.3.1}. Now suppose $S\in\cL(V)$ is a positive square root of $T$. Suppose $\ga$ is an eigenvalue fo $S$. If $\bmv\in\ker(S-\ga I)$, then $S\bmv=\ga\bmv$, which implies that
+		
+		$$T\bmv=S^2\bmv=\ga^2\bmv,\quad\ldots(1)$$
+		
+		so $\bmv\in\ker(T-\ga^2I)$. So $\ga^2$ is an eigenvalue of $T$, which means that $\ga^2$ must equal some $\lm_j$, i.e. $\ga=\sqrt{\lm_j}$ for some $j$. Furthermore, equation (1) implies that 
+		
+		$$\ker(S-\sqrt{\lm_j}I)\sbst\ker(T-\lm_jI).$$
+		
+		Also, we showed that the only possible eigenvalues for $S$ are $\sqrt{\lm_1},\ldots,\sqrt{\lm_m}$. Since $S$ is self-adjoint, which again implies
+		
+		$$V=\ker(S-\sqrt{\lm_1}I)\oplus\ldots\oplus\ker(S-\sqrt{\lm_m}I);$$
+		
+		which implies that 
+		
+		$$\ker(S-\sqrt{\lm_j}I)=\ker(T-\lm_jI)$$
+		
+		for each $j$. Hence on $\ker(T-\lm_jI)$, operator $S$ effectively just multiplies by $\sqrt{\lm_j}$, so $S$ is uniquely determined by $T$.
+	\end{myproof}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%% 7.6 Isometries %%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Isometries}
+	% Definition 7.6.1: Isometry 
+	\dfn{Isometry}{
+	An operator $S\in\cL(V)$ is an \textbf{isometry} if 
+	
+	$$\|S\bmv\|=\|\bmv\|$$
+	
+	$\forall \bmv\in V$, i.e. $S$ preserves the norm of $\bmv$.
+	}
+	\vspace{1mm}
+	% Example (isometry)
+	\ex{\label{sec:Ex761}}{
+	Generally, suppose $\lm_1,\ldots,\lm_n$ are scalars with absolute value 1 and $S\in\cL(V)$ satisfies $S(\bme_j)=\lm_j\bme_j$ for some orthonormal basis $(\bme_1,\ldots,\bme_n)$ of $V$. Suppose $\bmv\in V$, then we have
+	
+	$$\bmv=\lsp\bmv,\bme_1\rsp\bme_1+\ldots+\lsp\bmv,\bme_n\rsp\bme_n$$
+	
+	and
+	\begin{equation}
+		\|\bmv\|^2=|\lsp\bmv,\bmw_1\rsp|^2+\ldots+|\lsp\bmv,\bme_n\rsp|^2.
+	\end{equation}
+	by \hyperref[sec:Thm4]{Theorem 6.3.1}. Applying $S$ to both sides, we have
+	\begin{align*}
+		S\bmv&=\lsp\bmv,\bme_1\rsp S\bme_1+\ldots+\lsp\bmv,\bme_n\rsp S\bme_n\\
+		&=\lm_1\lsp\bmv,\bme_1\rsp\bme_1+\ldots+\lm_n\lsp\bmv,\bme_n\rsp\bme_n.
+	\end{align*}
+	Since each $|\lm_k|=1$, we have by the Pythagorean theorem
+	\begin{equation}
+		\|S\bmv\|^2=|\lsp\bmv,\bme_1\rsp|^2+\ldots+|\lsp\bmv,\bme_n\rsp|^2.
+	\end{equation}
+	By comparing (7.1) and (7.2), we have $\|\bmv\|=\|S\bmv\|$, so $S$ is an isometry.
+	}
+	\vspace{1mm}
+	% Theorem 7.6.1
+	\thm{\label{sec:Thm761}}{
+	Suppose $S\in\cL(V)$. Then the following are equivalent:
+	\begin{enumerate}
+		\item $S$ is an isometry;
+		\item $\lsp S\bmu,S\bmu\rsp=\lsp \bmu,\bmv\rsp$ $\forall \bmu,\bmv\in V$;
+		\item $S^*S=I$;
+		\item $(S\bme_1,\ldots,S\bme_n)$ is orthonormal whenever $(\bme_1,\ldots,\bme_n)$ is an orthonormal list of vectors in $V$;
+		\item $\exists$ an orthonormal basis $(\bme_1,\ldots,\bme_n)$ of $V$ such that $(S\bme_1,\ldots,S\bme_n)$ is orthonormal;
+		\item $S^*$ is an isometry;
+		\item $\lsp S^*\bmu,S^*\bmv\rsp=\lsp\bmu,\bmv\rsp$ $\forall\bmu,\bmv\in V$;
+		\item $SS^*=I$;
+		\item $(S^*\bme_1,\ldots,S^*\bme_n)$ is orthonormal whenever $(\bme_1,\ldots,\bme_n)$ is an orthonormal list of vectors in $V$;
+		\item $\exists$ an orthonormal basis $(\bme_1,\ldots,\bme_n)$ of $V$ such that $(S^*\bme_1,\ldots,S^*\bme_n)$ is orthonormal.
+	\end{enumerate}
+	}
+	% proof
+	\begin{myproof} We prove that $(1)\Rightarrow (2)\Rightarrow (3)\Rightarrow (4)\Rightarrow (5)\Rightarrow (6)$:
+		\begin{enumerate}
+			\item[$(1\Rightarrow 2)$] Suppose that (1) holds. If $V$ is a real inner-product space, then $\forall \bmu,\bmv\in V$ we have
+			\begin{align*}
+				\lsp S\bmu,S\bmv\rsp&=\frac{1}{4}(\|S\bmu+S\bmv\|^2-\|S\bmu-S\bmv\|^2)\\
+				&=\frac{1}{4}(\|SS(\bmu+\bmv)\|^2-\|S(\bmu-\bmv)\|^2)\\
+				&=\frac{1}{4}(\|\bmu+\bmv\|^2-\|\bmu-\bmv\|^2)\text{ since }S\text{ is an isometry;}\\
+				&=\lsp\bmu,\bmv\rsp.
+			\end{align*}
+			\item[$(2\Rightarrow 3)$] Suppose that (2) holds, then
+			$$\lsp(S^*S-I)\bmu,\bmv\rsp=\lsp S^*S\bmu,\bmv\rsp-\lsp\bmu,\bmv\rsp=\lsp S\bmu,S\bmv\rsp-\lsp\bmu,\bmv\rsp=0$$
+			for every $\bmu,\bmv\in V$. Taking $\bmv=(S^*S-I)\bmu$, we see that $S^*S-I=0$. Hence $S^*S=I$.
+			\item[$(3\Rightarrow 4)$] Suppose that (3) holds. Suppose that $(\bme_1,\ldots,\bme_n)$ is an orthonormal list of vectors in $V$, then
+			
+			$$\lsp \bme_j,\bme_k\rsp=\lsp S^*S\bme_j,\bme_k\rsp=\lsp S\bme_j, S\bme_k\rsp.$$
+			
+			Hence $\lsp S\bme_j, S\bme_k\rsp$ is orthogonal for any $j,k=1,\ldots,n$, $j\neq k$. If $j=k$, then the expression is equal to 1, so $(S\bme_1,\ldots,S\bme_n)$ is orthonormal.\\
+			\item[$(4\Rightarrow 5)$] Suppose that (4) holds. Let the standard basis of $V$ be $(\bme_1,\ldots,\bme_n)$, which is orthonormal, so $(S\bme_1,\ldots,S\bme_n)$ is orthonormal. \\
+			\item[$(5\Rightarrow 6)$] Suppose that (5) holds. Let $(\bme_1,\ldots,\bme_n)$ be an orthonormal basis of $V$ such that $(S\bme_1,\ldots,S\bme_n)$ is orthonormal. If $\bmv\in V$, then we have
+			\begin{align*}
+				\|S\bmv\|^2&=\|S(\lsp\bme,\bme_1\rsp\bme_1+\ldots+\lsp\bmv,\bme_n\rsp\bme_n)\|^2\\
+				&=\|\lsp\bmv,\bme_1\rsp S\bme_1+\ldots+\lsp\bmv,\bme_n\rsp S\bme_n\|^2\\
+				&=|\lsp\bmv,\bme_1\rsp|^2+\ldots+|\lsp\bmv,\bme_n\rsp|^2\\
+				&=\|\bmv\|^2\\
+				\|S\bmv\|&=\|\bmv\|,
+			\end{align*}
+			with first and third equality by \hyperref[sec:Thm4]{Theorem 6.3.1} and second equality by the Pythagorean theorem (since $\|S\bme_j\|=1$). \\
+		\end{enumerate}
+		Replacing $S$ with $S^*$ gives (6) to (10). To complete the proof, we show that one of the conditions in (1-5) is equivalent to (6-10). We show that (3) is equivalent to (8):\\
+		
+		Suppose that $S^*S=I$, then for all $\bmu,\bmv\in V$,
+		\begin{align*}
+			\lsp S^*S\bmu,\bmv\rsp&=\lsp S\bmu,S\bmv\rsp\\
+			\lsp \bmu,(S^*S)^*\bmv\rsp&=\lsp \bmu,S^*S\bmv\rsp.
+		\end{align*}
+		So $S^*S$ is self-adjoint, so it is normal, so $S^*S=SS^*=I$. The same result follows for the converse statement. 
+	\end{myproof}
+	\vspace{1mm}
+	From this theorem, we see that every isometry is normal, so we can use the characterizations of normal operators to give descriptions of isometries.
+	\vspace{2mm}
+	% Theorem 7.6.2 
+	\thm{\label{sec:Thm762}}{
+	Suppose $V$ is a complex inner-product space and $S\in\cL(V)$. Then $S$ is an isometry iif there is an orthonormal basis of $V$ consisting of eigenvectors of $S$ all of whose corresponding eigenvalues have absolute value 1.
+	}
+	% proof
+	\begin{myproof}
+		\begin{itemize}
+			\item[$(\Leftarrow)$] This is shown in \hyperref[sec:Ex761]{Example 7.6.1}.
+			\item[$(\Rightarrow)$] Suppose that $S$ is an isometry, so it is normal. By the complex spectral theorem, there is an orthonormal basis $(\bme_1,\ldots,\bme_n)$ of $V$ consisting of eigenvectors of $S$. All that remains is to show that all the corresponding eigenvalues have absolute value 1. For $j=\{1,\ldots,n\}$, let $\lm_j$ be the eigenvalue corresponding to $\bme_j$, then
+			
+			$$|\lm_j|=\|\lm_j\bme_j\|=\|S\bme_j\|=\|\bme_j\|=1.$$
+			
+		\end{itemize}
+	\end{myproof}
+	\pagebreak
+	% Theorem 7.6.3
+	\thm{\label{sec:Thm763}}{
+	Suppose that $V$ is a real inner-product space and $S\in\cL(V)$. $S$ is an isometry iif there is an orthonormal basis of $V$ with respect to which $S$ has a block diagonal matrix where each block on the diagonal is either a $1\times 1$ matrix containing $1$ or $-1$ or 
+	
+	$$\begin{pmatrix}
+		\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta 
+	\end{pmatrix}\in M_{22},$$
+	
+	with $\theta\in (0,\pi)$.
+	} \vspace{1mm}
+	% proof
+	\begin{myproof} We prove the statement from both directions:
+		\begin{itemize}
+			\item $(\Rightarrow)$ Suppose that $S$ is an isometry, so $S$ is normal. By \hyperref[sec:Thm742]{Theorem 7.4.2}, there is an orthonormal basis $B$ of $V$ such that with respect to this basis, $S$ has a block diagonal matrix, where each block is a $1\times 1$ matrix or a $2\times 2$ matrix with the form
+			
+			$$\begin{pmatrix}
+				a & -b \\ b & a
+			\end{pmatrix}$$
+			
+			with $b>0$. We now need to show that the $1\times 1$ matrix contains either 1 or -1 and that the $2\times 2$ matrix is of the form given.\\
+			
+			If $\lm$ is an entry in a $1\times 1$ along the diagonal of the matrix of $S$ with respect to basis $B$, then there is a basis vector $\bme_j$ with $S\bme_j=\lm\bme_j$. Since $S$ is an isometry, $|\lm|=1$ for $\|S\bme_j\|=\|\lm\bme_j\|$, so $\lm=\pm 1$.\\
+			
+			For the $2\times 2$ case, there are basis vectors $\bme_j,\bme_{j+1}$ such that
+			$$S\bme_j=a\bme_j+b\bme_{j+1}.$$
+			So, we have $1=\|\bme_j\|^2=\|S\bme_j\|^2=\|a\bme_j+b\bme_{j+1}\|=a^2+b^2$ by the Pythagorean theorem. Since we also have $b>0$, there exists a number $\theta\in(0,\pi)$ such that $a=\cos\theta$ and $b=\sin\theta$.
+			\item $(\Leftarrow)$ Suppose that there is an orthonormal basis of $V$ with respect to which the matrix of $S$ has the form given. Hence there is a direct sum decomposition
+			
+			$$V=U_1\oplus\ldots\oplus U_m,$$
+			
+			where each $U_j$ is a subspace of $V$ of dimension 1 or 2. Furthermore, any two vectors in distinct $U$'s are orthogonal, and each $S|_{U_j}$ is an isometry mapping $U_j$ into $U_j$. If $\bmv\in V$, we can write 
+			$$\bmv=\bmu_1+\ldots+\bmu_m,$$
+			where each $\bmu_j\in U_j$. Applying $S$ to the equation above and then taking the norms gives
+			\begin{align*}
+				\|S\bmv\|^2&=\|S\bmu_1+\ldots+S\bmu_m\|^2\\
+				&=\|S\bmu_1\|^2+\ldots+\|S\bmu_m\|^2\\
+				&=\|\bmu_1\|^2+\ldots+\|\bmu_m\|^2\\
+				&=\|\bmv\|^2.
+			\end{align*}
+			Hence $S$ is an isometry.
+		\end{itemize}
+	\end{myproof}
+	
+	\section{Polar and singular-value decompositions.}
+	\nt{
+	There is an analogy between $\CC$ and $\cL(V)$, where complex numbers corresponds to linear operators, complex conjugates correspond to adjoint operators, real numbers correspond to self-adjoint operators (the conjugate of a real number is equal to itself), and the non-negative numbers correspond to positive operators.
+	\vspace{1mm}
+	}
+	\vspace{1mm}
+	
+	Consider the unit circle in the complex plane, which consists of $z\in\CC$ such that $|z|=\bar{z}z=1$. In the context of linear operators, this corresponds to the condition $T^*T=I$, then the unit circle in $\CC$ would correspond to the set of all isometries.\\
+	
+	We can write each complex number $z$ except 0 as
+	$$z=\lt(\frac{z}{|z|}\rt)|z|=\lt(\frac{z}{|z|}\rt)\sqrt{\bar{z}z},$$
+	where the first factor is an element of the unit circle. Following our analogy, turns out it is true that we can do something similar for linear operators:
+	
+	\thm{\label{sec:PolarDecomp}}{
+	If $T\in\cL(V)$, then $\exists$ an isometry $S\in\cL(V)$ such that
+	$$T=S\sqrt{T^*T}.$$
+	}
+	\begin{myproof}
+		(very awesome proof)
+	\end{myproof}
+	
+	This theorem states that each operator on $V$ is the product of an isometry and a positive operator. Suppose $T=S\sqrt{T^*T}$ is the polar decomposition of $T\in\cL(V)$, where $S$ is an isometry, then there is an orthonormal basis of $V$ with respect to which $S$ has a diagonal matrix (if $\FF=\CC$) or a block diagonal matrix with blocks of size at most $2\times 2$ (if $\FF=\RR$), and there is an orthonormal basis of $V$ with respect to which $\sqrt{T^*T}$ has a diagonal matrix.
+	\vspace{1mm}
+	\nt{
+	There may not exist an orthonormal basis that simultaneously fulfills both these roles. 
+	}
+	\vspace{1mm}
+	\dfn{Singular values}{
+	Suppose $T\in\cL(V)$. The \textbf{singular values} of $T$ are the eigenvalues of $\sqrt{T^*T}$ with each eigenvalue $\lm$ repeated $\nul(\sqrt{T^*T}-\lm I)$ times. 
+	}
+	\vspace{1mm}
+	The singular values of $T$ are nonnegative since they are the eigenvalues of the positive operator $\sqrt{T^*T}$.
+	
+	\ex{}{
+	Define $T\in\cL(\FF^4)$ by
+	
+	$$T(z_1,z_2,z_3,z_4)=(0,3z_1,2z_2,-3z_4),$$
+	
+	then $T^*T(z_1,z_2,z_3,z_4)=T^*(0,3z_1,2z_4)=(9z_1,4z_2,0,9z_4)$ and
+	
+	$$\sqrt{T^*T}(z_1,z_2,z_3,z_4)=(3z_1,2z_2,0,3z_4),$$
+	
+	and we see that the eigenvalues of $\sqrt{T^*T}$ are 3,2,0. Clearly
+	
+	$$\nul(\sqrt{T^*T}-3I)=2,\quad\nul(\sqrt{T^*T}-2I)=1,\quad\nul\sqrt{T^*T=1},$$
+	
+	noting that $\sqrt{T^*T}-3I=(0,-z_2,-3z_3,0)$. So the singular values of $T$ are 3,3,2,0. -3 and 0 are the only eigenvalues of $T$ by solving
+	\begin{align*}
+		T(z_1,z_2,z_3,z_4)&=\lm(z_1,z_2,z_3,z_4)\\
+		(0,3z_1,2z_2,-3z_4)&=(\lm z_1,\lm z_2, \lm z_3, \lm z_4)
+	\end{align*}
+	Comparing the first entries, we have either $\lm=0$ or $z_1=0$. If $\lm=0$ then $z_1=z_2=z_4=0$, so the eigenspace is $\Span(0,0,1,0)$. If $z_1=0$ then $z_2=z_3=0$ and $\lm=-3$ with eigenspace $\Span(0,0,0,1)$
+	}
+	\vspace{1mm}
+	\thm{Singular-value decomposition \label{sec:SVD}}{
+	Suppose $T\in\cL(V)$ has singular values $s_1,\ldots,s_n$. Then there exist orthonormal bases $(\bme_1,\ldots,\bme_n)$ and $(\bmf_1,\ldots,\bmf_n)$ of $V$ such that
+	$$T\bmv=s_1\lsp\bmv,\bme_1\rsp\bmf_1+\ldots+s_n\lsp\bmv,\bme_n\rsp\bmf_n$$
+	for every $n\in V$.
+	}
+	
+	\chapter{Matrix decompositions}
+	This chapter focuses on the singular value decomposition from the more practical point of view, where instead of linear operators, we use matrices.
+	\section{Matrix-matrix products}
+	Usually we think of the product of two matrices $\bmA$ and $\bmB$ as the rows of $\bmA$ times the columns of $\bmB$ giving the corresponding entry in the product matrix. Here, for reasons that will become apparent later, we instead think of them as a sum of rank 1 matrices, which we obtain by multiplying the columns of $\bmA$ with the rows of $\bmB$.\\
+	\ex{}{
+	$$\begin{pmatrix}
+		1 & 1 & 2 \\ 2 & 3 & 3
+	\end{pmatrix}\begin{pmatrix}
+	1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 
+	\end{pmatrix}=\sum_{i=1}^{3}\bma_i\bmb_i^T=\begin{pmatrix}
+	1 \\ 2
+	\end{pmatrix}\begin{pmatrix}
+	1 & 2 & 3
+	\end{pmatrix}+\begin{pmatrix}
+	1 \\ 3
+	\end{pmatrix}\begin{pmatrix}
+	4 & 5 & 5
+	\end{pmatrix}+\begin{pmatrix}
+	2 \\ 3
+	\end{pmatrix}\begin{pmatrix}
+	7 & 8 & 9
+	\end{pmatrix}$$
+	}
+	
+	\section{Spectral/eigen decomposition}
+	\subsection{Eigenvalues and eigenvectors}
+	\dfn{Eigenvalue and eigenvector}{
+	Let $\bmA\in M_{nn}$. The vector $\bmx\in\RR^n$ is an eigenvector of $\bmA$ corresponding to eigenvalue $\lm$ iif
+	$$A\bmx=\lm\bmx.$$
+	}
+	\vspace{2mm}
+	Note that we only discuss the real spectral theorem here, which then restricts us to only discussing symmetric matrices. For the specifics, refer to the previous chapter.
+	\mprop{}{
+	If $\bmA$ is symmetric ($\bmA^T=\bmA$), then the eigenvalues and eigenvectors of $A$ are real.
+	}
+	\pagebreak
+	\mprop{}{
+	If $\bmA$ is an $n\times n$ symmetric matrix, then its determinant is the product of its eigenvalues, i.e.
+	$$\det(\bmA)=\lm_1\ldots\lm_n.$$
+	Hence, we have
+	$$\bmA\text{ is invertible }\,\Leftrightarrow\,\det(\bmA)\neq 0\, \Leftrightarrow\,\lm_i\neq 0 \,\forall i\,\Leftrightarrow\, \bmA \text{ is of full rank}$$
+	}
+	\subsection{Spectral decomposition}
+	\mprop{Spectral/eigen-decomposition}{
+	Any symmetric matrix $\bmA\in M_{nn}$ can be written as 
+	$$\bmA=\bmQ\mathbf{\Lambda}\bmQ^T=\sum_{i=1}^{n}\lm_i\bmq_i\bmq_i^T,$$
+	where $\mathbf{\Lambda}=\diag\{\lm_1,\ldots,\lm_n\}\in M_{nn}$ consists of the eigenvalues of $\bmA$ and $\bmQ$ is orthogonal matrix whose columns are unit eigenvectors $\bmq_1,\ldots,\bmq_n$ of $\bmA$.
+	}
+	\vspace{1mm}
+	\nt{By convention, we arrange the eigenvalues so that $\lm_1$ is the largest eigenvalue and $\lm_n$ is the smallest.}
+	\vspace{1mm}
+	\cor{}{
+	The rank of a symmetric matrix is equal to the number of non-zero eigenvalues (counting accoding to their multiplicities).
+	}
+	\begin{myproof}
+		If $r$ is the number of non-zero eigenvalues of $\bmA$, then we have
+		$$\bmA=\sum_{i=1}^{r}\lm_i\bmq_i\bmq_i^T.$$
+		Each $\bmq_i\bmq_i^T$ is a rank 1 matrix, with column space equal to the span of $\bmq_i$. As the $\bmq_i$ are orthogonal the column spaces of each $\bmq_i\bmw_1^T$ are orthogonal, and their union is a vector space of dimension $r$. Hence the rank of $\bmA$ is $r$.
+	\end{myproof}
+	\vspace{1mm}
+	\dfn{Positive definite matrices}{
+	A \textbf{positive definite matrix} is a symmetric matrix with all positive eigenvalues. 
+	}
+	\vspace{1mm}
+	Note that this definition makes sense since all eigenvalues of symmetric matrices are real. Now, since eigenvalues are rather cumbersome to compute, we may want a simpler way to tell whether a matrix is positive definite: A matrix is positive definite if it is symmetric and \textbf{all its pivots are positive}. \\
+	
+	\mlenma{}{
+	Let $\bmA$ be an $n\times n$ symmetric matrix with real eigenvalues $\lm_1\geq\ldots\geq\lm_n$. Then $\bmA$ is positive definite iif $\bmx^T\bmA\bmx>0$ and positive semi-definite iif $\bmx^T\bmA\bmx\geq0$ for any non-zero vector $\bmx$.
+	}
+	\begin{myproof} We will prove for the positive definite case. For the positive semi-definite case, replace the signs in the initial assumption and everything follows similarly.
+		\begin{itemize}
+			\item ($\Rightarrow$) Suppose that $\bmA$ is positive definite. Since $\bmA$ is symmetric with real eigenvalues, we can write it as
+			$$\bmA=\bmQ\mathbf{\Lambda}\bmQ^T.$$
+			Let $\bmx$ be a non-zero vector, then $\bmy=\bmQ^T\bmx\neq\bzero$ since $\dim\ker(\bmQ)=0$ as $Q^T$ has inverse $Q$. Thus, returning to our target expression:
+			$$\bmx^T\bmA\bmx=\bmx^T\bmQ\Lm\bmQ^T\bmx=\bmy^T\Lm\bmy=\sum_{i}^{n}\lm_iy_i^2>0$$
+			since each $\lm_i>0$ and $\bmy\neq\bzero$.
+			\item ($\Leftarrow$) Suppose that we have $\bmx^T\bmA\bmx>0$ for any non-zero $\bmx$, let $\bmx$ be a unit eigenvector of $\bmA$ corresponding to $\lm_n$, then
+			$$0<\bmx^T\bmA\bmx=\bmx^T\lm_n\bmx=\lm_n\|\bmx\|^2=\lm_n.$$
+		\end{itemize}
+	\end{myproof}
+	
+	\subsection{Matrix square roots}
+	By the (real) spectral theorem, we see that if $\bmA$ is a symmetric positive semi-definite matrix, then for any integer $p$, we have
+	$$\bmA^p=\bmQ\Lm^p\bmQ^T.$$
+	In addition, if $\bmA$ is positive definite, then
+	$$\bmA^{-1}=\bmQ\Lm^{-1}\bmQ^T$$ 
+	since $\bmQ\Lm^{-1}\bmQ^T\bmQ\Lm\bmQ^T=\bmI$, where $\Lm^{-1}=\diag\{\frac{1}{\lm_1},\ldots,\frac{1}{\lm_n}\}$. We will then abuse this notation and extend it to matrix square roots, and verify that it fulfills our intuition of how such a square root should behave like:\\
+	
+	\dfn{Matrix square root}{
+	Let $\bmA$ be positive semi-definite with nonnegative eigenvalues. $\bmA^{\frac{1}{2}}$ is a matrix square root of $\bmA$ with 
+	$$\bmA^{\frac{1}{2}}=\bmQ\Lm^{\frac{1}{2}}\bmQ^T$$
+	where $\diag\{\lm_1^{\frac{1}{2}},\ldots,\lm_n^{\frac{1}{2}}\}$.}
+	\vspace{1mm}
+	Now consider
+	\begin{align*}
+		\bmA^{\frac{1}{2}}\bmA^{\frac{1}{2}}&=\bmQ\Lm^{\frac{1}{2}}(\bmQ^T\bmQ)\Lm^{\frac{1}{2}}\bmQ^T\\
+		&=\bmQ\Lm^{\frac{1}{2}}\Lm^{\frac{1}{2}}\bmQ^T\\
+		&=\bmQ\Lm\bmQ^T=\bmA.
+	\end{align*}
+	If now instead $\bmA$ is positive definite, then all of its eigenvalues are positive and non-zero and hence we can define
+	
+	$$\bmA^{-\frac{1}{2}}=\bmQ\Lm^{-\frac{1}{2}}\bmQ^T$$
+	
+	with $\Lm=\diag\{\lm_1^{-\frac{1}{2}},\ldots,\lm_n^{-\frac{1}{2}}\}$. Then we have $\bmA^{-\frac{1}{2}}\bmA^{-\frac{1}{2}}=\bmA^{-1}$ and $\bmA^{-\frac{1}{2}}=(\bmA^{\frac{1}{2}})^{-1}$.
+	
+	\section{Singular value decomposition (SVD)}
+	We are already able to decompose any symmetric matrix using the spectral theorem. Now we are interested in extending this decomposition to rectangular matrices: instead of eigenvectors and eigenvalues, non-square matrices have \textbf{singular vectors} corresponding to \textbf{singular values}. \\
+	
+	\dfn{Singular vectors and singular values}{
+	Let $\bmA$ be a $n\times p$ matrix, then $\sigma$ is a \textbf{singular value} with corresponding left and right singular vectors $\bmu$ and $\bmv$ respectively if
+	$$\bmA\bmv=\sigma\bmu \quad \text{ and }\quad \bmA^T\bmu=\sigma\bmv.$$
+	}
+	\vspace{1mm}
+	Note that if $\bmA$ is a symmetric matrix then $\bmu=\bmv$ is an eigenvector corresponding to eigenvalue $\sigma$.\\
+	
+	\mprop{Singular value decomposition}{
+	Let $\bmA$ be an $n\times p$ matrix with rank $r$, where $1\leq r\leq \min(n,p)$. Then there exists an $n\times r$ matrix $\bmU=\{\bmu_1,\ldots,\bmu_r\}$, an $p\times r$ matrix $\bmV=\{\bmv_1,\ldots,\bmv_r\}$, and an $r\times r$ matrix $\Sg=\diag\{\sigma_1,\ldots,\sigma_r\}$, such that
+	$$\bmA=\bmU\Sg\bmV=\sum_{i=1}^{r}\sigma_i\bmu_i\bmv_i^T$$
+	where $\bmU^T\bmU=\bmI_r=\bmV^T\bmV$ and $\sigma_1\geq\ldots\geq\sigma_r>0$.
+	}
+	\vspace{1mm}
+	Note that all singular vectors are necessarily unit vectors and the singular values are ordered from largest to smallest. The form given above is called the \textbf{compact SVD}. The non-compact form is given by
+	
+	$$\bmA=\bmU\Sg\bmV^T$$
+	
+	where $\bmU$ is an $n\times n$ orthogonal matrix, $\bmV$ is a $p\times p$ orthogonal matrix and $\Sg$ is a $n\times p$ diagonal matrix, leaving the remaining diagonals after the $r^{\text{th}}$ entry zero.
+	\vspace{1mm}
+	\mprop{\label{sec:Prop832}}{
+	Let $\bmA$ be a $n\times p$ matrix with rank $r$, then 
+	$$\rank(\bmA^T\bmA)=\rank(\bmA)=r.$$
+	}
+	\begin{myproof}
+		We show that $\bmA$ and $\bmA^T\bmA$ have the same null space and hence the same nullity.
+		\begin{itemize}
+			\item Let $\bmx\in\RR^p$ such that $\bmA\bmx=\bzero$. Then, $\bmA^T\bmA\bmx=\bmA^T(\bzero_n)=\bzero_r$. So $\nul(\bmA)\subseteq\nul(\bmA^T\bmA)$.
+			\item Let $\bmx\in\RR^p$ such that $\bmA^T\bmA\bmx=\bzero$. Left multiplying both sides by $\bmx^T$,
+			$$\bmx^T\bmA^T\bmA\bmx=(\bmA\bmx)^T(\bmA\bmx)=\|\bmA\bmx\|^2=\bzero.$$
+			This implies that $\bmA\bmx=\bzero$, so $\nul(\bmA^T\bmA\bmx)\subseteq\nul(\bmA\bmx)$.
+		\end{itemize}
+		Then since the dimension of the domain of both matrices are the same ($p$), hence by the rank-nullity formula, they have the same rank.
+	\end{myproof}
+	
+	\pagebreak
+	
+	\mprop{}{
+	Let $A$ be a $n\times p$ matrix of rank $r$. Then  
+	\begin{itemize}
+		\item the non-zero eigenvalues of both $\bmA\bmA^T$ and $\bmA^T\bmA$ are $\sigma_1^2,\ldots,\sigma_r^2$;
+		\item the corresponding unit eigenvectors of $\bmA\bmA^T$ are given by the columns of $\bmU$;
+		\item the corresponding unit eigenvectors of $\bmA^T\bmA$ are given by the columns of $\bmV$.
+	\end{itemize}
+	}
+	\begin{myproof}
+		$\bmA^T\bmA$ is a $p\times p$ symmetric matrix, so by the spectral theorem we can write it as
+		$$\bmA^T\bmA=\bmV\Lm\bmV^T$$
+		where $\bmV$ is a $p\times r$ \textbf{semi-orthogonal} matrix containing the orthonormal eigenvectors of $\bmA^T\bmA$ (and hence its columns $\bmv_i$ are orthonormal) and $\Lm=\diag(\lm_1,\ldots,\lm_r)$ is a diagonal matrix of eigenvalues with $\lm_1\geq\ldots\geq\lm_r>0$. Note that we know that there are $r$ eigenvalues by \hyperref[sec:Prop832]{Proposition 8.3.2}. \\
+		
+		Now, we let each $\sigma_i=\sqrt{\lm_i}$ and $\bmu_i=\frac{1}{\sigma_i}\bmA\bmv_i$ for $i=1,\ldots,r$. We will then show that the vectors $\bmu_i$ are orthonormal and subsequently, $\bmu_i$ and $\bmv_i$ are left and right singular vectors corresponding to singular values $\sigma_i$.
+		\begin{align*}
+			\bmu_i^T\bmu_j
+			=\frac{1}{\sigma_i\sigma_j}\bmv_i^T\textcolor{myorange}{\bmA^T\bmA\bmv_j}
+			=\frac{1}{\sigma_i\sigma_j}\bmv_i^T(\textcolor{myorange}{\lm_j\bmv_j})
+			=\frac{\textcolor{myorange}{\sigma_j^2}}{\sigma_i\sigma_j}\bmv_i^T\bmv_j
+			=\frac{\sigma_j^2}{\sigma_i\sigma_j}\bmv_i\cdot\bmv_j
+		\end{align*}
+		Notice that if $i=j$, then the expression simplifies to just $\|\bmv_i\|^2=1$ since the vectors $\bmv_i$ are orthonormal. If $i\neq j$, then the dot product collapses to zero. This behaviour implies that the vectors $\bmu_i$ are orthonormal. Now, following the definition of singular vectors, we consider
+		$$\bmA^T\textcolor{mygreen}{\bmu_i}=\textcolor{mygreen}{\frac{1}{\sigma_i}}(\bmA^T\textcolor{mygreen}{\bmA\bmv_i})=\frac{\textcolor{mypurple}{\sigma_i^2}}{\sigma_i}\textcolor{mypurple}{\bmv_i}=\sigma_i\bmv_i,$$
+		so $\bmv_i$ are right singular vectors corresponding to singular values $\sigma_i$ while $\bmu_i$ by our formulation are left singular vectors. Now all that is left is to construct $\bmU=\begin{pmatrix}
+			\bmu_1 & \ldots & \bmu_r & \ldots & \bmu_n
+		\end{pmatrix}$ and $\Sg=\diag\{\sigma_1,\ldots,\sigma_r,0,\ldots,0\}$. 
+	\end{myproof}
+	\vspace{1mm}
+	\nt{
+		The procedure to compute SVD of A ($A=U\Sigma V^T$) are as follows:
+		\begin{enumerate}
+			\item Solve for eigenvalues $\lm$ of $AA^T$ (or $A^TA$ depending on which is easier) and take the singular values $\sigma=\sqrt{\lm}$. 
+			\item Solve for left singular vectors by using
+			$$(AA^T-\lm I)\bmu=\bzero$$
+			\item Convert the left singular vectors to unit vectors and construct matrix $\bmU$.
+			\item Compute $\bmV$ by using the definition of right singular vectors:
+			$$\sigma_i\bmv_i=A^T\bmu_i.$$
+			\item Express $A=U\Sigma V^T$ as a sum of rank-one matrices.\\
+		\end{enumerate}
+	}
+	\pagebreak
+	
+	\section{Exercises}
+	\qs{}{
+	Compute the singular value decomposition (full and compact) of the following matrices.
+	\begin{itemize}
+		\item $\begin{pmatrix}
+			2 & 0 \\ 0 & -1
+		\end{pmatrix}$
+		\item $\begin{pmatrix}
+			1 & 0 \\ 0 & 0 \\ 0 & 0
+		\end{pmatrix}$
+	\end{itemize}
+	}
+	\sol \begin{itemize}
+		\item Let $\bmA=\begin{pmatrix}
+		2 & 0 \\ 0 & -1
+		\end{pmatrix}$. 
+		This matrix is diagonal, so $\bmA\bmA^T=\begin{pmatrix}
+		4 & 0 \\ 0 & 1
+		\end{pmatrix}$ and the eigenvalues are 4 and 1. We take singular values $\sigma=2,1$, so $\Sg=\diag\{2,1\}$.\\
+		Solving for left singular vectors (eigenvectors of $\bmA\bmA^T$) $\bmu$, 
+		\begin{align*}
+			(\bmA\bmA^T-4I_2)\bmu&=\bzero &(\bmA\bmA^T-I_2)\bmu=\bzero\\
+			\begin{pmatrix}
+				0 & 0 \\ 0 & -3
+			\end{pmatrix}\begin{pmatrix}
+			u_1 \\ u_2
+			\end{pmatrix}&=\begin{pmatrix}
+			0 \\ 0
+			\end{pmatrix} &\quad\begin{pmatrix}
+			3 & 0 \\ 0 & 0
+			\end{pmatrix}\begin{pmatrix}
+			u_1 \\ u_2
+			\end{pmatrix}=\begin{pmatrix}
+			0 \\ 0
+			\end{pmatrix}\\
+		\end{align*}
+		Taking the unit eigenvector for each eigenvalue, we have
+		\begin{align*}
+			\bmu_1=\begin{pmatrix}
+				1 \\ 0
+			\end{pmatrix},\quad \quad \bmu_2=\begin{pmatrix}
+			0 \\ 1
+			\end{pmatrix},
+		\end{align*}
+		since zero row $i$ indicate that any value of $u_i$ will satisfy the system. Then we solve for $\bmV$,
+		$$\bmV=A\bmU^{T}\Sg^{-1}=\begin{pmatrix}
+			2 & 0 \\ 0 & -1
+		\end{pmatrix}\begin{pmatrix}
+		1 & 0 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+		0.5 & 0 \\ 0 & 1
+		\end{pmatrix}=\begin{pmatrix}
+		1 & 0 \\ 0 & -1
+		\end{pmatrix}.$$
+		So the SVD of $\bmA$ is
+		$$\bmA=\begin{pmatrix}
+			1 & 0 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+		2 & 0 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+		1 & 0 \\ 0 & -1
+		\end{pmatrix}$$
+		\item Let $\bmB=\begin{pmatrix}
+			1 & 0 \\ 0 & 0 \\ 0 & 0
+		\end{pmatrix}$. We take $\bmB^T\bmB=\begin{pmatrix}
+		1 & 0 & 0 \\ 0 & 0 & 0
+	\end{pmatrix}\begin{pmatrix}
+	1 & 0 \\ 0 & 0 \\ 0 & 0
+	\end{pmatrix}=\begin{pmatrix}
+	1 & 0 \\ 0 & 0
+	\end{pmatrix}$ since the resulting product is $2\times 2$. This is a diagonal matrix, so it follows that the only non-zero eigenvalue is $\lm=1$. Then we take the singular value $\sigma=\sqrt{1}=1$. We now solve for the right singular vectors $\bmv$ which are eigenvectors of $\bmB^T\bmB$:
+	\begin{align*}
+		(\bmB^T\bmB-\bmI_2)\bmv&=\bzero\\
+		\begin{pmatrix}
+			0 & 0 \\ 0 & -1
+		\end{pmatrix}\begin{pmatrix}
+		v_1 \\ v_2
+		\end{pmatrix}&=\begin{pmatrix}
+		0 \\ 0
+		\end{pmatrix}
+	\end{align*}
+	We have $v_2=0$ and $v_1\in\RR$. The unit singular vector is $\begin{pmatrix}
+		1 \\ 0
+	\end{pmatrix}$. We now solve for $\bmU$ in compact form:
+	$$\bmU=\bmB\bmV\Sg^{-1}=\begin{pmatrix}
+		1 & 0 \\ 0 & 0 \\ 0 & 0
+	\end{pmatrix}\begin{pmatrix}
+	1 \\ 0
+	\end{pmatrix}\begin{pmatrix}
+	1
+	\end{pmatrix}=\begin{pmatrix}
+	1 \\ 0 \\ 0
+	\end{pmatrix}$$
+	Hence the SVD of $\bmB$ in compact form is
+	$$\bmB=\begin{pmatrix}
+		1 \\ 0 \\ 0
+	\end{pmatrix}\begin{pmatrix}
+	1
+	\end{pmatrix}\begin{pmatrix}
+	1 & 0
+	\end{pmatrix}.$$
+	For the non-compact form, we just need to choose vectors to fill in $\bmU$ and $\bmV$ so that we have orthonormal columns. An easy choice here is 
+	$$\bmU=\begin{pmatrix}
+		1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1
+	\end{pmatrix}\quad\quad\text{ and }\quad \quad \begin{pmatrix}
+	1 & 0 \\ 0 & 1
+\end{pmatrix}.$$
+	Hence the non-compact form is
+	$$\bmB=\begin{pmatrix}
+		1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1
+	\end{pmatrix}\begin{pmatrix}
+	1 & 0 \\ 0 & 0 \\ 0 & 0
+	\end{pmatrix}\begin{pmatrix}
+	1 & 0 \\ 0 & 1
+	\end{pmatrix}.$$
+	\end{itemize}
+	\vspace{2mm}
+	\qs{}{
+		Let $$\bmX=\begin{pmatrix}
+			1 & 1 \\ 0 & 1 \\ 1 & 0
+		\end{pmatrix}.$$
+		The eigen-decomposition of $\bmX^T\bmX$ is 
+		$$\bmX^T\bmX=\frac{1}{\sqrt{2}}\begin{pmatrix}
+			1 & -1 \\ 1 & 1
+		\end{pmatrix}
+		\begin{pmatrix}
+			3 & 0 \\ 0 & 1
+		\end{pmatrix}\frac{1}{\sqrt{2}}\begin{pmatrix}
+			1 & -1 \\ 1 & 1
+		\end{pmatrix}^T.$$
+		
+		\begin{enumerate}
+			\item What are the singular values of $\bmX$?
+			\item What are the right singular vectors of $\bmX$?
+			\item What are the left singular vectors of $\bmX$?
+			\item Give the compact SVD of $\bmX$. Check your answer, noting that the singular vectors are only specified up to multiplication by -1.
+			\item Can you compute the full SVD of $\bmX$?
+			\item What is the eigen-decomposition of $\bmX\bmX^T$?
+			\item Find a generalised inverse of matrix $\bmX$.
+		\end{enumerate}
+	}
+	\sol 
+	\begin{enumerate}
+		\item The eigenvalues of $\bmX^T\bmX$ are 3 and 1, so the singular values of $\bmX$ are $\sqrt{3}$ and 1.
+		\item The unit eigenvectors of $\bmX^T\bmX$ give the right singular vectors of $\bmX$: 
+		$$\frac{1}{\sqrt{2}}\begin{pmatrix}
+			1 \\ 1
+		\end{pmatrix},\quad \frac{1}{\sqrt{2}}\begin{pmatrix}
+		-1 \\ 1
+		\end{pmatrix}.$$
+		\item We use $\bmU=\bmX\bmV\Sg^{-1}$ to compute the left singular vectors:
+		$$\bmU=\frac{1}{\sqrt{2}}\begin{pmatrix}
+			1 & 1 \\ 0 & 1 \\ 1 & 0
+		\end{pmatrix}\begin{pmatrix}
+		1 & -1 \\ 1 & 1
+		\end{pmatrix}\begin{pmatrix}
+		\frac{1}{\sqrt{3}} & 0 \\ 0 & 1
+		\end{pmatrix}=\frac{1}{\sqrt{2}}\begin{pmatrix}
+		\frac{2}{\sqrt{3}} & 0 \\ \frac{1}{\sqrt{3}} & 1 \\ \frac{1}{\sqrt{3}} & -1
+		\end{pmatrix}=\frac{1}{\sqrt{6}}\begin{pmatrix}
+		2 & 0 \\ 1 & \sqrt{3} \\ 1 & -\sqrt{3}
+		\end{pmatrix}.$$
+		\item The compact SVD of $\bmX$ is
+		$$\bmX=\frac{1}{2\sqrt{3}}\begin{pmatrix}
+			2 & 0 \\ 1 & \sqrt{3} \\ 1 & -\sqrt{3}
+		\end{pmatrix}\begin{pmatrix}
+		\sqrt{3} & 0 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+		1 & 1 \\ -1 & 1
+		\end{pmatrix}.$$
+		\item To compute the full SVD of $\bmX$, we need a third column in $\bmU$ which is orthonormal to the other columns. Let such column be $\bmv_3=\begin{pmatrix}
+		v_1 & v_2 & v_3
+		\end{pmatrix}^T$, then we compute the null space of $\bmU$:
+		\begin{align*}
+			\begin{pmatrix}
+				2 & 1 & 1 \\ 0 & \sqrt{3} & -\sqrt{3}
+			\end{pmatrix}\begin{pmatrix}
+			v_1 \\ v_2 \\ v_3
+			\end{pmatrix}&=\begin{pmatrix}
+			0 \\ 0 \\ 0
+			\end{pmatrix}
+		\end{align*}
+		After performing row operations, we find that the null space is $\lsp(-1,1,1)\rsp$. We choose one unit vector from this space $\frac{1}{\sqrt{3}}(-1,1,1)$ and rewrite the full SVD of $\bmX$:
+		$$\bmX=\frac{1}{2\sqrt{3}}\begin{pmatrix}
+			2 & 0 & -\sqrt{2} \\ 1 & \sqrt{3} & \sqrt{2} \\ 1 & -\sqrt{3} & \sqrt{2} 
+		\end{pmatrix}\begin{pmatrix}
+		\sqrt{3} & 0 \\ 0 & 1 \\ 0 & 0
+		\end{pmatrix}\begin{pmatrix}
+		1 & 1 \\ -1 & 1
+		\end{pmatrix}$$
+		\item The eigenvalues of $\bmX\bmX^T$ should be equal to the eigenvalues of $\bmX^T\bmX$, 3 and 1, which are the squares of the singular values of $\bmX$. The corresponding eigenvectors is then equal to the left singular vectors of $\bmX$. Hence the eigen-decomposition of $\bmX\bmX^T$ is
+		$$\bmX\bmX^T=\begin{pmatrix}
+			2 & 1 & 1 \\ 1 & 1 & 0 \\ 1 & 0 & 1
+		\end{pmatrix}=\frac{1}{6}\begin{pmatrix}
+			2 & 0 \\ 1 & \sqrt{3} \\ 1 & -\sqrt{3}
+		\end{pmatrix}\begin{pmatrix}
+		3 & 0 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+		2 & 1 & 1 \\ 0 & \sqrt{3} & -\sqrt{3}
+		\end{pmatrix}.$$
+		\item A generalised inverse $\bmG$ of $\bmX$ has the property
+		$$\bmX\bmG\bmX=\bmX.$$
+		Since $\begin{pmatrix}
+			1 & 1 \\ 0 & 1
+		\end{pmatrix}$ is invertible, a generalised inverse is
+		$\bmG=\begin{pmatrix}
+			\begin{pmatrix}
+				1 & 1 \\ 0 & 1
+			\end{pmatrix}^{-1} & \bmO
+		\end{pmatrix}=\begin{pmatrix}
+			1 & -1 & 0 \\ 0 & 1 & 0
+		\end{pmatrix}$ which we verify by
+		$$\bmX\bmG\bmX=\begin{pmatrix}
+			1 & 1 \\ 0 & 1 \\ 1 & 0
+		\end{pmatrix}\begin{pmatrix}
+		1 & -1 & 0 \\ 0 & 1 & 0
+		\end{pmatrix}\begin{pmatrix}
+		1 & 1 \\ 0 & 1 \\ 1 & 0
+		\end{pmatrix}=\begin{pmatrix}
+		1 & 0 & 0 \\ 0 & 1 & 0 \\ 1 & -1 & 0
+		\end{pmatrix}\begin{pmatrix}
+		1 & 1 \\ 0 & 1 \\ 1 & 0
+		\end{pmatrix}=\begin{pmatrix}
+		1 & 1 \\ 0 & 1 \\ 1 & 0
+		\end{pmatrix}=\bmX.$$
+	\end{enumerate}
+	\pagebreak
+	\qs{}{The SVD can be used to solve linear systems of the form
+	$$\bmA\bmx=\bmy$$
+	where $\bmA$ is a $n\times p$ matrix, with compact SVD $\bmA=\bmU\Sg\bmV^T$.
+	\begin{enumerate}
+		\item If $\bmA$ is a square invertible matrix, show that
+		$$\bar{\bmx}=\bmV\Sg^{-1}\bmU^T\bmy$$
+		is the unique solution to $\bmA\bmx=\bmy$, i.e. show that $\bmA^{-1}=\bmV\Sg^{-1}\bmU^T$.
+		\item If $\bmA$ is not a square matrix, then $\bmA^+=\bmV\Sg^{-1}\bmU^T$ is a pseudoinverse (not a true inverse) matrix, and $\bar{\bmx}=\bmA^+\bmy$ is still a useful quantity to consider as we shall now see. Let $\bmA=\begin{pmatrix}
+		1 & 1 \\ 0 & 1 \\ 1 & 0 
+		\end{pmatrix}$ and $\bmy=\begin{pmatrix}
+		2 \\ 1 \\ 1
+		\end{pmatrix}$. Then $\bmA\bmx=\bmy$ is an over-determined system in that there are 3 equations in 2 unknowns. Compute $\bar{\bmx}=\bmA^+\bmy$. Is this a solution to the equation?
+	\end{enumerate}
+	}
+	\sol
+	\begin{enumerate}
+		\item Since $\bmA$ is a square invertible matrix, from the SVD, we have
+		\begin{align*}
+			\bmA\bmA^{-1}&=\bmI\\
+			\bmU\Sg\bmV^{T}\bmA^{-1}&=\bmI\\
+			\Sg\bmV^{T}\bmA^{-1}&=\bmU^{-1}=\bmU^{T}\\
+			\bmV^{T}\bmA^{-1}&=\Sg^{-1}\bmU^{T}\\
+			\bmA^{-1}&=(\bmV^{T})^{-1}\Sg^{-1}\bmU^{T}=\bmV\Sg^{-1}\bmU^{T}.
+		\end{align*}
+		\item From the previous question, we have computed the SVD of
+		$$\bmX=\frac{1}{2\sqrt{3}}\begin{pmatrix}
+			2 & 0 \\ 1 & \sqrt{3} \\ 1 & -\sqrt{3}
+		\end{pmatrix}\begin{pmatrix}
+			\sqrt{3} & 0 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+			1 & 1 \\ -1 & 1
+		\end{pmatrix}.$$
+		The pseudoinverse is hence
+		$$\bmA^+=\frac{1}{2\sqrt{3}}\begin{pmatrix}
+			1 & -1 \\ 1 & 1
+		\end{pmatrix}\begin{pmatrix}
+		\frac{1}{\sqrt{3}} & 0 \\ 0 & 1
+		\end{pmatrix}\begin{pmatrix}
+		2 & 1 & 1 \\ 0 & \sqrt{3} & -\sqrt{3}
+		\end{pmatrix}=\frac{1}{2\sqrt{3}}\begin{pmatrix}
+		\frac{2}{\sqrt{3}} & -\frac{2}{\sqrt{3}} & \frac{4}{\sqrt{3}} \\
+		\frac{2}{\sqrt{3}} & \frac{4}{\sqrt{3}} & -\frac{2}{\sqrt{3}} \\
+		\end{pmatrix}=\frac{1}{3}\begin{pmatrix}
+		1 & -1 & 2 \\ 1 & 2 & -1
+		\end{pmatrix}$$
+		We now verify that $\bmA^{+}\bmy=\begin{pmatrix}
+			1 \\ 1
+		\end{pmatrix}$ is a solution:
+		$$\begin{pmatrix}
+			1 & 1 \\ 0 & 1 \\ 1 & 0
+		\end{pmatrix}\begin{pmatrix}
+		1 \\ 1
+		\end{pmatrix}=\begin{pmatrix}
+		2 \\ 1 \\ 1 
+		\end{pmatrix}=\bmy.$$
+	\end{enumerate}
+	\chapter{Generalised inverse and pseudoinverse}
+	\section{Matrix generalised inverse}
+	\dfn{Generalised inverse}{
+	Let $\bmA\in\RR^{m\times n}$, then $\bmG\in\RR^{n\times m}$ is a \textbf{generalised inverse} of $\bmA$ iif
+	$$\bmA\bmG\bmA=\bmA.$$
+	}
+	
+	If $\bmA$ is square and invertible, then it has a unique generalised inverse $\bmA^{-1}$. First we can see that $\bmA\bmA^{-1}\bmA=\bmA\bmI=\bmA$ and also that
+	$$\bmG=\bmA^{-1}(\bmA\bmG\bmA)\bmA^{-1}=\bmA^{-1}(\bmA)\bmA^{-1}=\bmA^{-1}.$$
+	
+	To compute the generalised inverse of any matrix we use the following theorem:
+	\thm{\label{sec:Thm811}}{
+	Let $\bmA=\begin{pmatrix}
+		\bmA_{11} & \bmA_{12} \\ \bmA_{21} & \bmA_{22}
+	\end{pmatrix}\in\RR^{m\times n}$ be a matrix of rank $r$, and $\bmA_{11}\in\RR^{r\times r}$. If $\bmA_{11}$ is invertible, then $\bmG=\begin{pmatrix}
+	\bmA_{11}^{-1} & \bmO \\ \bmO & \bmO
+	\end{pmatrix}\in \RR^{n\times m}$ is a generalised inverse of $\bmA$.
+	}
+	
+	The generalised inverse can be used to find a solution to a consistent linear system:
+	\thm{}{
+	Consider the linear system $\bmA\bmx=\bmb$. Suppose $\bmb\in\Col(\bmA)$ such that the system is consistent. Let $\bmG$ be a generalised inverse of $\bmA$, then $\bmx^*=\bmG\bmb$ is a particular solution to the system.
+	}
+	\begin{myproof}
+		Multiplying both sides of $\bmA\bmx=\bmb$ by $\bmA\bmG$ gives
+		\begin{align*}
+			(\bmA\bmG)\bmA\bmx&=(\bmA\bmG)\bmb\\
+			(\bmA\bmG\bmA)\bmx&=\bmA(\bmG\bmb)\\
+			\bmA\bmx&=\bmA\bmx^{*}
+		\end{align*}
+	\end{myproof}
+	\pagebreak
+	\ex{}{
+	Consider the linear system $\bmA\bmx=\bmb$, where $$\bmA=\begin{pmatrix}
+		1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9
+	\end{pmatrix},\quad\quad \bmb=\begin{pmatrix}
+		6 \\ 15 \\ 24
+	\end{pmatrix}.$$
+	
+	$\bmA$ has a rank of 2, since after eliminating the first entries in row 2 and row 3 using row 1, we are left with linearly dependent rows in row 2 and 3. Hence we now turn to generalised inverses. By \hyperref[sec:Thm811]{Theorem 8.1.1}, since $\begin{pmatrix}
+		1 & 2 \\ 4 & 5
+	\end{pmatrix}$ is invertible, a generalised matrix of $\bmA$ is 
+	$$\bmG=\frac{1}{3}\begin{pmatrix}
+		-5 & 2 & 0 \\ 4 & -1 & 0 \\ 0 & 0 & 0 
+	\end{pmatrix}.$$
+	
+	Then, a particular solution to the system is 
+	$$\bmx^*=\bmG\bmb=\frac{1}{3}\begin{pmatrix}
+		-5 & 2 & 0 \\ 4 & -1 & 0 \\ 0 & 0 & 0 
+	\end{pmatrix}\begin{pmatrix}
+	6 \\ 15 \\ 24
+	\end{pmatrix}=\begin{pmatrix}
+	0 \\ 3 \\ 0
+	\end{pmatrix},$$
+	valid since $\bmb$ is in the column span of $\bmA$, computed as follows:
+	$$k_1\begin{pmatrix}
+		1 \\ 4 \\ 7
+	\end{pmatrix}+k_2\begin{pmatrix}
+	2 \\ 5 \\ 8
+	\end{pmatrix}+k_3\begin{pmatrix}
+	3 \\ 6 \\ 9
+	\end{pmatrix}=\begin{pmatrix}
+	x \\ y \\ z
+	\end{pmatrix}=\bma,$$
+	for any $\bma$ in the column space of $\bmA$. Then we try to solve for $k_1,k_2,k_3$ by reducing
+	$$\begin{pmatrix}
+		1 & 4 & 7 \\ 2 & 5 & 8 \\ 3 & 6 & 9
+	\end{pmatrix}\xrightarrow[A_{13}(-3)]{A_{12}(-2)}\begin{pmatrix}
+	1 & 4 & 7 \\ 0 & -3 & -6 \\ 0 & -6 & -12
+	\end{pmatrix}\xrightarrow[M_2(-\frac{1}{3}), A_{21}(-4)]{A_{23}(-2)}\begin{pmatrix}
+	1 & 0 & -1 \\ 0 & 1 & 2 \\ 0 & 0 & 0
+	\end{pmatrix}.$$
+	Hence, the column space of $\bmA$ is 
+	$$\Col(\bmA)=\lsp(1,0,-1)^T,(0,1,2)^T\rsp$$
+	and we can write 
+	$$\bmb=6(1,0,-1)^T+15(0,1,2)^T.$$
+	}
+	\section{Projection matrices}
+	\dfn{Projection matrix}{A square matrix $\bmP$ is a projection matrix if $\bmP=\bmP^2$.}
+	
+	\ex{Projection matrices}{
+	$$\bmI,\begin{pmatrix}
+		1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0
+	\end{pmatrix}, \begin{pmatrix}
+	1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0
+	\end{pmatrix}, \bmO$$
+	}
+	
+	Notice that 
+	$$\det(\bmP)=\det(\bmP^2)=\det(\bmP)^2\Rightarrow \det(\bmP)=0,1.$$
+	
+	We will give a geometric interpretation of this definition here: Matrices project/map any vector in $\Rn$ onto its range (column space). This is obvious as applying a matrix to a vector gives a linear combination of the columns of the matrix. In addition to this, a projection matrix also keeps all points from its range in their original places.
+	
+	
+	\thm{}{Let $\bmA\in\RR^{m\times n}$ with a generalised inverse $\bmG\in\RR^{n\times m}$. Then $\bmA\bmG\in\RR^{m\times m}$ is a projection matrix.}
+	\begin{myproof}
+		From $\bmA\bmG\bmA=\bmA$, we obtain
+		$$(\bmA\bmG)(\bmA\bmG)=(\bmA\bmG\bmA)\bmG=\bmA\bmG.$$
+	\end{myproof}
+	
+	\mprop{}{
+	Let $\bmA\in\RR^{m\times n}$, $\bmG\in\RR^{n\times m}$ is a generalised inverse of $\bmA$, then $$\Col(\bmA\bmG)=\Col(\bmA)$$
+	}
+	\begin{myproof}
+		We prove this in two cases:
+		\begin{itemize}
+			\item Suppose that $\bmy\in \Col(\bmA\bmG)$, then there exists some $\bmx\in\RR^m$ such that $\bmy=(\bmA\bmG)\bmx=\bmA(\bmG\bmx)\in\Col(\bmA)$. Hence $\Col(\bmA\bmG)\subseteq\Col(\bmA)$.
+			\item Suppose that $\bmy\in\Col(\bmA)$, then there exists $\bmx\in\Rn$ such that $\bmy=\bmA\bmx=\bmA\bmG\bmA\bmx=(\bmA\bmG)(\bmA\bmx)\in\Col(\bmA\bmG)$. Hence $\Col(\bmA)\subseteq\Col(\bmA\bmG)$.
+		\end{itemize}
+		Combining both cases, $\Col(\bmA\bmG)=\Col(\bmA)$.
+	\end{myproof}
+	
+	Since $(\bmA\bmG)^2=(\bmA\bmG\bmA)\bmG=\bmA\bmG$, $\bmA\bmG$ is a projection matrix, and from the previous proposition, it projects onto the column space of $\bmA$. Similarly, $\bmG\bmA$ is a projection matrix onto the row space of $\bmA$.\\
+	\section{Pseudoinverse}
+	\dfn{Pseudoinverse}{
+	Let $\bmA\in\RR^{m\times n}$. $\bmA^+\in\RR^{n\times m}$ is the \textbf{pseudoinverse} (or the \textbf{Moore-Penrose inverse}) of $\bmA$ iif
+	\begin{enumerate}
+		\item $\bmA^+$ is a generalised inverse of $\bmA$: $\bmA\bmA^+\bmA=\bmA$;
+		\item $\bmA$ is a generalised inverse of $\bmA^+$: $\bmA^+\bmA\bmB=\bmA^+$;
+		\item $\bmA\bmA^+$ is symmetric: $(\bmA\bmA^+)^T=\bmA\bmA^+$;
+		\item $\bmA^+\bmA$ is symmetric: $(\bmA^+\bmA)^T=\bmA^+\bmA$.
+	\end{enumerate}
+	}
+	If $\bmA^+$ only satisfies the first two conditions, it is a \textbf{reflexive generalised inverse}. Furthermore, it can be shown that \textcolor{myorange}{for any matrix $\bmA\in\RR^{m\times n}$, the pseudoinverse always exists and is unique}.
+	
+	\section{Orthogonal projection matrices}
+	\dfn{Orthogonal projection matrix}{A square matrix $\bmP$ is an orthogonal projection matrix iif $\bmP=\bmP^2$ and \textcolor{myorange}{$\bmP=\bmP^T$}.}
+	
+	\thm{}{
+	For any matrix $\bmA\in\RR^{m\times n}$ and its pseudoinverse $\bmA^+$, $\bmA\bmA^+$ is an orthogonal projection matrix (onto the column space of $\bmA$).
+	}
+	\begin{myproof}
+		Since $\bmA^+$ is a generalised inverse, it follows that $\bmA\bmA^+$ is a projection matrix onto the columns of $\bmA$. Furthermore, by definition of pseudoinverses, $\bmA\bmA^+$ is symmetric. 
+	\end{myproof}
+	\vspace{1mm}
+	Similarly, $\bmA^+\bmA$ is an orthogonal projection matrix onto the row space of $\bmA$.
+	
+	\thm{}{
+	Let $\bmA\in\RR^{m\times n}$ be any tall matrix with full column rank, i.e. $\rank(\bmA)=n\leq m$, then the pseudoinverse of $\bmA$ is
+	$$\bmA^+=(\bmA^T\bmA)^{-1}\bmA^T$$
+	If we have that the SVD of $\bmA=\bmU\Sg\bmV^T$, then
+	\begin{align*}
+		\bmA^+&=((\bmU\Sg\bmV^T)^T\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
+		&=(\bmV\Sg\bmU^T\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
+		&=(\bmV\Sg^2\bmV^T)^{-1}(\bmV\Sg\bmU^T)\\
+		&=(\bmV^T)^{-1}(\Sg^{-1})^2(\bmV)^{-1}\bmV\Sg\bmU^T\\
+		&=\bmV\Sg^{-1}\bmU^T
+	\end{align*}
+	}
+	
+	\section{Application to solving linear systems of equations}
+	\thm{}{Let $\bmA\in\RR^{m\times n}$ and $\bmb\in\RR^m$. If the linear system $\bmA\bmx=\bmb$ has solutions, then $\bmx^*=\bmA^+\bmb$ is an exact solution and has the smallest possible norm, i.e. $\|\bmx^*\|\leq\|\bmx\|\,\forall \bmx$.}
+	\begin{myproof}
+		First, since $\bmA^+$ is a generalised inverse, $\bmA^+\bmb$ must be a solution to $\bmA\bmx=\bmb$. Now, for any solution $\bmx\in\Rn$, consider its orthogonal decomposition via $\bmA^+\bmA\in\RR^{n\times n}$:
+		$$\bmx=(\bmA^+\bmA)\bmx+(\bmI-\bmA^+\bmA)\bmx=\bmA^+\bmb+(\bmI-\bmA^+\bmA)\bmx.$$
+		Then by the Pythagorean theorem, we have
+		$$\|\bmx\|^2=\|\bmA^+\bmb\|^2+\|(\bmI-\bmA^+\bmA)\bmx\|^2\geq \|\bmA^+\bmb\|^2.$$
+		Hence $\|\bmx\|\geq\|\bmA^+\bmb\|$.
+	\end{myproof}
+
+\end{document}
