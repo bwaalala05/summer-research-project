@@ -1,0 +1,68 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PACKAGE IMPORTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[
+top=2.54cm,
+bottom=2.54cm,
+left=3.18cm,
+right=3.18cm,
+footskip=0.5cm
+]{geometry}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,mathtools}
+\usepackage[varbb]{newpxmath}
+\usepackage{ mathrsfs }
+%\usepackage{xfrac}
+\usepackage[makeroom]{cancel}
+\usepackage{mathtools}
+\usepackage{bookmark}
+\usepackage{enumitem}
+\usepackage{hyperref,theoremref}
+\hypersetup{
+	pdftitle={Assignment},
+	colorlinks=true, linkcolor=doc!90,
+	bookmarksnumbered=true,
+	bookmarksopen=true
+}
+\usepackage[most,many,breakable]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{varwidth}
+\usepackage{varwidth}
+\usepackage{etoolbox}
+%\usepackage{authblk}
+\usepackage{nameref}
+\usepackage{multicol,array}
+\usepackage{tikz-cd}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{import}
+\usepackage{xifthen}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{subfiles}
+
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\usepackage{tikzsymbols}
+
+\definecolor{doc}{RGB}{0,0,0}
+
+\definecolor{lemmaTitle}{RGB}{255, 166, 77}
+\definecolor{lemmaBody}{RGB}{255, 218, 179}
+
+\definecolor{defTitle}{RGB}{0, 179, 179}
+\definecolor{defBody}{RGB}{230, 255, 255}
+
+\definecolor{thmTitle}{RGB}{255, 179, 255}
+\definecolor{thmBody}{RGB}{255, 230, 255}
+
+\definecolor{crlTitle}{RGB}{255, 255, 128}
+\definecolor{crlBody}{RGB}{255, 255, 204}
+
+\definecolor{phyTitle}{RGB}{153, 153, 153}
+\definecolor{phyTitle}{RGB}{179, 179, 179}
