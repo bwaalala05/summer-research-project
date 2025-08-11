@@ -10,6 +10,7 @@ Content
 
 - LA2: linear algebra (inner-product spaces, operators on inner-product spaces, matrix decompositions, SVD, generalised inverses and pseudoinverses)
 - MVS: Multiple linear regression, ridge and lasso)
+- FPT: Fundamentals of probability theory, based on https://www.statlect.com/fundamentals-of-probability/
 
 All $\LaTeX$ files needs to be saved in the same directory as the files "preamble.tex", "macros.tex", "letterfonts.tex" to compile. Change "preamble.tex" to "preamble2.tex" for report.
 
