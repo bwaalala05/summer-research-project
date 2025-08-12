@@ -16,3 +16,6 @@ All $\LaTeX$ files needs to be saved in the same directory as the files "preambl
 
 2. Code
 
+- `regression.ipynb`: following tutorial from ISLP, using `statsmodel`
+- `pinv.ipynb`: building multiple regression model using `sklearn`, testing how it deals with perfect collinearity, compare output with pseudoinverse, build ridge/lasso models
+
