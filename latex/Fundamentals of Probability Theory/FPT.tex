@@ -1,0 +1,444 @@
+\documentclass{report}
+
+% PREAMBLE
+\input{preamble.tex}
+\input{macros.tex}
+\input{letterfonts.tex}
+\setlength{\parindent}{0pt}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{mathtools}
+
+% SHORTCUTS
+\newcommand{\var}{\sigma^2}
+\newcommand{\sm}{\bar{x}}
+\newcommand{\estm}{\hat{\gb_1}}
+\newcommand{\estc}{\hat{\gb_0}}
+\newcommand{\Om}{\Omega}
+\newcommand{\om}{\omega}
+\newcommand{\pt}{\partial}
+\newcommand{\Rk}{\RR^K}
+\newcommand{\RX}{R_{\bmX}}
+\newcommand{\Rx}{R_X}
+\newcommand\myeq{\stackrel{\mathclap{\normalfont\mbox{D}}}{=}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\bin}{Bin}
+\DeclareMathOperator{\po}{Po}
+\DeclareMathOperator{\vect}{vec}
+
+
+\title{\LARGE{Fundamentals of Probability Theory\\ - Notes -}}
+\author{Lim Zi Xiang}
+
+\begin{document}
+	\maketitle
+	\pdfbookmark[section]{\contentsname}{toc}
+	\tableofcontents
+	%\pagebreak
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%$% CHAPTER 1: Random variables and random vectors $$$
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\chapter{Random variables and random vectors}
+	
+	%%% 1.1 | Random vectors $$$
+	\section{Random vectors}
+	\dfn{Random vector}{
+	Let $\Omega$ be a sample space. A \textbf{random vector} $\bmX$ is a function from the sample space $\Omega$ to the set of $K$-dimensional real vectors $\RR^K$:
+	$$\bmX:\Omega\rightarrow\RR^K.$$
+	}
+	\vspace{2mm}
+	To put it simply, a random vector is a vector whose value depends on the outcome of the probabilistic experiment. The real vector $\bmX(\omega)$ associated to a sample point $\om\in\Om$ is a \textbf{realisation} of the random vector. The set of all possible realisations is the \textbf{support}, denoted $R_X$.
+	
+	\nt{
+	We denote the probability of an event $E\subseteq\Omega$ by $P(E)$. We use the following conventions when dealing with random vectors:
+	\begin{itemize}
+		\item For $A\subseteq\RR^K$, $P(\bmX\in A)=P(\{\omega\in\Omega:\bmX(\omega)\in A\})$.
+		\item For $A\subseteq\RR^K$, $P_{\bmX}(A)=P(\bmX\in A)$. \\
+		It is very common in applied work to build statistical models where a random vector $X$ is defined by directly specifying $P_X$ and omitting the specification of the sample space $\Omega$.
+		\item We often write $\bmX$ to mean $\bmX(\omega)$.\\
+	\end{itemize}
+	}
+	\vspace{1mm}
+	\ex{Defining a random vector on a sample space}{
+	Two coins are toseed. The possible outcomes of each toss can be either tail (T) or head (H). The sample space is
+	$$\Omega=\{TT,TH,HT,HH\}.$$
+	
+	The four possible outcomes are assigned equal probabilities:
+	$$P(\{TT\})=P(\{TH\})=P(\{HT\})=P(\{HH\})=\frac{1}{4}.$$
+	If the outcome is tails, we win a dollar, otherwise we lose one dollar. A 2D random vector $\bmX$ indicates the amount we win on each toss:
+	
+	$$\bmX(\om)=\begin{cases}
+		\begin{pmatrix}
+			1 & 1
+		\end{pmatrix} & \text{ if }\om=TT\\
+		\begin{pmatrix}
+			1 & -1
+		\end{pmatrix} & \text{ if }\om=TH\\
+		\begin{pmatrix}
+			-1 & 1
+		\end{pmatrix} & \text{ if }\om=HT\\
+		\begin{pmatrix}
+			-1 & -1
+		\end{pmatrix} & \text{ if }\om=HH\\
+	\end{cases}$$ 
+	The probability of winning one dollar on both tosses is 
+	$$P\lt(\bmX=\begin{pmatrix}
+		1 & 1
+	\end{pmatrix}\rt)=P\lt(\{\om\in\Om:\bmX(\om)=\begin{pmatrix}
+	1 & 1
+	\end{pmatrix}\}\rt)=P(\{TT\})=\frac{1}{4}.$$
+	The probability of losing one dollar on the second toss is
+	$$P(X_2=-1)=P(\{\om\in\Om:X_2(\om)=-1\})=P(\{TH,HH\})=\frac{1}{2}.$$
+	}
+	\subsection{Discrete random vectors} % 1.1.1
+	\dfn{Discrete random vector}{
+	A random vector $\bmX$ is \textbf{discrete} iif
+	\begin{enumerate}
+		\item its support $R_{\bmX}$ is a countable set;
+		\item there is a function $p_{\bmX}:\RR^K\rightarrow[0,1]$, called the \textbf{joint probability mass function} of $\bmX$, such that for any $\bmx\in\RR^K$:
+		$$p_{\bmX}(\bmx)=\begin{cases}
+			P(\bmX=\bmx) & \text{ if } \bmx\in R_{\bmX};\\
+			0 & \text{ if }\bmx\notin R_{\bmX}.
+		\end{cases}$$
+	\end{enumerate}
+	}
+	\nt{
+	The following are equivalent notations used interchangeably to indicate the joint pmf:
+	$$p_{\bmX}(x)=p_{\bmX}(x_1,\ldots,x_K)=p_{X_1,\ldots,X_k}(x_1,\ldots,x_K).$$
+	}
+	\vspace{1mm}
+	\ex{}{
+	Suppose $\bmX$ is a 2D random vector whose components ($X_1$ and $X_2$) can take only two values: 1 or 0, and the four possible combinations of 0 and 1 are equally likely. The support of the discrete vector $\bmX$ is 
+	$$R_{\bmX}=\lt\{\begin{pmatrix}
+		1 \\ 1
+	\end{pmatrix},\begin{pmatrix}
+	1 \\ 0
+	\end{pmatrix},\begin{pmatrix}
+	0 \\ 1
+	\end{pmatrix},\begin{pmatrix}
+	0 \\ 0
+	\end{pmatrix}\rt\}.$$
+	
+	Its pmf is 
+	$$p_{\bmX}=\begin{cases}
+		0.25 &\text{ if }x=\begin{pmatrix}
+			1 & 1
+		\end{pmatrix}^T;\\
+		0.25 &\text{ if }x=\begin{pmatrix}
+			1 & 0
+		\end{pmatrix}^T;\\
+		0.25 &\text{ if }x=\begin{pmatrix}
+			0 & 1
+		\end{pmatrix}^T;\\
+		0.25 &\text{ if }x=\begin{pmatrix}
+			0 & 0
+		\end{pmatrix}^T;\\
+		0 & \text{ otherwise.}
+	\end{cases}$$
+	}
+	
+	\subsection{Continuous random vectors} % 1.1.2
+	\dfn{Continuous random vector}{
+	A random vector $\bmX$ is \textbf{continuous} (or \textbf{absolutely continuous}) iif
+	\begin{enumerate}
+		\item its support $R_{\bmX}$ is uncountable;
+		\item there exists a function $f_{\bmX}:\RR^K\rightarrow[0,\infty]$, called the \textbf{joint probability density function} of $\bmX$, such that for any set $A\subseteq\RR^K$ where
+		$$A=[a_1,b_1]\times\ldots\times[a_K,b_K].$$
+		The probability that $\bmX\in A$ is calculated by
+		$$P(\bmX\in A)=\int_{a_1}^{b_1}\ldots\int_{a_K}^{b_K}f_{\bmX}(x_1,\ldots,x_K)dx_K\ldots dx_1$$
+		provided the multiple integral is well defined.
+	\end{enumerate}
+	}
+	\ex{}{
+	Suppose $\bmX$ is a 2D random vector whose components $X_1$ and $X_2$ are independent uniform random variables on the interval $[0,1]$. Then, $\bmX$ is an example of a continuous vector with support
+	$$R_{\bmX}=[0,1]\times[0,1].$$
+	Its joint pmf is 
+	$$f_{\bmX}(\bmx)=\begin{cases}
+		1 & \text{ if }\bmx\in[0,1]\times[0,1];\\
+		0 & \text{ otherwise.}
+	\end{cases}$$
+	The probability that the realisation of $\bmX$ falls in the rectangle $[0,0.5]\times [0,0.5]$ is
+	\begin{align*}
+		P(\bmX\in[0,0.5]\times [0,0.5])&=\int_{0}^{0.5}\int_{0}^{0.5}f_{\bmX}(x_1,x_2)dx_2dx_1\\
+		&=\int_{0}^{0.5}\int_{0}^{0.5}(1)dx_2dx_1\\
+		&=\int_{0}^{0.5}[x_2]_0^{0.5}dx_1\\
+		&=\int_{0}^{0.5}0.5dx_1\\
+		&=[0.5x_1]_0^{0.5}\\
+		&=0.25		
+	\end{align*}
+	}
+	\subsection{Random vectors in general} % 1.1.3
+	\dfn{Joint distribution function}{
+	Let $\bmX$ be a random vector. The \textbf{joint (cumulative) distribution function} of $\bmX$ is a function $F_{\bmX}:\RR^K\rightarrow[0,1]$ such that
+	$$F_{\bmX}(\bmx)=P(X_1\leq x_1,\ldots, X_K\leq x_K), \forall \bmx\in\RR^K,$$
+	where the components of $\bmX$ and $\bmx$ are denoted by $X_k$ and $x_k$ respectively, for $k=1,\ldots,K$.
+	}
+	Similarly for the case of joint pmf/pdf, the following notations are used interchangeably to indicate the joint cdf:
+	$$F_{\bmX}(\bmx)=F_{\bmX}(x_1,\ldots,x_K)=F_{X_1,\ldots,X_K}(x_1,\ldots,x_K).$$
+	
+	\subsection{Joint distribution} % 1.1.4
+	Sometimes we talk about the \textbf{joint distribution} of a random vector without specifying whether we mean the joint cdf, pmf, or pdf. And this is justified, since the joint pmf/pdf completely determines and is complete determined by the joint cdf of a discrete/continuous vector.
+	
+	
+	\subsection{Random matrices} % 1.1.5
+	\dfn{Random matrix}{
+	A random matrix is a matrix whose entries are random variables.
+	}
+	
+	A random matrix can always be written as a random vector by vectorising it: given a $K\times L$ random matrix $\bmA$, its vectorisation, denoted $\vect(\bmA)$ is the $KL\times 1$ random vector obtained by stacking the columns of $\bmA$ on top of each other.
+	\ex{}{
+	Let $\bmA$ be the following $2\times 2$ random matrix:
+	$$\bmA=\begin{pmatrix}
+		a_{11} & a_{12}\\
+		a_{21} & a_{22}
+	\end{pmatrix}.$$
+	The vectorisation of $\bmA$ is the following $4\times 1$ vector:
+	$$\vect(\bmA)=\begin{pmatrix}
+		a_{11} \\ a_{21}\\ a_{12} \\ a_{22}
+	\end{pmatrix}.$$
+	}
+	
+	If $\vect(\bmA)$ is a discrete/continuous vector, then $\bmA$ is a \textbf{discrete/continuous random matrix}, the joint pmf of $\bmA$ is just the joint pmf/pdf of $\vect(\bmA)$.
+	
+	\subsection{The marginal distribution of a random vector} % 1.1.6
+	Let $X_i$ be the $i$-th component of a $K$-dimensional random vector $\bmX$. The cdf $F_{X_i}(\bmx)$ of $X_i$ is the marginal distribution function of $X_i$.\\
+	
+	If $\bmX$ is discrete/continuous, then $X_i$ is a discrete/continuous random variable and its pmf $p_{X_i}(\bmx)$/pdf $f_{X_i}(\bmx)$ is the \textbf{marginal pmf/pdf} of $X_i$.
+	
+	\subsection{Marginalisation of a joint distribution} % 1.1.7
+	\textbf{Marginalisation} is the process of deriving the distribution of a component $X_i$ of a random vector $\bmX$ from the joint distribution of $\bmX$.\\
+	
+	It can also have a broader meaning of deriving the joint distribution of a subset of the set of components of $\bmX$ from the joint distribution of $\bmX$, e.g. if $\bmX$ has three components $X_1,X_2,X_3$, we can marginalise their joint distribution to find the joint distribution of $X_1$ and $X_2$. In this case, $X_3$ is said to be marginalised out of the joint distribution of $X_1,X_2,$ and $X_3$.
+		
+	\subsection{The marginal distribution of a discrete vector} % 1.1.8
+	Let $X_i$ be the $i$-th component of a $K$-dimensional discrete random vector $\bmX$. The marginal pmf of $X_i$ is derived from the joint pmf by:
+	
+	$$p_{X_i}(x)=\sum_{(x_1,\ldots,x_K)\in R_{\bmX}:x_i=x}p_{\bmX}(x_1,\ldots,x_K),$$
+	
+	where the sum is over the set
+	
+	$$\{(x_1,\ldots,x_K)\in R_{\bmX}: x_i=x\},$$
+		
+	i.e. the probability that $X_i=x$ is obtained as the sum of the probabilites of all the vectors in $R_{\bmX}$ such that their $i$-th component is equal to $x$.
+	
+	\subsection{Marginalisation of a discrete distribution} % 1.1.9
+	Let $X_i$ be the $i$-th component of a $K$-dimensional discrete random vector $\bmX$. By marginalising $\bmX_i$ out of the joint distribution of $\bmX$, we obtain the joint distribution of the remaining components of $\bmX$, $\bmX_{-i}$:
+	
+	$$\bmX_{-i}=\begin{pmatrix}
+		X_1 & \ldots & X_{i-1} & X_{i+1} & \ldots & X_K
+	\end{pmatrix}.$$
+	
+	The joint pmf of $\bmX_{-i}$ is computed as follows:
+	
+	$$p_{\bmX_{-i}}(x_1,\ldots,x_{i-1},x_{i+1},\ldots,x_K)=\sum_{x_i\in R_{X_i}}p_{\bmX}(x_1,\ldots,x_{i-1},x_{i+1},\ldots, x_K),$$
+	
+	i.e. the joint pmf of $\bmX_{-i}$ is computed by summing the joint pmf od $\bmX$ over all values of $x_i$ that belong to the support of $X_i$.
+	
+	\subsection{The marginal distribution of a continuous vector} % 1.1.10
+	Let $X_i$ be the $i$-th component of a $K$-dimensional continuous random vector $\bmX$. The \textbf{marginal pdf} of $X_i$ is derived from the joint pdf of $\bmX$ by
+	
+	$$f_{X_i}(x)=\int_{-\infty}^{\infty}\ldots\int_{-\infty}^{\infty}f_{\bmX}(x_1,\ldots,x_{K})dx_K\ldots dx_{i+1}dx_{i-1} dx_1,$$
+	
+	i.e. the joint pdf evaluated at $x_i=x$ is integrated with respect to all variables except $x_i$.
+	
+	\subsection{Marginalisation of a continuous distribution} % 1.1.11
+	Let $X_i$ be the $i$-th component of a continuous random vector $\bmX$. By marginalising $X_i$ out of the joint distribution of $\bmX$, we obtain the joint distribution of the remaining components of $\bmX$, $\bmX_{-i}$.\\
+	
+	The joint pdf of $\bmX_{-i}$ is then computed by
+	
+	$$f_{\bmX_{-i}}(x_1,\ldots,x_{i-1},x_{i+1},\ldots,x_K)=\int_{-\infty}^{\infty}f_{\bmX}(x_1,\ldots,x_K)dx_i,$$
+	
+	i.e. the joint pdf of $\bmX_{-i}$ is computed by integrating the joint pdf of $\bmX$ with respect to $x_i$.
+	
+	\subsection{Partial derivatives of the distribution function of a continuous vector} % 1.1.12
+	We know that if $\bmX$ is continuous, then
+	
+	$$F_{\bmX}(\bmx)=\int_{-\infty}^{x_1}\ldots\int_{-\infty}^{x_K}f_{\bmX}(t_1,\ldots,t_K)dt_K\ldots dt_1.$$
+	
+	So by taking the $K$-th order cross-partial derivative with respect to $x_1,\ldots,x_K$ of both sides of the above equation, we get
+	
+	$$\frac{\pt^KF_{\bmX}(\bmx)}{\pt x_1\ldots,\pt x_{K}}=f_{\bmX}(\bmx).$$
+	
+	\subsection{A more rigorous definition of random vectors} % 1.1.13
+	The following is a more rigorous definition of random vector using the formalism of measure theory. (I'll ignore this part for the time being.)
+	
+	\dfn{}{
+	Let $(\Om,\mcF, P)$ be a probability space. Let $\mcB(\Rk)$ be the Borel sigma-algebra of $\Rk$ (i.e. the smallest sigma-algebra containing all open hyper-rectangles in $\Rk$). A function $\bmX:\Om\rightarrow\Rk$ such that 
+	$$\{\om\in\Om:\bmX(\om)\in B\}\in\mcF$$
+	for any $B\in\mcB(\Rk)$ is said to be a random vector on $\Om$.
+	}
+	
+	This definition ensures that the probability that the realisation of $\bmX$ belongs to a set $B\in\mcB(\Rk)$ that can be defined as
+	
+	$$P(\bmX\in B)\coloneq P(\{\om\in\Om:\bmX(\om)\in B\})$$
+	
+	because the set $\{\om\in\Om:\bmX(\om)\in B\}$ belongs to the sigma-algebra $\mcF$ and hence its probability is well-defined.
+
+	
+	\subsection{Exercises} % 1.1.14
+	\qs{}{
+	Let $\bmX$ be a $2\times 1$ discrete random vector and denote its components by $X_1$ and $X_2$.\\
+	Let the support of $X$ be the set of all $2\times 1$ vectors such that their entries belong to the set of the first three natural numbers, that is,
+	$$R_X=\{\bmx=\begin{pmatrix}
+		x_1 & x_2
+	\end{pmatrix}^T:x_1\in N_3 \text{ and }x_2\in N_3\}.$$
+	}
+	
+	%%% 1.2 | Expected value %%%
+	\section{Expected value}
+	In this section we give an informal definition of expected value. A formal definition involves the Lebesgue integral which I will ignore for the time being.\\
+	
+	\dfn{Expected value}{
+	The \textbf{expected value} of a random variable $\bmX$, $E[X]$ is the weighted average of the values that $\bmX$ can take on, where each possible value is weighted by its respective probability.
+	}
+	
+	\subsection{Expected value of a discrete random variable} % 1.2.1
+	\dfn{Expected value of a discrete random variable}{
+	Let $X$ be a discrete random variable with support $R_{\bmX}$ and pmf $p_{X}(x)$. The expected value of $\bmX$ is
+	$$E[X]=\sum_{x\in R_{X}}xp_X(x),$$
+	provided that we have \textbf{absolute summability}
+	$$\sum_{x\in R_X}|x|p_X(x)<\infty,$$
+	ensuring that the summation is well-defined when $\Rx$ contained infinitely many elements.
+	}
+	
+	\nt{
+	When summing infinitely many terms, the order in which you sum them can change the results and the expected value of $\bmX$ is not well-defined or does not exist. However this is not true if the terms are absolutely summable. 
+	}
+	
+	\ex{Expected value}{
+	Let $\bmX$ be a random variable with support $\Rx=\{0,1\}$ and pmf
+	$$p_X(x)=\begin{cases}
+		0.5 & \text{ if }x=1;\\
+		0.5 & \text{ if }x=0;\\
+		0 & \text{ otherwise.}
+	\end{cases}$$ 
+	Its expected value is
+	\begin{align*}
+		E[X]&=\sum_{x\in\Rx}xp_X(x)\\
+		&=(1)(0.5)+(0)(0.5)\\
+		&=0.5
+	\end{align*}
+	}
+	
+	
+	\subsection{Expected value of a continuous random variable} % 1.2.2
+	\dfn{Expected value of a continuous random variable}{
+	Let $X$ be a continuous random variable with pdf $f_X(x)$. The expected value of $X$ is 
+	$$E[X]=\int_{-\infty}^{\infty}xf_X(x)dx,$$
+	provided that we have absolute integrability
+	$$\int_{-\infty}^{\infty}|x|f_X(x)dx<\infty.$$
+	}
+	
+	\ex{Expected value of continuous random variable}{
+	Let $X$ be a continuous random variable with support $\Rx=[0,\infty)$ and pdf
+	$$f_X(x)=\begin{cases}
+		\lm\exp(-\lm x) & \text{ if }x\in[0,\infty);\\	
+		0 & \text{ otherwise.}
+	\end{cases}$$
+	where $\lm>0$. Its expected value is 
+	\begin{align*}
+		E[X]&=\int_{-\infty}^{\infty}xf_X(x)dx\\
+		&=\int_{0}^{\infty}x\lm(-\lm x)dx\\
+		&=\frac{1}{\lm}\int_{t=0}^{t=\infty}t\exp(-t)dt\\
+		&=\frac{1}{\lm}\lt\{[-t\exp(-t)]_{t=0}^{t=\infty}+\int_{0}^{\infty}\exp(-t)dt\rt\}
+	\end{align*}
+	}
+	
+	\subsection{Expected value of a random variable in general: the Riemann-Stieltjes integral} % 1.2.3
+	\dfn{Expected value (general)}{
+	Let $X$ be a random variable with cdf $F_X(x)$. The expected value of $X$ is
+	$$E[X]=\int_{-\infty}^{\infty}xdF_X(x),$$
+	where the integral is a Riemann-Stieltjes integral and the expected value exists and is well-defined iif the integral is well-defined.
+	}
+	
+	This definition gives a formal notation which allows for a unified treatment of discrete and continuous random variables and can be treated as a sum in one case and as ordinary Riemann integral in the other.
+	
+	\ex{}{
+	Let $X$ be a random variable with support $R_X=[0,1]$ and distribution function
+	$$F_X(x)=\begin{cases}
+		0 & \text{ if }x<0\\
+		0.5x & \text{ if }0\leq x<1\\
+		1 & \text{ if }x\geq 0
+	\end{cases}.$$
+	Its expected value is
+	\begin{align*}
+		E[X]&=\int_{-\infty}^{\infty}xdF_X(x)\\
+		&=\int_{0}^{1}xdF_X(x)+1\cdot\lt[F_X(1)-\lim_{x\rightarrow 1^+}F_X(x)\rt]\\
+		&=\int_{0}^{1}x\frac{d}{dx}(\frac{1}{2}x)dx+1\cdot[1-\frac{1}{2}]\\
+		&=\lt[\frac{1}{4}x^2\rt]_0^1+\frac{1}{2}\\
+		&=\frac{3}{4}
+	\end{align*}
+	}
+	
+	\subsection{Expected value of a random variable in general: the Lebesgue integral} % 1.2.4
+	\dfn{Expected value (rigorous)}{
+	Let $\Om$ be a sample space, $P$ a probability measure defined on the events of $\Om$ and $X$ a random variable defined on $\Om$. The expected value of $X$ is 
+	$$E[X]=\int XdP,$$
+	provided the Lebesgue integral of $X$ with respect to $P$ exists and is well-defined.
+	}
+	
+	\subsection{The transformation theorem} % 1.2.5
+	Let $X$ be a random variable, $g:\RR\rightarrow\RR$ be a real function. Define a new random variable $Y$ as $Y=g(X)$. Then, 
+	
+	$$E[Y]=\int_{-\infty}^{\infty}g(x)dF_X(x)$$
+	
+	provided that the integral exists. For discrete random variables, the formula becomes
+	
+	$$E[Y]=\sum_{x\in\Rx} g(x)p_X(x)$$
+	
+	while for continuous random variables, 
+	
+	$$E[Y]=\int_{-\infty}^{\infty}g(x)f_X(x)dx.$$
+	
+	When $\bmX$ is a discrete random vector and $p_{\bmX}(x)$ is its joint pmf, then
+	
+	$$E[Y]=\sum_{\bmx\in\RX}g(\bmx)p_{\bmX}(\bmx).$$
+	
+	When $\bmX$ is an continuous random vector and $f_{\bmX}(\bmx)$ is its joint pdf, then
+	
+	$$E[Y]=\int_{-\infty}^{\infty}\ldots\int_{-\infty}^{\infty}g(\bmx)f_{\bmX}(\bmx)dx_1\ldots dx_K.$$
+	
+	\subsection{Linearity of the expected value} % 1.2.6
+	\thm{}{If $X$ is a random variable and $Y$ is another random variable such that
+		$$Y=a+bX,$$
+		where $a,b\in\RR$, then we have
+		$$E[Y]=a+bE[X].$$}
+	\begin{myproof}
+		For discrete random variables,
+		\begin{align*}
+			E[Y]=\sum_{x\in\Rx}(a+bx)p_X(x)
+		\end{align*}
+	\end{myproof}
+	
+	\subsection{Expected value of random vectors} % 1.2.7
+	\subsection{Expected value of random matrices} % 1.2.8
+	\subsection{Integrability and Lp spaces} % 1.2.9
+	\subsection{Exercises} % 1.2.10
+	
+	%%% 1.3 | Properties of expected value %%%
+	\section{Properties of the expected value}
+	\subsection{Scalar multiplication of a random variable} % 1.3.1
+	\subsection{Sums of random variables} % 1.3.2
+	\subsection{Linear combination of random variables} % 1.3.3
+	\subsection{Expected value of a constant} % 1.3.4
+	\subsection{Expectation of a product of random variables} % 1.3.5
+	\subsection{Non-linear transformations} % 1.3.6
+	\subsection{Addition of a constant matrix and a matrix with random entries} % 1.3.7
+	\subsection{Multiplication of a constant matrix and a matrix with random entries} % 1.3.8
+	\subsection{Expectation of a positive random variable} % 1.3.9
+	\subsection{Preservation of almost sure inequalities} % 1.3.10
+	\subsection{Exercises} % 1.3.11
+	
+	%%% 1.4 | Variance %%%
+	\section{Variance}
+	\section{Covariance}
+	\section{Linear correlation}
+	\section{Covariance matrix}
+	\section{Indicator functions}
+	\section{Quantile}
+	
+	\chapter{Conditional distributions and independence}
+	\subsection{Rigorous conditional probebility}
+	
+\end{document}
