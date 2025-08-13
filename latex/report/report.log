@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  10 AUG 2025 23:58
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  13 AUG 2025 13:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1509,10 +1509,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 61--62
 
  []
 
-[2]
+[2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 89--90
+
+ []
+
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 86.
- [3] [4] (./report.aux)
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 95.
+[4] [5] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -1523,12 +1527,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 37552 strings out of 474773
- 794261 string characters out of 5757725
- 1930839 words of memory out of 5000000
- 59029 multiletter control sequences out of 15000+600000
+ 37553 strings out of 474773
+ 794267 string characters out of 5757725
+ 1931839 words of memory out of 5000000
+ 59030 multiletter control sequences out of 15000+600000
  579058 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 106i,6n,110p,738b,330s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 106i,6n,110p,944b,444s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.pdf (4 pages).
+Output written on report.pdf (5 pages).
