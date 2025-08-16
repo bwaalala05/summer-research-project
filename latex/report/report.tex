@@ -93,15 +93,22 @@
 	
 	\section{Results and discussion}
 	\subsection{Python's \texttt{scikit-learn} library}
+	(include screenshot of results?)
+	\begin{itemize}
+		\item Evenly distributes weights amongst the correlated predictors (found out to be due to StandardScaler)
+		\item Does not give flags or warnings upon detection of high multicollinearity. Needs to be assessed manually by the data analyst.
+	\end{itemize}
+	
 	\subsection{Python's \texttt{statsmodel} library}
-	(include screenshot of results)
+	(include screenshot of results?)
 	\begin{itemize}
 		\item Looks like it evenly distributes weights throughout the correlated predictors.
 		\item Apparently uses pseudoinverse, and that the results obtained don't carry meaning.
+		\item Gives warning upon detect of high to perfect collinearity.
 	\end{itemize}
 	
 	\subsection{R's \texttt{lm} function}
-	(include screenshot of results)
+	(include screenshot of results?)
 	
 	\begin{itemize}
 		\item Looks like it dropped one collinear column and add the two coefficients together.
@@ -111,19 +118,45 @@
 	\end{itemize}
 	
 	\subsection{Impact of multicollinearity}
-	\subsection{Methods to detect collinearity}
 	\begin{itemize}
-		\item Hypothesis testing for correlation
-		\item VIF and correlation matrix
-		\item Condition numbers
+		\item inflate variance and covariances of OLS estimates 
+		\item important regressors may have low t-stats 
+		\item  OLS estimates and their variance become sensitive to minor changes in data
+		\item removing/adding samples changes the regressors chosen by variable selection
+		\item  inflate some of the OLS estimates
+		\item  incorrect sign of OLS estimate
 	\end{itemize}
+	
+	\subsection{Methods to detect collinearity}
+	
+	One simple way to detect collinearity is through a test for correlation, where we test the hypothesis
+	$$H_0: \rho=0 \quad\quad\text{ vs. }\quad\quad H_1: \rho\neq 0,$$
+	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method: 
+	\begin{enumerate}
+		\item as the number of predictors included in the model increase, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs;
+		\item even if we find that every pair of predictors has no significant correlation, we cannot conclude the same about predictors amongst groups of other numbers. 
+	\end{enumerate}
+	
+	Therefore, we turn to a more commonly used method of identifying highly correlated predictors: the variance inflation factor (VIF). (Formula and interpretation of formula and VIF values).\\
+	
+	(Condition numbers)
 	
 	\subsection{Confounding variables}
 	
+	In addition to the pitfall of collinearity in performing regression analysis, confounding variables, or confounders, can also severely distort our results if not given attention. The concept of confounders is illustrated using Simpson's paradox, which states that 
+	
 	\section{Conclusion}
+	
+	Difference in flag/no flag: indicates general attitude of different fields that uses regression modelling. ML engineers who are more concerned about making accurate predictions would not be as concerned about the impacts of collinearity on model interpretability given that the fitted model returns a satisfactory test score. This is in stark contrast to statisticians who are more interested in investigating the relationships between the predictors and the response. Hence, they are more likely to use \texttt{statsmodel} or R as opposed to \texttt{scikit\_learn} which in addition to flagging high multicollinearity, also affords a more extensive function library for the purpose of performing analysis on the model.
+	
 	\section{Future recommendations}
+	\begin{enumerate}
+		\item Explore the same issue in other software commonly used in the industry such as (?)
+		\item Confounding and causality.
+	\end{enumerate}
 	\section{Appendix}
 	
 	\section{References}
+	Citations to be added in second draft.
 	
 \end{document}
