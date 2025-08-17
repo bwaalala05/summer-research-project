@@ -75,7 +75,7 @@
 	
 	The least squares method estimates the regression coefficients of a model with $p$ predictors by fitting it to a dataset with $n$ observations using the following equation
 	$$\mathbf{\gb}=(\bmX^T\bmX)^{-1}\bmX^T\bmy,$$
-	where $\mathbf{\gb}$ is a $p\times 1$ column matrix, $\bmX$ is a $n\times p$ data matrix, and $\bmy$ is a $n\times 1$ column matrix containing the observed response values. With the presence of perfect collinearity, the matrix $\bmX^T\bmX$ is singular and hence $(\bmX^T\bmX)^{-1}$ does not exist. However, the least squares solver of Python uses the Moore-Penrose inverse (or pseudoinverse) which gives the best approximation of $(\bmX^T\bmX)^{-1}$, and can be easily computed using the SVD of $\bmX^T\bmX$.
+	where $\mathbf{\gb}$ is a $p\times 1$ column matrix, $\bmX$ is a $n\times p$ data matrix, and $\bmy$ is a $n\times 1$ column matrix containing the observed response values. With the presence of perfect collinearity, the matrix $\bmX^T\bmX$ is singular and hence $(\bmX^T\bmX)^{-1}$ does not exist. However, the least squares solver of Python uses the Moore-Penrose inverse (or pseudoinverse) of $\bmX$, $\bmX^+$, which can be used to calculate the minimum norm approximation of $(\bmX^T\bmX)^{-1}$, and can be easily computed using the SVD of $\bmX^T\bmX$.
 	
 	
 	\subsection{Investigate how software deals with singularity when building linear models.}
@@ -95,7 +95,7 @@
 	\subsection{Python's \texttt{scikit-learn} library}
 	(include screenshot of results?)
 	\begin{itemize}
-		\item Evenly distributes weights amongst the correlated predictors (found out to be due to StandardScaler)
+		\item Evenly distributes weights amongst the correlated predictors (found out to be due to \texttt{StandardScaler})
 		\item Does not give flags or warnings upon detection of high multicollinearity. Needs to be assessed manually by the data analyst.
 	\end{itemize}
 	
@@ -127,6 +127,8 @@
 		\item  incorrect sign of OLS estimate
 	\end{itemize}
 	
+	In the special case of perfect collinearity, the matrix $\bmX^T\bmX$ is singular (see Appendix [section]).
+	
 	\subsection{Methods to detect collinearity}
 	
 	One simple way to detect collinearity is through a test for correlation, where we test the hypothesis
@@ -139,11 +141,15 @@
 	
 	Therefore, in this project, we turn to a more commonly-used method of identifying highly correlated predictors: the variance inflation factor (VIF). (Formula and interpretation of formula and VIF values).\\
 	
-	(Condition numbers)
+	Another metric for measuring the degreee of collinearity are condition numbers, which indicates how sensitive the response is to changes in the data matrix...
 	
 	\subsection{Confounding variables}
 	
-	In addition to the pitfall of collinearity in performing regression analysis, confounding variables, or confounders, can also severely distort our results if not given attention. The concept of confounders is illustrated using Simpson's paradox, which states that 
+	In addition to the pitfall of collinearity in performing regression analysis, confounding variables, or confounders, can also severely distort our results if not given attention. The concept of confounders is illustrated using Simpson's paradox, where relationship between individual predictors and the response disappears or reverses when all predictors are included in a single model. The variables which cause such occurences are referred to as confounders.\\
+	
+	We give the classic textbook example of the relationship between ice cream sales and shark attacks. We initially observe a positive correlation between these two variables, yet upon the inclusion of the confounder, temperature, we find that this correlation vanishes. One should avoid the confusion between confounders and correlated variables by noting that in addition to being correlated, confounders should also have a causal relationship to the variables involved in the confounding effect.\\
+	
+	Although including confounders inherently introduces collinearity into the model, failing to account for them causes us to commit omitted variable bias in addition to causing the aforementioned confounding effects according to Simpson's paradox. Hence, by weighing each consequence, we generally always include confounders as we have well-established methods for effectively addressing collinearity, hence one should not harbour a doomed mentality upon encounter with high collinearity.
 	
 	\section{Conclusion}
 	
@@ -155,6 +161,67 @@
 		\item Confounding and causality.
 	\end{enumerate}
 	\section{Appendix}
+	Let $\bmA=\begin{pmatrix}
+		\bmu & k\bmu & \bmv
+	\end{pmatrix}$ where $\bmu,\bmv\in\Rn$ are arbitrarily linearly independent column vectors containing $n$ observations of a particular feature with $\bmu^T=\begin{pmatrix}
+		u_1 & \ldots & u_n
+	\end{pmatrix}$ and $\bmv^T=\begin{pmatrix}
+		v_1 & \ldots & v_n
+	\end{pmatrix}$, $k\in\RR$ is such that the column $k\bmu$ is a scalar multiple of the first column. Then we consider
+	\begin{align*}
+		\bmA^T\bmA&=\begin{pmatrix}
+			\bmu^T \\ k\bmu^T \\ \bmv^T
+		\end{pmatrix}\begin{pmatrix}
+			\bmu & k\bmu & \bmv
+		\end{pmatrix}\\
+		&=\begin{pmatrix}
+			u_1 & \ldots & u_n \\ ku_1 & \ldots & ku_n \\ v_1 & \ldots & v_n
+		\end{pmatrix}\begin{pmatrix}
+			u_1 & ku_1 & v_1 \\ \vdots & \vdots & \vdots \\ u_n & ku_n & v_n
+		\end{pmatrix}\\
+		&=\sum_{i=1}^{n}\begin{pmatrix}
+			u_i \\ ku_i \\ v_i
+		\end{pmatrix}\begin{pmatrix}
+			u_i & ku_i & v_i
+		\end{pmatrix}\\
+		&=\sum_{i=1}^{n}\begin{pmatrix}
+			u_i^2 & ku_i^2 & u_iv_i \\ 
+			ku_i^2 & k^2u_i^2 & ku_iv_i \\
+			u_iv_i & ku_iv_i & v_i^2
+		\end{pmatrix}.
+	\end{align*}
+	Since for every $i$, the second row of $\bmA^T\bmA$ is $k$ times the first row, adding each rank 1 matrix, the second row of the final matrix will also be $k$ times the first, so $\bmA^T\bmA$ is rank-deficient and not full rank, and hence is singular. \\
+	
+	Note that writing matrix-matrix products in this form, each term in the sum is a rank 1 matrix, however, under no collinearity, the rows in every term will not necessarily be dependent on some other rows \textbf{by the same factor}. Notice that actually in our formulation, the third row differs from the first row by a multiplicative factor of $v_i/u_i$ (this is consistent with the case of collinear columns since $ku_i/u_i=k$). Since under no collinearity, this fraction will differ for varying $i$, so after adding each term up, there is no common factor between the first and third row.\\
+	
+	Alternatively for a simpler approach, we look at each entry in the product matrix as multiplying rows with columns:
+	
+	$$\bmA^T\bmA=\begin{pmatrix}
+		\bmu\cdot\bmu & \bmu\cdot(k\bmu) & \bmu\cdot\bmv\\
+		(k\bmu)\cdot\bmu & (k\bmu)\cdot(k\bmu) & (k\bmu)\cdot\bmv \\
+		\bmv\cdot\bmu & \bmv\cdot(k\bmu) & \bmv\cdot\bmv
+	\end{pmatrix}=\begin{pmatrix}
+		\bmu\cdot\bmu & k\bmu\cdot\bmu & \bmu\cdot\bmv\\
+		k(\bmu\cdot\bmu) & k(k\bmu\cdot\bmu) & k(\bmu\cdot\bmv) \\
+		\bmv\cdot\bmu & k(\bmv\cdot\bmu) & \bmv\cdot\bmv
+	\end{pmatrix}.$$
+	
+	We observe that the second row is $k$ times the first row as expected. The third row again is not collinear with the first two. Suppose they are, then we solve for some $\lm\in\RR$ such that
+	$$\bmv\cdot\bmu=\lm(\bmu\cdot\bmu) \quad \text{and}\quad \bmv\cdot\bmv=\lm(\bmu\cdot\bmv).$$
+	It then follows that
+	\begin{align*}
+		\|\bmv\|^2&=\bmv\cdot\bmv\\
+		&=\lm(\bmv\cdot\bmu)\\
+		&=\lm^2(\bmu\cdot\bmu)\\
+		&=\lm^2\|\bmu\|^2\\ 
+		\|\bmv\|&=\lm\|\bmu\|\\
+		&=\dfrac{\bmv\cdot\bmu}{\|\bmu\|^2}\|\bmu\|\\
+		\bmv&=\dfrac{\bmv\cdot\bmu}{\|\bmu\|^2}\bmu
+	\end{align*}
+	$$$$
+	i.e. $\bmv$ is its own orthogonal projection on vector $\bmu$, implying that they are collinear, which is a contradiction. Hence the third row is linear independent of the first two rows. Note that the least squares coefficient estimates are given by
+	$$\boldsymbol{\gbh}=(\bmX^T\bmX)^{-1}\bmX^T\bmy$$
+	and so singularity of $\bmX^T\bmX$ causes OLS to fail. However depending on the software used, we may still be able to obtain a result (however from the point where perfect collinearity is present, the assumption for OLS by the Gauss-Markov theorem has already been violated).\\
 	
 	\section{References}
 	Citations to be added in second draft.
