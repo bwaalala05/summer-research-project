@@ -6,7 +6,7 @@ Explore how R's `lm` function, Python's `statsmodel` and `sklearn` packages deal
 Content
 -
 
-1. Personal Notes
+1. Personal Notes (`.tex` and `.pdf` files)
 
 - LA2: linear algebra (inner-product spaces, operators on inner-product spaces, matrix decompositions, SVD, generalised inverses and pseudoinverses)
 - MVS: Multiple linear regression, ridge and lasso)
