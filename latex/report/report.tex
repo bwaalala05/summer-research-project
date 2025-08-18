@@ -33,6 +33,7 @@
 \DeclareMathOperator{\RSS}{RSS}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\var}{\sigma^2}
+\DeclareMathOperator{\vif}{VIF}
 \newcommand{\cL}{\mathcal{L}}
 \newcommand{\cM}{\mathcal{M}}
 \newcommand{\cP}{\mathcal{P}}
@@ -60,9 +61,14 @@
 	
 	Furthermore, we embrace this opportunity to explore further on the topic of multicollinearity, such as its impact on the accuracy of model prediction and model interpretation. We have also identified several known methods of detecting collinearity in the data, whether through hypothesis testing, or by using measures such as the variance inflation factor (VIF) and condition numbers/indices. In addition to aforementioned methods of addressing collinearity, shrinkage methods such as ridge regression and lasso were also considered to alleviate the impact of overfitting (due to collinearity) on variance at the cost of negligible bias in order to obtain an improved model for prediction. Another potential pitfall in regression analysis, that is confounding variables, were also briefly explored by examining examples of Simpson's paradox.\\
 	
-	It should be noted that there are different conventions to what collinearity and multicollinearity mean according to varying sources. In this report, we will use these two terms interchangably.
+	Here, we lay down the general setup for fitting a linear regression model. Given an $n\times p$ data matrix $\bmX$ ($n$ samples and $p$ predictors), corresponding to an $n\times 1$ column matrix $\bmy$ containing the observed response, we model the relationship between $p$ predictors, $X_i$  and the response variable, $Y$ as
+	$$Y=\beta_0+\sum_{i=1}^{p}\beta_i X_i+\varepsilon,$$
 	
-	\pagebreak
+	where $\varepsilon$ represents the random error. We fit the model to the data collected for the expected response $E[Y]$ by estimating each $\beta_i$ using the least squares method so that we have
+	$$E[Y]=\gbh_0+\sum_{i=1}^{p}\gbh_iX_i.$$
+	
+	
+	Finally, it should be noted that there are different conventions to what collinearity and multicollinearity mean according to varying sources. In this report, we will use these two terms interchangably to refer to correlation between two or more predictors in a regression model.
 	
 	\section{Objectives}
 	
@@ -81,8 +87,6 @@
 	\subsection{Investigate how software deals with singularity when building linear models.}
 	
 	It is observed that there exists discrepancy between how different software handles highly correlated predictors when fitting a multiple linear regression model via OLS. In this project, we aim to understand the reason behind this difference in behaviour by referring to standard documentation and examining program output. As an extension, methods for detecting and addressing multicollinearity using software is also explored.
-	
-	\pagebreak
 	
 	\section{Methodology}
 	
@@ -137,19 +141,33 @@
 	
 	One simple way to detect collinearity is through a test for correlation, where we test the hypothesis
 	$$H_0: \rho=0 \quad\quad\text{ vs. }\quad\quad H_1: \rho\neq 0,$$
-	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method: 
+	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method.
 	\begin{enumerate}
-		\item as the number of predictors included in the model increase, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs;
-		\item even if we find that every pair of predictors has no significant correlation, we cannot conclude the same about predictors amongst groups of other numbers. 
+		\item As the number of predictors included in the model increase, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs. 
+		\item More importantly, even if we find that every pair of predictors has no significant correlation, we cannot make the same conclusion about predictors amongst groups of other numbers. 
 	\end{enumerate}
 	
-	Therefore, in this project, we turn to a more commonly-used method of identifying highly correlated predictors: the variance inflation factor (VIF). (Formula and interpretation of formula and VIF values).\\
+	\subsubsection{Variance inflation factor (VIF)}
+	Therefore, in this project, we turn to a more commonly-used method of identifying highly correlated predictors: the variance inflation factor (VIF), formula for which is given by
+	$$\vif_k=\frac{1}{1-R_{k}^2},$$
+	where $R^2_k$ is the multiple coefficient of determination of the $k^{\text{th}}$ predictor regressed against the other predictors, assuming that it has zero mean. Intuitively, a higher value of $R^2_k$ indicates a good fit, hence a strong correlation between the $k^{\text{th}}$ regressor and some of the other regressors. (Uncorrelated regressors would simply have a low coefficient.) \\
 	
-	Another metric for measuring the degreee of collinearity are condition numbers, which indicates how sensitive the response is to changes in the data matrix...
+	The motivation behind the formulation of the VIF is to calculate the ratio between the variance of a coefficient estimate if it was uncorrelated with the other regressors (baseline case), and the actual variance. For example, a coefficient estimate having a VIF of 4 corresponds to its variance being 4 times of what it would have been if it was uncorrelated with every other predictor. In other words, VIF measures the factor by which the variance of the regression coefficients is inflated above what it would have been if $R_k^2=0$, hence its name. \\
+	
+	There are different rule of thumbs for the thresholds beyond which one may consider the VIF value of a particular predictor to be high, ranging roughly from 4 to 10. There is no definitively correct answer, and we have no choice but to make decisions based on our interpretation of the VIF value. Once predictors with high VIF's are identified, we can then examine the correlation matrix to identify which the predictors which each high VIF predictor is correlated to.
+	
+	\subsubsection{Condition numbers}
+	Another metric for measuring the degreee of collinearity is the condition number (or sometimes condition indices) of the data matrix $\bmX$, which indicates how sensitive the response is to changes in $\bmX$. Aside from using it to determine whether a model is highly collinear, the condition number of $\bmX^T\bmX$ is used to check for a potential source of large numerical error due to collinearity when computing $(\bmX^T\bmX)^{-1}$ using software. In this case, it indicates the multiplicative factor to which round-off errors are amplified due to computer arithmetic being performed to finite precision.\\
+	
+	The formula for the condition number of a $m\times n$ matrix $\bmA$ with rank $r\leq n$, denoted $\kappa(\bmA)$, is given by
+	$$\kappa(\bmA)=\frac{\sigma_1}{\sigma_r},$$
+	where $\sigma_i$ are the singular values of $\bmA$ arranged in descending order. Note that definitions will differ for varying contexts, giving rise to different condition numbers. The point of discussion here is the condition number for inversion.\\
+	
+	Similar to the case of VIF, there is no exact threshold for a condition number to be considered high, but a rule of thumb is any condition numbers exceeding 20 indicates the matrix to be ill-conditioned. 
 	
 	\subsection{Methods to address collinearity}
 	
-	(adapted from personal notes) We give a few commonly-used methods to address moderate to perfect collinearity. However, note that depending on the purpose, particularly for machine learning engineers, there may not be a need to address high collinearity provided that it does not inflate standard errors to a problematic extent (see "A caution regarding rules of thumb for variance inflation factors" by O'Brien), as there are many other factors which can suppress the inflation effect of standard errors, one of which is the sample size. The main issue that multicollinearity brings is sensitive coefficient estimates and erroneous coefficient signs, both of which is unimportant to most machine learning engineers.\\
+	(adapted from personal notes) We present a few commonly-used methods to address moderate to perfect collinearity. However, note that depending on the purpose, particularly for machine learning engineers, there may not be a need to address high collinearity provided that it does not inflate standard errors to a problematic extent (see "A caution regarding rules of thumb for variance inflation factors" by O'Brien), as there are many other factors which can suppress the inflation effect of standard errors, one of which is the sample size. The main issue that multicollinearity brings is sensitive coefficient estimates and erroneous coefficient signs, both of which is unimportant to most machine learning engineers. Hence, quoting the words of O'Brien, collinearity does not hurt as long as it does not bite.\\
 	
 	In the case of perfect collinearity, one of the correlated predictors is completely described by the other, hence our only choice is to remove one of them. This is however not recommended for non-perfect collinearity as we are at risk of committing omitted variable bias. In such cases, we may want to either combine some of the variables or use shrinkage methods such as ridge regression or lasso.\\
 	
@@ -161,7 +179,7 @@
 	
 	\subsection{Confounding variables}
 	
-	In addition to the pitfall of collinearity in performing regression analysis, confounding variables, or confounders, can also severely distort our results if not given attention. The concept of confounders is illustrated using Simpson's paradox, where relationship between individual predictors and the response disappears or reverses when all predictors are included in a single model. The variables which cause such occurences are referred to as confounders.\\
+	In addition to the pitfall of collinearity in performing regression analysis, confounding variables, or confounders, can also severely distort our results if not given attention. The concept of confounders is illustrated using Simpson's paradox, where the relationship between individual predictors and the response disappears or reverses when all predictors are included in a single model. The variables which cause such occurences are referred to as confounders.\\
 	
 	We give the classic textbook example of the relationship between ice cream sales and shark attacks. We initially observe a positive correlation between these two variables, yet upon the inclusion of the confounder, temperature, we find that this correlation vanishes. One should avoid the confusion between confounders and correlated variables by noting that in addition to being correlated, confounders should also have a causal relationship to the variables involved in the confounding effect.\\
 	
