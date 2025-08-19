@@ -15,7 +15,8 @@ Content
 2. Code
 
 - `regression.ipynb`: following tutorial from ISLP, using `statsmodel`
-- `pinv.ipynb`: building multiple regression model using `sklearn`, testing how it deals with perfect collinearity, compare output with pseudoinverse, build ridge/lasso models
+- `pinv.ipynb`: building multiple regression model using `sklearn`, build ridge/lasso models
+- `test.ipynb`: testing how sklearn and statsmodel deals with perfect collinearity, compare output with pseudoinverse, testing influence of scaler, testing if ridge and lasso gives interpretable results, and its effectiveness in reducing variance in the presence of high collinearity.
 
 3. Report
 
