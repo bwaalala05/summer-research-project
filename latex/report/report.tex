@@ -90,11 +90,17 @@
 	
 	\section{Methodology}
 	
-	We narrow our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we have randomly generated several sets of artificial data from a uniform distribution: one set using two correlated regressors and one set using three regressors where only one pair is correlated, each with 100 samples. The degree of collinearity is varied between high and perfect to observe differences in output. The pseudoinverse of the data matrix is also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates and the results are compared. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined and that the degree of correlation and noise in the data can be manually specified. Note that the distribution used is irrelevant for our topic of study.\\
+	We narrow our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we have randomly generated several sets of artificial data from a uniform distribution using three regressors where only one pair is correlated, each with 100 samples. The degree of collinearity is varied between high and perfect to observe differences in output. The pseudoinverse of the data matrix is also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates and the results are compared. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined and that the degree of correlation and noise in the data can be manually specified. Note that the distribution used is irrelevant for our topic of study.\\
+	
+	The true relationship to which the artificial data is generated is 
+	$$Y=X_1+2X_2+3X_3,$$
+	where $X_1$ and $X_2$ are correlated with $X_2=2X_1$. The train-test ratio chosen for splitting the dataset into training and testing sets is 0.8-0.2. Metrics such as the (adjusted) multiple coefficient of determination $R^2$ and mean squared error were used to evaluate model performance.\\
 	
 	The scaling effect of \texttt{StandardScaler} on the model is also given attention by reading standard documentation as well as testing it using artificially generated data. For data with and without high multicollinearity present respectively, we fitted two models each: one with predictors scaled by \texttt{StandardScaler} and one without, and the output is examined and compared. \\
 	
-	We also performed regression analysis on built-in datasets such as California housing and diabetes dataset in \texttt{scikit-learn} and tried fitting highly correlated models. Subsequently, ridge regression models and lasso models were also used to examine its effectiveness in increasing the $R^2$ score of these models.
+	\pagebreak
+	
+	We have also performed regression analysis on built-in datasets such as California housing and diabetes dataset in \texttt{scikit-learn} and tried fitting highly correlated models. Subsequently, ridge regression models and lasso models were also used to examine its effectiveness in decreasing the standard errors of these models.
 	
 	
 	\section{Results and discussion}
@@ -106,6 +112,8 @@
 		\item No actual need to scale predictors for least squares regression (common practice in ML when algorithm involves gradient descent or when we perform principle component analysis), yet not scaling gives promising results in the presence of perfect collinearity as opposed to when we use a scaler. 
 		\item Does not give flags or warnings upon detection of high multicollinearity. Needs to be assessed manually by the data analyst.
 	\end{itemize}
+	
+
 	
 	\subsection{Python's \texttt{statsmodel} library}
 	(include screenshot of results?)
@@ -171,9 +179,9 @@
 	
 	In the case of perfect collinearity, one of the correlated predictors is completely described by the other, hence our only choice is to remove one of them. This is however not recommended for non-perfect collinearity as we are at risk of committing omitted variable bias. In such cases, we may want to either combine some of the variables or use shrinkage methods such as ridge regression or lasso.\\
 	
-	There are many possible ways of combining correlated variables, but in most cases the simple approach of simply adding the columns up (such as what R does) gives sufficiently improved results. Note that it is important that we consider the context when doing this, that is, whether combining the two variables make sense in context. An example is a model predicting the salary of employees based on predictors such as years of experience, gender, test scores for course A, and test scores for course B. Obviously, any employee who does well on one test is expected to do well in the other, and so we may consider adding the two test scores together to form a single column "total test scores for course A and B".\\
+	There are many possible ways of combining correlated variables, but in most cases the simple approach of simply adding the columns up (such as what R does) gives sufficiently improved results. Note that it is important that we consider the context when doing this, that is, whether combining the two variables make sense in context. An example is a model predicting the salary of employees based on predictors such as years of experience, gender, test scores for course A, and test scores for course B. Obviously, any employee who does well on one test is expected to do well in the other, and so we may consider adding the two test scores together to form a single column "total test scores for course A and B", then the results obtained may be interpreted accordingly.\\
 	
-	(ridge and lasso)
+	For ridge regression and lasso, otherwise known as $L_2$ and $L_1$ regularisation respectively, we find that it successfully decreases standard errors at the cost of increasing the bias (and hence decreasing $R^2$ score compared to the OLS model) by a neglibible amount. However, in the face of perfect collinearity, ridge and lasso does not yield interpretable coefficients, where the correlated predictors have equally distributed coefficients, as in the case of OLS due to the effect of the scaler. However, there is no room for argument in this case as ridge and lasso explicitly requires that the predictors are standardised.
 	
 	
 	
@@ -259,7 +267,13 @@
 	$$$$
 	i.e. $\bmv$ is its own orthogonal projection on vector $\bmu$, implying that they are collinear, which is a contradiction. Hence the third row is linear independent of the first two rows. Note that the least squares coefficient estimates are given by
 	$$\boldsymbol{\gbh}=(\bmX^T\bmX)^{-1}\bmX^T\bmy$$
-	and so singularity of $\bmX^T\bmX$ causes OLS to fail.\\
+	and so singularity of $\bmX^T\bmX$ causes OLS to fail.
+	
+	\subsection{Effect of \texttt{StandardScaler} on collinear columns in data matrix}
+	From the documentation, \texttt{StandardScaler} calculates the $Z$-score of each entry by subtracting each entry by the mean of its column and dividing by the standard deviation of its column. Suppose that the true relationship between regressors $\bmx_1$ and $\bmx_2$ is $\bmx_2=k\bmx_1$. Then we have
+	$$\bar{x_2}=k\bar{x_1}\quad \quad \text{ and }\quad \quad s^2_2=k^2s_1^2.$$
+	So for collinear columns $\bmx_1$ and $\bmx_2$, the entries of scaled columns $\bmu_1$ and $\bmu_2$ are
+	$$u_{i1}=\frac{x_{i1}-\bar{x_1}}{s_1}\quad\quad\text{ and }\quad \quad u_{i2}=\frac{x_{i2}-\bar{x_2}}{s_2}=\frac{kx_{i1}-k\bar{x_1}}{ks_1}=\frac{x_{i1}-\bar{x_1}}{s_1}=u_{i1}.$$
 	
 	\section{References}
 	Citations to be added in second draft.
