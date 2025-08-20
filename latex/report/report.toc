@@ -10,13 +10,14 @@
 \contentsline {subsection}{\numberline {4.3}R's \texttt {lm} function}{5}{subsection.4.3}%
 \contentsline {subsection}{\numberline {4.4}Impact of multicollinearity}{6}{subsection.4.4}%
 \contentsline {subsection}{\numberline {4.5}Methods to detect collinearity}{6}{subsection.4.5}%
-\contentsline {subsubsection}{\numberline {4.5.1}Variance inflation factor (VIF)}{6}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.1}Variance inflation factor (VIF)}{7}{subsubsection.4.5.1}%
 \contentsline {subsubsection}{\numberline {4.5.2}Condition numbers}{7}{subsubsection.4.5.2}%
 \contentsline {subsection}{\numberline {4.6}Methods to address collinearity}{8}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Confounding variables}{8}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.7}Confounding variables}{9}{subsection.4.7}%
 \contentsline {section}{\numberline {5}Conclusion}{9}{section.5}%
 \contentsline {section}{\numberline {6}Future recommendations}{10}{section.6}%
-\contentsline {section}{\numberline {7}Appendix}{10}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Singularity due to perfect collinearity }{10}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Effect of \texttt {StandardScaler} on collinear columns in data matrix}{12}{subsection.7.2}%
-\contentsline {section}{\numberline {8}References}{12}{section.8}%
+\contentsline {section}{\numberline {7}Appendix}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Singularity due to perfect collinearity }{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Effect of \texttt {StandardScaler} on collinear columns in data matrix }{12}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Minimum norm approximation using pseudoinverse}{13}{subsection.7.3}%
+\contentsline {section}{\numberline {8}References}{13}{section.8}%
