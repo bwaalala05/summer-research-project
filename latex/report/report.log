@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  20 AUG 2025 13:13
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  23 AUG 2025 23:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1339,58 +1339,58 @@ Package: setspace 2022/12/04 v6.7b set line spacing
 (./report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/npxmi/m/it on input line 50.
+LaTeX Font Info:    Checking defaults for OML/npxmi/m/it on input line 52.
 LaTeX Font Info:    Trying to load font information for OML+npxmi on input line
- 50.
+ 52.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/omlnpxmi.fd
 File: omlnpxmi.fd 2013/03/21 Fontinst v1.933 font definitions for OML/npxmi.
 )
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 5
-0.
+2.
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for U/npxexa/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for U/npxexa/m/n on input line 52.
 LaTeX Font Info:    Trying to load font information for U+npxexa on input line 
-50.
+52.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/unpxexa.fd
 File: unpxexa.fd 2013/03/24 Fontinst v1.933 font definitions for U/npxexa.
 )
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for LMS/npxsy/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for LMS/npxsy/m/n on input line 52.
 LaTeX Font Info:    Trying to load font information for LMS+npxsy on input line
- 50.
+ 52.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/lmsnpxsy.fd
 File: lmsnpxsy.fd 2016/07/04 Fontinst v1.933 font definitions for LMS/npxsy.
 )
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for LMX/npxexx/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for LMX/npxexx/m/n on input line 52.
 LaTeX Font Info:    Trying to load font information for LMX+npxexx on input lin
-e 50.
+e 52.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/lmxnpxexx.fd
 File: lmxnpxexx.fd 2016/07/04 Fontinst v1.933 font definitions for LMX/npxexx.
 )
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1426,9 +1426,9 @@ LaTeX Font Info:    ... okay on input line 50.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Command `\dddot' is already robust on input line 50.
-LaTeX Info: Command `\ddddot' is already robust on input line 50.
-Package hyperref Info: Link coloring ON on input line 50.
+LaTeX Info: Command `\dddot' is already robust on input line 52.
+LaTeX Info: Command `\ddddot' is already robust on input line 52.
+Package hyperref Info: Link coloring ON on input line 52.
 \c@lstlisting=\count454
 (/usr/local/texlive/2024/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
@@ -1445,154 +1445,201 @@ Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 ))
 (./report.toc
 LaTeX Font Info:    Trying to load font information for OT1+TimesNewRoman(0) on
- input line 3.
-LaTeX Font Info:    No file OT1TimesNewRoman(0).fd. on input line 3.
+ input line 4.
+LaTeX Font Info:    No file OT1TimesNewRoman(0).fd. on input line 4.
 
 
 LaTeX Font Warning: Font shape `OT1/TimesNewRoman(0)/m/n' undefined
-(Font)              using `OT1/cmr/m/n' instead on input line 3.
+(Font)              using `OT1/cmr/m/n' instead on input line 4.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for U+npxmia on input line 
-3.
+4.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/unpxmia.fd
 File: unpxmia.fd 2013/03/24 Fontinst v1.933 font definitions for U/npxmia.
 )
 LaTeX Font Info:    Trying to load font information for U+npxsym on input line 
-3.
+4.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/unpxsym.fd
 File: unpxsym.fd 2023/08/16 Fontinst v1.933 font definitions for U/npxsym.
 )
 LaTeX Font Info:    Trying to load font information for U+npxsyc on input line 
-3.
+4.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/unpxsyc.fd
 File: unpxsyc.fd 2013/03/24 Fontinst v1.933 font definitions for U/npxsyc.
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 3.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 4.
 
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-))
+)
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 17.
+)
 \tf@toc=\write5
 \openout5 = `report.toc'.
 
  [1
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 58--59
+Underfull \hbox (badness 10000) in paragraph at lines 60--61
 
  []
 
 
 LaTeX Font Warning: Font shape `OT1/TimesNewRoman(0)/b/n' undefined
-(Font)              using `OT1/TimesNewRoman(0)/m/n' instead on input line 60.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 60--61
-
- []
+(Font)              using `OT1/TimesNewRoman(0)/m/n' instead on input line 62.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 62--63
 
  []
 
-[2] [3]
-Underfull \hbox (badness 10000) in paragraph at lines 93--94
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 83--84
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--98
+Underfull \hbox (badness 10000) in paragraph at lines 88--90
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 95--96
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 99--100
+Underfull \hbox (badness 10000) in paragraph at lines 98--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--102
 
  []
 
 [4]
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 107.
- [5]
-Underfull \hbox (badness 10000) in paragraph at lines 160--162
+Underfull \hbox (badness 10000) in paragraph at lines 117--119
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 128--130
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 135--136
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 139--140
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 163--164
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 168--169
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 171--173
-
- []
-
-
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 147.
+ [7]
 Underfull \hbox (badness 10000) in paragraph at lines 178--179
 
  []
 
-[7]
+
 Underfull \hbox (badness 10000) in paragraph at lines 180--181
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 182--183
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 192--193
+Underfull \hbox (badness 10000) in paragraph at lines 191--192
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 198--199
+Underfull \hbox (badness 10000) in paragraph at lines 197--198
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 200--201
+Underfull \hbox (badness 10000) in paragraph at lines 199--200
 
  []
 
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 239--241
+[9] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 242--244
 
  []
 
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 242--243
+
+Underfull \hbox (badness 10000) in paragraph at lines 245--246
 
  []
 
-[11] [12] (./report.aux)
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 271--273
+
+ []
+
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <17.28> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 278.
+
+Overfull \hbox (0.5025pt too wide) in paragraph at lines 279--280
+\TU/TimesNewRoman(0)/m/n/12 From the documentation, \TU/lmtt/m/n/12 scikit_lear
+n\TU/TimesNewRoman(0)/m/n/12 ’s \TU/lmtt/m/n/12 StandardScaler \TU/TimesNewRoma
+n(0)/m/n/12 calculates the $\OML/npxmi/m/it/12 Z$\TU/TimesNewRoman(0)/m/n/12 -s
+core of each
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 294--295
+
+ []
+
+(./report.bbl
+
+LaTeX Warning: Empty `thebibliography' environment on input line 3.
+
+) [13] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -1603,12 +1650,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 37573 strings out of 474773
- 794717 string characters out of 5757725
- 1936839 words of memory out of 5000000
- 59048 multiletter control sequences out of 15000+600000
- 579074 words of font info for 112 fonts, out of 8000000 for 9000
+ 37590 strings out of 474773
+ 795057 string characters out of 5757725
+ 1941839 words of memory out of 5000000
+ 59060 multiletter control sequences out of 15000+600000
+ 579090 words of font info for 114 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 106i,18n,110p,989b,446s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 106i,18n,110p,1047b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.pdf (12 pages).
+Output written on report.pdf (13 pages).

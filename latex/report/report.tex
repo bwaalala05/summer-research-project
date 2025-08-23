@@ -4,6 +4,7 @@
 
 
 % PREAMBLE
+\renewcommand{\refname}{References}
 \input{preamble2.tex}
 \input{macros.tex}
 \input{letterfonts.tex}
@@ -37,6 +38,7 @@
 \newcommand{\cL}{\mathcal{L}}
 \newcommand{\cM}{\mathcal{M}}
 \newcommand{\cP}{\mathcal{P}}
+\newcommand{\Sg}{\Sigma}
 \newcommand{\gbh}{\hat{\gb}}
 \newcommand{\adjR}{R_a^2}
 \newcommand{\res}{\hat{\epsilon}}
@@ -57,50 +59,88 @@
 	
 	Multiple linear regression is widely used in many applications to model linear relationships between a set of predictors and a response. One of the more common and simpler methods of fitting such a model is known as the ordinary least squares method (OLS), which is found to be a Best Linear Unbiased Estimator (BLUE) by the Gauss-Markov theorem, that is, it gives the unbiased estimates of each regression coefficient with the lowest possible variance, provided that assumptions are satisfied. Furthermore, it has a main advantage of it being easily interpretable as a parametric model as opposed to non-parametric models.\\
 	
-	\setlength\parindent{24pt} The motivation for this project arises from one of these assumptions, that is, the data matrix, $\bmX$, is full rank, i.e. none of the predictors are (nearly) perfectly correlated with each other. In cases where this is not true, we find that OLS fails to acquire any results. In such cases, there are several methods we can employ to address this issue, whether to drop one of the correlated variables, or to combine them, etc., based on the discretion of the data analyst. In this project, we investigate how two of the commonly used software for regression analysis, Python (\texttt{sklearn} and \texttt{statsmodel}) and R each deal with the collinearity problem.\\
+	\setlength\parindent{24pt} The motivation for this project arises from one of these assumptions, that is, the data matrix, $\bmX$, is full rank, i.e. none of the predictors are (nearly) perfectly correlated with each other. In cases where this is not true, OLS is unable to estimate regression parameters due to singularity. In such cases, there are several methods we can employ to address this issue, whether to drop one of the correlated variables, or to combine them, etc., based on the discretion of the data analyst. In this project, we investigate how two of the commonly used software for regression analysis, Python (\texttt{sklearn} and \texttt{statsmodel}) and R each handles perfect collinearity when fitting the model.\\
 	
-	Furthermore, we embrace this opportunity to explore further on the topic of multicollinearity, such as its impact on the accuracy of model prediction and model interpretation. We have also identified several known methods of detecting collinearity in the data, whether through hypothesis testing, or by using measures such as the variance inflation factor (VIF) and condition numbers/indices. In addition to aforementioned methods of addressing collinearity, shrinkage methods such as ridge regression and lasso were also considered to alleviate the impact of overfitting (due to collinearity) on variance at the cost of negligible bias in order to obtain an improved model for prediction. Another potential pitfall in regression analysis, that is confounding variables, were also briefly explored by examining examples of Simpson's paradox.\\
+	Furthermore, we embrace this opportunity to explore further on the topic of multicollinearity, such as its impact on model prediction and interpretation. We also apply several known methods of detecting collinearity in the data, whether through hypothesis testing, or by using measures such as the variance inflation factor (VIF) and condition numbers/indices. In addition to aforementioned methods of addressing collinearity, we consider shrinkage methods such as ridge regression and lasso to alleviate the impact of overfitting (due to collinearity) on variance at the cost of negligible bias. We also briefly explore another potential pitfall in regression analysis, that is confounding variables, by examining examples of Simpson's paradox.\\
 	
 	Here, we lay down the general setup for fitting a linear regression model. Given an $n\times p$ data matrix $\bmX$ ($n$ samples and $p$ predictors), corresponding to an $n\times 1$ column matrix $\bmy$ containing the observed response, we model the relationship between $p$ predictors, $X_i$  and the response variable, $Y$ as
 	$$Y=\beta_0+\sum_{i=1}^{p}\beta_i X_i+\varepsilon,$$
-	
-	where $\varepsilon$ represents the random error. We fit the model to the data collected for the expected response $E[Y]$ by estimating each $\beta_i$ using the least squares method so that we have
+	where $\varepsilon$ represents the random error. We fit the model to the data collected for the expected response $E[Y]$ by estimating each $\beta_i$ using the least squares method to obtain $\gbh_i$ so that we have
 	$$E[Y]=\gbh_0+\sum_{i=1}^{p}\gbh_iX_i.$$
 	
-	
-	Finally, it should be noted that there are different conventions to what collinearity and multicollinearity mean according to varying sources. In this report, we will use these two terms interchangably to refer to correlation between two or more predictors in a regression model.
+	Finally, it should be noted that there are different conventions to what collinearity and multicollinearity mean according to varying sources. In this report, we will use these two terms interchangably to refer to the correlation between two or more predictors in a regression model.
 	
 	\section{Objectives}
 	
 	There are three main objectives for this project:
-	\subsection{Explore issues that arise from singularity.}
 	
-	In practical settings, it is unlikely to obtain a set of perfectly correlated data due to inevitable noise. However, even near perfect collinearity can lead to singularity and subsequently the failure of OLS when employing the use of software. This project aims to explore how a rank-deficient data matrix can lead to singularity, how (nearly) perfect collinearity can lead to the failure of OLS, and the pitfalls caused by moderate to high multicollinearity in general in terms of model interpretation, model prediction, and model validity. Subsequently, we look into commonly used methods to handle situations where regressors are highly correlated depending on purpose of analysis.
+	\begin{enumerate}
+		\item Explore issues that arise from singularity.
+		\item Understand singular value decomposition (SVD).
+		\item Investigate how software deals with singularity when building linear models.
+	\end{enumerate}
 	
-	\subsection{Understand singular value decomposition (SVD).}
+	In practical settings, it is unlikely to obtain a set of perfectly correlated data due to inevitable noise. However, even near perfect collinearity leads to singularity when attempting to fit the regression model using software. We hence aim to explore how a rank-deficient data matrix can lead to singularity and the issues that arise from it. We also explore pitfalls caused by moderate to high multicollinearity in terms of interpretation and prediction. Subsequently, we look into commonly used methods to handle situations where regressors are highly correlated depending on purpose of analysis.\\
 	
-	The least squares method estimates the regression coefficients of a model with $p$ predictors by fitting it to a dataset with $n$ observations using the following equation
-	$$\mathbf{\gb}=(\bmX^T\bmX)^{-1}\bmX^T\bmy,$$
-	where $\mathbf{\gb}$ is a $p\times 1$ column matrix, $\bmX$ is a $n\times p$ data matrix, and $\bmy$ is a $n\times 1$ column matrix containing the observed response values. With the presence of perfect collinearity, the matrix $\bmX^T\bmX$ is singular and hence $(\bmX^T\bmX)^{-1}$ does not exist. However, the least squares solver of Python uses the Moore-Penrose inverse (or pseudoinverse) of $\bmX$, $\bmX^+$, which can be used to calculate the minimum norm approximation of $(\bmX^T\bmX)^{-1}$, and can be easily computed using the SVD of $\bmX^T\bmX$.
+	The next objective is to undetstand how to apply the singular value decomposition in the computations of the least square estimates. The least squares method estimates the regression coefficients of a model with $p$ predictors by fitting it to a dataset with $n$ observations using the following equation
+	\begin{equation} \label{eq1}
+		\boldsymbol{\gbh}=(\bmX^T\bmX)^{-1}\bmX^T\bmy,
+	\end{equation}
+	where $\boldsymbol{\gbh}$ is a $p\times 1$ column matrix containing the least square estimates, $\bmX$ is a $n\times p$ data matrix, and $\bmy$ is a $n\times 1$ column matrix containing the observed response values. With the presence of perfect collinearity, the matrix $\bmX^T\bmX$ is singular and hence $(\bmX^T\bmX)^{-1}$ does not exist. However, the least squares solver of Python uses the Moore-Penrose inverse (or pseudoinverse) of $\bmX$, $\bmX^+$, which can be used to calculate the minimum norm approximation of $(\bmX^T\bmX)^{-1}$, and can be computed using the SVD of $\bmX^T\bmX$ (see Appendix \hyperref[sec:append3]{Section 7.3}).\\
 	
-	
-	\subsection{Investigate how software deals with singularity when building linear models.}
-	
-	It is observed that there exists discrepancy between how different software handles highly correlated predictors when fitting a multiple linear regression model via OLS. In this project, we aim to understand the reason behind this difference in behaviour by referring to standard documentation and examining program output. As an extension, methods for detecting and addressing multicollinearity using software is also explored.
+	Lastly, it is observed that there exists discrepancy between how different software handles highly correlated predictors when fitting a multiple linear regression model via OLS. In this project, we aim to understand the reason behind this difference in behaviour by referring to standard documentation and examining program output in Python and R. As an extension, methods for detecting and addressing multicollinearity using software are also explored.
 	
 	\section{Methodology}
 	
-	We narrow our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we have randomly generated several sets of artificial data from a uniform distribution using three regressors where only one pair is correlated, each with 100 samples. The degree of collinearity is varied between high and perfect to observe differences in output. The pseudoinverse of the data matrix is also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates and the results are compared. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined and that the degree of correlation and noise in the data can be manually specified. Note that the distribution used is irrelevant for our topic of study.\\
+	We narrow our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we have randomly generated several sets of artificial data from a uniform distribution using three regressors where only one pair is correlated, each with 100 samples. The degree of collinearity was varied between high and perfect to observe differences in output. The pseudoinverse of the data matrix was also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates and the results were compared. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined, and that the degree of correlation and noise in the data can be manually specified. Note that the distribution used in data generation is irrelevant for our topic of study.\\
 	
-	The true relationship to which the artificial data is generated is 
+	The true relationship to which the artificial data was generated is 
 	$$Y=X_1+2X_2+3X_3,$$
-	where $X_1$ and $X_2$ are correlated with $X_2=2X_1$. The train-test ratio chosen for splitting the dataset into training and testing sets is 0.8-0.2. Metrics such as the (adjusted) multiple coefficient of determination $R^2$ and mean squared error were used to evaluate model performance.\\
+	where $X_1$ and $X_2$ are correlated with $X_2=2X_1$. The train-test ratio chosen for splitting the dataset into training and testing sets is 80-20. Metrics such as the (adjusted) multiple coefficient of determination $R^2$ and mean squared error were used to evaluate model performance in terms of prediction.\\
 	
-	The scaling effect of \texttt{StandardScaler} on the model is also given attention by reading standard documentation as well as testing it using artificially generated data. For data with and without high multicollinearity present respectively, we fitted two models each: one with predictors scaled by \texttt{StandardScaler} and one without, and the output is examined and compared. \\
+	The scaling effect of \texttt{scikit\_learn}'s \texttt{StandardScaler} on the model ws also given attention by reading standard documentation as well as testing it using artificially generated data. For data with and without high multicollinearity present respectively, we fitted two models each: one with predictors scaled by \texttt{StandardScaler} and one without, and the output was examined and compared. \\
 	
-	\pagebreak
+	We have also performed regression analysis on built-in datasets such as California housing in \texttt{scikit-learn} and applied methods to address collinearity using \texttt{statsmodel}. Subsequently, ridge regression models and lasso models were also used to examine its effectiveness in decreasing the standard errors of these models.
 	
-	We have also performed regression analysis on built-in datasets such as California housing and diabetes dataset in \texttt{scikit-learn} and tried fitting highly correlated models. Subsequently, ridge regression models and lasso models were also used to examine its effectiveness in decreasing the standard errors of these models.
+	\subsection{Methods to detect collinearity}
+	
+	One simple way to detect collinearity is through a test for correlation, where we test the hypothesis
+	$$H_0: \rho=0 \quad\quad\text{ vs. }\quad\quad H_1: \rho\neq 0,$$
+	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method.
+	\begin{enumerate}
+		\item As the number of predictors included in the model increases, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs. 
+		\item More importantly, even if we find that every pair of predictors has no significant correlation, we cannot make the same conclusion about predictors amongst groups of other numbers. 
+	\end{enumerate}
+	
+	\subsubsection{Variance inflation factor (VIF)}
+	Therefore, in this project, we turn to a more commonly-used method of identifying highly correlated predictors: the variance inflation factor (VIF), the formula for which is given by
+	$$\vif_k=\frac{1}{1-R_{k}^2},$$
+	where $R^2_k$ is the multiple coefficient of determination of the $k^{\text{th}}$ predictor regressed against the other predictors, assuming that it has zero mean. Intuitively, a higher value of $R^2_k$ indicates a good fit, hence a strong correlation between the $k^{\text{th}}$ regressor and some of the other regressors. (Uncorrelated regressors would simply have a coefficient close to zero.) \\
+	
+	The motivation behind the formulation of the VIF is to calculate the ratio between the variance of a coefficient estimate if it was uncorrelated with the other regressors (baseline case), and the actual variance. For example, a coefficient estimate having a VIF of 4 corresponds to its variance being 4 times of what it would have been if it was uncorrelated with every other predictor. In other words, VIF measures the factor by which the variance of the regression coefficients is inflated above what it would have been if $R_k^2=0$, hence its name. \\
+	
+	There are different rule of thumbs for the thresholds beyond which one may consider the VIF value of a particular predictor to be high, ranging roughly from 4 to 10. There is no definitively correct answer, and we have no choice but to make decisions based on our interpretation of the VIF value. Once predictors with high VIF's are identified, we can then examine the correlation matrix to identify which the predictors which each high VIF predictor is correlated to.
+	
+	\subsubsection{Condition numbers}
+	Another metric for measuring the degreee of collinearity is the condition number (condition indices) of the data matrix $\bmX$, which indicates how sensitive the response is to changes in $\bmX$. Aside from using it to determine whether a model is highly collinear, the condition number of $\bmX^T\bmX$ is used to check for a potential source of large numerical error due to collinearity when computing $(\bmX^T\bmX)^{-1}$ using software. In this case, it indicates the multiplicative factor to which round-off errors are amplified due to computer arithmetic being performed to finite precision.\\
+	
+	The formula for the condition number of a $m\times n$ matrix $\bmA$ with rank $r\leq n$, denoted $\kappa(\bmA)$, is given by
+	$$\kappa(\bmA)=\frac{\sigma_1}{\sigma_r},$$
+	where $\sigma_i$ are the singular values of $\bmA$ arranged in descending order. Note that definitions will differ for varying contexts, giving rise to different condition numbers. The point of discussion here is the condition number for inversion.\\
+	
+	Similar to the case of VIF, there is no exact threshold for a condition number to be considered high, but a rule of thumb is any condition numbers exceeding 20 indicates the matrix to be ill-conditioned. 
+	
+	\subsection{Methods to address collinearity}
+	
+	We present a few commonly-used methods to address moderate to perfect collinearity. \\
+	
+	In the case of perfect collinearity, one of the correlated predictors is completely described by the other, hence our only choice is to remove one of them. This is however not recommended for non-perfect collinearity as we are at risk of committing omitted variable bias. In such cases, we may want to either combine some of the variables or use shrinkage methods such as ridge regression or LASSO.\\
+	
+	There are many possible ways of combining correlated variables, but in most cases the simple approach of adding the columns up (such as what R does) gives sufficiently improved results. Note that it is important that we consider the context when doing this, that is, whether combining the two variables make sense in context. An example is a model predicting the salary of employees based on predictors such as years of experience, gender, test scores for course A, and test scores for course B. Obviously, any employee who does well on one test is expected to do well in the other, and so we may consider adding the two test scores together to form a single column "total test scores for course A and B", then the results obtained may be interpreted accordingly.\\
+	
+	%When analysing the California housing dataset, we identified two pairs of correlated predictors: \texttt{AveBedrms} with \texttt{AveRooms} (), and \texttt{Longitude} with \texttt{Latitude}. \\
+	
+	For ridge regression and LASSO, otherwise known as $L_2$ and $L_1$ regularisation respectively, we find that it successfully decreases coefficient standard errors at the cost of increasing the bias (and hence decreasing $R^2$ score compared to the OLS model) by a neglibible amount. However, in the face of perfect collinearity, ridge and lasso does not yield interpretable coefficients, where the correlated predictors have equally distributed coefficients due to the effect of standardising the predictors beforehand (see Appendix \hyperref[sec:append2]{Section 7.2}), as the ridge and LASSO coefficient estimates are not scale equivariant. 
 	
 	
 	\section{Results and discussion}
@@ -109,7 +149,7 @@
 	\begin{itemize}
 		\item Evenly distributes weights amongst the correlated predictors (found out to be due to \texttt{StandardScaler})
 		\item Uses pseudoinverse
-		\item No actual need to scale predictors for least squares regression (common practice in ML when algorithm involves gradient descent or when we perform principle component analysis), yet not scaling gives promising results in the presence of perfect collinearity as opposed to when we use a scaler. 
+		\item No actual need to scale predictors for least squares regression (common practice in ML when algorithm involves gradient descent or when we perform principle component analysis)
 		\item Does not give flags or warnings upon detection of high multicollinearity. Needs to be assessed manually by the data analyst.
 	\end{itemize}
 	
@@ -119,7 +159,7 @@
 	(include screenshot of results?)
 	\begin{itemize}
 		\item Looks like it evenly distributes weights throughout the correlated predictors.
-		\item Uses pseudoinverse, still questionable if results obtained carry any meaning.
+		\item Uses pseudoinverse
 		\item Gives warning upon detect of high to perfect collinearity.
 	\end{itemize}
 	
@@ -134,54 +174,13 @@
 	\end{itemize}
 	
 	\subsection{Impact of multicollinearity}
-	\begin{itemize}
-		\item inflate variance and covariances of OLS estimates 
-		\item important regressors may have low t-stats 
-		\item  OLS estimates and their variance become sensitive to minor changes in data
-		\item removing/adding samples changes the regressors chosen by variable selection
-		\item  inflate some of the OLS estimates
-		\item  incorrect sign of OLS estimate
-	\end{itemize}
 	
-	In the special case of perfect collinearity, the matrix $\bmX^T\bmX$ is singular (see \hyperref[sec:append1]{Appendix section 7.1}).
+	High multicollinearity mainly poses a major problem to model interpretation. Notably, it inflates the variance and covariances of least squares estimates and causes estimates and their variance to become sensitive to minor changes in data. As a result, we may obtain different results when performing variable selection after removing or adding samples from the dataset, or obtain incorrect signs of cofficients estimates. Another curious effect is that the $t$-values of correlated predictors may be insignificant yet removing these predictors from the model results in a lower $R^2$ value. Although this seems contradictory by intuition, it is actually reasonable behaviour, as the prediction is contributed by both variables while the $t$-values indicate the contribution of one variable after accounting for the others.\\
 	
-	\subsection{Methods to detect collinearity}
+	In the special case of perfect collinearity, the matrix $\bmX^T\bmX$ is singular (see \hyperref[sec:append1]{Appendix section 7.1}), and its inverse does not exist, leading to us unable to compute $\boldsymbol{\gbh}$ (see \hyperref[eq1]{Equation 1}). However, \texttt{statsmodel}'s and \texttt{scikit\_learn}'s least square solvers computes the pseudoinverse of $\bmX^T\bmX$ when estimating the regression coefficients, giving the least norm approximated solution (which is interpretable) when $\bmX$ is rank-deficient. However, the aforementioned impacts of high collinearity still apply should hence it should be addressed.\\
 	
-	One simple way to detect collinearity is through a test for correlation, where we test the hypothesis
-	$$H_0: \rho=0 \quad\quad\text{ vs. }\quad\quad H_1: \rho\neq 0,$$
-	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method.
-	\begin{enumerate}
-		\item As the number of predictors included in the model increase, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs. 
-		\item More importantly, even if we find that every pair of predictors has no significant correlation, we cannot make the same conclusion about predictors amongst groups of other numbers. 
-	\end{enumerate}
+	It is important to note that collinearity does not, in any way, impact predictions or its precision. Hence, if the model is not expected to be interpreted, multicollinearity is no issue of concern and may be ignored. Moreover, even for more statistically-oriented analysts, there may also not be a need to address high collinearity provided that it does not inflate standard errors to a problematic extent (see "A caution regarding rules of thumb for variance inflation factors" by O'Brien), as there are many other factors which can suppress the inflation effect of standard errors, one of which is the sample size. Quoting the words of O'Brien, collinearity does not hurt as long as it does not bite.
 	
-	\subsubsection{Variance inflation factor (VIF)}
-	Therefore, in this project, we turn to a more commonly-used method of identifying highly correlated predictors: the variance inflation factor (VIF), formula for which is given by
-	$$\vif_k=\frac{1}{1-R_{k}^2},$$
-	where $R^2_k$ is the multiple coefficient of determination of the $k^{\text{th}}$ predictor regressed against the other predictors, assuming that it has zero mean. Intuitively, a higher value of $R^2_k$ indicates a good fit, hence a strong correlation between the $k^{\text{th}}$ regressor and some of the other regressors. (Uncorrelated regressors would simply have a low coefficient.) \\
-	
-	The motivation behind the formulation of the VIF is to calculate the ratio between the variance of a coefficient estimate if it was uncorrelated with the other regressors (baseline case), and the actual variance. For example, a coefficient estimate having a VIF of 4 corresponds to its variance being 4 times of what it would have been if it was uncorrelated with every other predictor. In other words, VIF measures the factor by which the variance of the regression coefficients is inflated above what it would have been if $R_k^2=0$, hence its name. \\
-	
-	There are different rule of thumbs for the thresholds beyond which one may consider the VIF value of a particular predictor to be high, ranging roughly from 4 to 10. There is no definitively correct answer, and we have no choice but to make decisions based on our interpretation of the VIF value. Once predictors with high VIF's are identified, we can then examine the correlation matrix to identify which the predictors which each high VIF predictor is correlated to.
-	
-	\subsubsection{Condition numbers}
-	Another metric for measuring the degreee of collinearity is the condition number (or sometimes condition indices) of the data matrix $\bmX$, which indicates how sensitive the response is to changes in $\bmX$. Aside from using it to determine whether a model is highly collinear, the condition number of $\bmX^T\bmX$ is used to check for a potential source of large numerical error due to collinearity when computing $(\bmX^T\bmX)^{-1}$ using software. In this case, it indicates the multiplicative factor to which round-off errors are amplified due to computer arithmetic being performed to finite precision.\\
-	
-	The formula for the condition number of a $m\times n$ matrix $\bmA$ with rank $r\leq n$, denoted $\kappa(\bmA)$, is given by
-	$$\kappa(\bmA)=\frac{\sigma_1}{\sigma_r},$$
-	where $\sigma_i$ are the singular values of $\bmA$ arranged in descending order. Note that definitions will differ for varying contexts, giving rise to different condition numbers. The point of discussion here is the condition number for inversion.\\
-	
-	Similar to the case of VIF, there is no exact threshold for a condition number to be considered high, but a rule of thumb is any condition numbers exceeding 20 indicates the matrix to be ill-conditioned. 
-	
-	\subsection{Methods to address collinearity}
-	
-	(adapted from personal notes) We present a few commonly-used methods to address moderate to perfect collinearity. However, note that depending on the purpose, particularly for machine learning engineers, there may not be a need to address high collinearity provided that it does not inflate standard errors to a problematic extent (see "A caution regarding rules of thumb for variance inflation factors" by O'Brien), as there are many other factors which can suppress the inflation effect of standard errors, one of which is the sample size. The main issue that multicollinearity brings is sensitive coefficient estimates and erroneous coefficient signs, both of which is unimportant to most machine learning engineers. Hence, quoting the words of O'Brien, collinearity does not hurt as long as it does not bite.\\
-	
-	In the case of perfect collinearity, one of the correlated predictors is completely described by the other, hence our only choice is to remove one of them. This is however not recommended for non-perfect collinearity as we are at risk of committing omitted variable bias. In such cases, we may want to either combine some of the variables or use shrinkage methods such as ridge regression or lasso.\\
-	
-	There are many possible ways of combining correlated variables, but in most cases the simple approach of simply adding the columns up (such as what R does) gives sufficiently improved results. Note that it is important that we consider the context when doing this, that is, whether combining the two variables make sense in context. An example is a model predicting the salary of employees based on predictors such as years of experience, gender, test scores for course A, and test scores for course B. Obviously, any employee who does well on one test is expected to do well in the other, and so we may consider adding the two test scores together to form a single column "total test scores for course A and B", then the results obtained may be interpreted accordingly.\\
-	
-	For ridge regression and lasso, otherwise known as $L_2$ and $L_1$ regularisation respectively, we find that it successfully decreases standard errors at the cost of increasing the bias (and hence decreasing $R^2$ score compared to the OLS model) by a neglibible amount. However, in the face of perfect collinearity, ridge and lasso does not yield interpretable coefficients, where the correlated predictors have equally distributed coefficients, as in the case of OLS due to the effect of the scaler. However, there is no room for argument in this case as ridge and lasso explicitly requires that the predictors are standardised.
 	
 	
 	
@@ -191,30 +190,34 @@
 	
 	We give the classic textbook example of the relationship between ice cream sales and shark attacks. We initially observe a positive correlation between these two variables, yet upon the inclusion of the confounder, temperature, we find that this correlation vanishes. One should avoid the confusion between confounders and correlated variables by noting that in addition to being correlated, confounders should also have a causal relationship to the variables involved in the confounding effect.\\
 	
-	Although including confounders inherently introduces collinearity into the model, failing to account for them causes us to commit omitted variable bias in addition to causing the aforementioned confounding effects according to Simpson's paradox. Hence, by weighing each consequence, we generally always include confounders as we have well-established methods for effectively addressing collinearity, hence one should not harbour a doomed mentality upon encounter with high collinearity.
+	Although including confounders inherently introduces collinearity into the model, failing to account for them causes us to commit omitted variable bias in addition to causing the aforementioned confounding effects according to Simpson's paradox. (We note the difference between these confounding effects and the effect of collinearity on the coefficient signs: the latter may still occur even after including confounders in the model due to high collinearity causing coefficient estimates to become sensitive to changes in observed data). Hence, by weighing each consequence, we generally always include confounders as we have well-established methods for effectively addressing collinearity. Unfortunately, it is more often the case that confounders are excluded unintentionally, as there is no standard method of identifying them. Furthermore, this is not a problem exclusive to regression modelling, but observational studies in general. Hence, we highlight this further in \hyperref[sec:future-rec]{Section 6}.
 	
 	\section{Conclusion}
 	
-	After examining Python's and R's program output, we have observed differences in how they each handle the issue of multicollinearity. In particular, R's behaviour of combining correlated predictors while giving a warning upon detection of high multicollinearity aligns best with standard practice. It is also found that in the processing of estimating the regression coefficients, R's \texttt{lm}, Python's \texttt{statsmodel}, and \texttt{sklearn} calculates the pseudoinverse of $\bmX^T\bmX$ rather than $(\bmX^T\bmX)^{-1}$ so that a result may be obtained even in the presence of singularity.\\
+	After examining Python's and R's program output, we have observed differences in how they each handle the issue of multicollinearity. In particular, R's behaviour of combining correlated predictors while giving a warning upon detection of high multicollinearity aligns best with standard practice. It is also found that in the process of estimating the regression coefficients, R's \texttt{lm}, Python's \texttt{statsmodel}, and \texttt{sklearn} calculates the pseudoinverse of $\bmX^T\bmX$ rather than $(\bmX^T\bmX)^{-1}$ so that a result may be obtained even in the presence of singularity.\\
 	
-	Additionally, we have observed a difference between the three's behaviour of flagging problematic multicollinearity, which indicates the general attitude of different fields that uses regression modelling. For example, \texttt{sklearn} aligns with machine learning engineers who are generally more concerned about making accurate predictions would not be as concerned about the impacts of collinearity on model interpretability given that the fitted model returns a satisfactory test score. This is in stark contrast to statisticians who bear greater interest in investigating the relationships between the regressors and the response. Hence, as opposed to \texttt{scikit\_learn}, they are more likely to use \texttt{statsmodel} or R, which in addition to flagging high multicollinearity, also affords a more extensive function library for the purpose of performing analysis on the model.\\
+	Additionally, we have observed a difference between the three's behaviour of flagging problematic multicollinearity, which indicates the general attitude of different fields that uses regression modelling. For example, \texttt{sklearn} aligns with machine learning engineers who are generally more concerned about making accurate predictions and hence would not be as concerned about the impacts of collinearity on model interpretability. This is in stark contrast to statisticians who bear greater interest in investigating the relationships between the regressors and the response. Hence, as opposed to \texttt{scikit\_learn}, they would be more likely to use \texttt{statsmodel} or R, which in addition to flagging high multicollinearity, also affords a more extensive function library for the purpose of performing analysis on the model.\\
 	
 	Taking these distinctions into account, it depends ultimately on the data analyst to make the final decision on which approach is best to handle anomalies in the model after performing analysis according to context and domain knowledge. Nevertheless, it is still crucial that one is made aware of these differences so as to select the appropriate tools depending on the individual's purpose and objective of regression modelling. 
 	
-	\section{Future recommendations}
+	\section{Future recommendations\label{sec:future-rec}}
 	\begin{enumerate}
 		\item Explore the same issue in other software commonly used in the industry such as (?)
 		\item Confounding and causality.
+		\item Partial effect, total effect, direct effect
 	\end{enumerate}
-	\section{Appendix}
-	\subsection{Singularity due to perfect collinearity \label{sec:append1}}
+	
+	%%------------------------------------------------
+	% if you need an appendix
+	\appendix %enables appendix numbering
+	\section{Singularity due to perfect collinearity \label{sec:append1}}
 	Let $\bmX=\begin{pmatrix}
 		\bmu & k\bmu & \bmv
 	\end{pmatrix}$ where $\bmu,\bmv\in\Rn$ are arbitrarily linearly independent column vectors containing $n$ observations of a particular feature with $\bmu^T=\begin{pmatrix}
 		u_1 & \ldots & u_n
 	\end{pmatrix}$ and $\bmv^T=\begin{pmatrix}
 		v_1 & \ldots & v_n
-	\end{pmatrix}$, $k\in\RR$ is such that the column $k\bmu$ is a scalar multiple of the first column. Then we consider
+	\end{pmatrix}$, with $k\in\RR$ such that the column $k\bmu$ is a scalar multiple of the first column. Consider
 	\begin{align*}
 		\bmX^T\bmX&=\begin{pmatrix}
 			\bmu^T \\ k\bmu^T \\ \bmv^T
@@ -237,11 +240,12 @@
 			u_iv_i & ku_iv_i & v_i^2
 		\end{pmatrix}.
 	\end{align*}
-	Since for every $i$, the second row of $\bmX^T\bmX$ is $k$ times the first row, adding each rank 1 matrix, the second row of the final matrix will also be $k$ times the first, so $\bmX^T\bmX$ is rank-deficient and not full rank, and hence is singular. \\
+	The second row of $\bmX^T\bmX$ is $k$ times the first row for every $i$. After summing up the rank-1 matrices, the second row of $\bmX^T\bmX$ will also be $k$ times the first. So, $\bmX^T\bmX$ is not full rank, and hence is singular. \\
 	
-	Note that writing matrix-matrix products in this form, each term in the sum is a rank 1 matrix. However, under no collinearity, the rows in every term will not necessarily be dependent on some other rows \textbf{by the same factor}. Notice that actually in our formulation, the third row differs from the first row by a multiplicative factor of $v_i/u_i$ (this is consistent with the case of collinear columns since $ku_i/u_i=k$). Since under no collinearity, this fraction will differ for varying $i$, so after adding each term up, there is no common factor between the first and third row.\\
+	By writing matrix-matrix products in this form, each term in the sum is a rank-1 matrix. However, under no collinearity, the rows in every term will not necessarily be dependent on some other rows \textbf{by the same factor}. In the formulation above, the third row differs from the first row by a multiplicative factor of $v_i/u_i$ (this is consistent with the case of collinear columns since $ku_i/u_i=k$), which is a constant under no collinearity. This fraction will differ for varying $i$, thus after adding each term up, there is no common factor between the two rows.\\
 	
 	Alternatively for a simpler and less analytic approach, we look at each entry in the product matrix as multiplying rows with columns:
+	
 	$$\bmX^T\bmX=\begin{pmatrix}
 		\bmu\cdot\bmu & \bmu\cdot(k\bmu) & \bmu\cdot\bmv\\
 		(k\bmu)\cdot\bmu & (k\bmu)\cdot(k\bmu) & (k\bmu)\cdot\bmv \\
@@ -265,17 +269,39 @@
 		\bmv&=\dfrac{\bmv\cdot\bmu}{\|\bmu\|^2}\bmu
 	\end{align*}
 	$$$$
-	i.e. $\bmv$ is its own orthogonal projection on vector $\bmu$, implying that they are collinear, which is a contradiction. Hence the third row is linear independent of the first two rows. Note that the least squares coefficient estimates are given by
-	$$\boldsymbol{\gbh}=(\bmX^T\bmX)^{-1}\bmX^T\bmy$$
-	and so singularity of $\bmX^T\bmX$ causes OLS to fail.
+	i.e. $\bmv$ is its own orthogonal projection on vector $\bmu$, implying that they are collinear, which is a contradiction. Hence the third row is linearly independent of the first two rows. \\
 	
-	\subsection{Effect of \texttt{StandardScaler} on collinear columns in data matrix}
-	From the documentation, \texttt{StandardScaler} calculates the $Z$-score of each entry by subtracting each entry by the mean of its column and dividing by the standard deviation of its column. Suppose that the true relationship between regressors $\bmx_1$ and $\bmx_2$ is $\bmx_2=k\bmx_1$. Then we have
+	Since the least squares coefficient estimates are given by
+	$$\boldsymbol{\gbh}=(\bmX^T\bmX)^{-1}\bmX^T\bmy$$
+	the singularity of $\bmX^T\bmX$ causes least squares to fail to obtain estimates for .
+	
+	\section{Effect of \texttt{StandardScaler} on collinear columns in data matrix \label{sec:append2}}
+	From the documentation, \texttt{scikit\_learn}'s \texttt{StandardScaler} calculates the $Z$-score of each entry by subtracting each entry by the mean of its column and dividing by the standard deviation of its column. Suppose that the true relationship between regressors $\bmx_1$ and $\bmx_2$ is $\bmx_2=k\bmx_1$. Then we have
 	$$\bar{x_2}=k\bar{x_1}\quad \quad \text{ and }\quad \quad s^2_2=k^2s_1^2.$$
 	So for collinear columns $\bmx_1$ and $\bmx_2$, the entries of scaled columns $\bmu_1$ and $\bmu_2$ are
 	$$u_{i1}=\frac{x_{i1}-\bar{x_1}}{s_1}\quad\quad\text{ and }\quad \quad u_{i2}=\frac{x_{i2}-\bar{x_2}}{s_2}=\frac{kx_{i1}-k\bar{x_1}}{ks_1}=\frac{x_{i1}-\bar{x_1}}{s_1}=u_{i1}.$$
 	
-	\section{References}
-	Citations to be added in second draft.
+	\section{Minimum norm approximation using pseudoinverse\label{sec:append3}}
+	We can compute the pseudoinverse of $\bmX^T\bmX$ using its SVD as follows: Let $\bmA=\bmX^T\bmX$. If the SVD of $\bmA=\bmU\Sg\bmV^T$, then the pseudoinverse of $\bmA$, $\bmA^+$, is given by
+	\begin{align*}
+		\bmA^+&=((\bmU\Sg\bmV^T)^T()\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
+		&=(\bmV\Sg\bmU^T\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
+		&=(\bmV\Sg^2\bmV^T)^{-1}(\bmV\Sg\bmU^T)\\
+		&=(\bmV^T)^{-1}(\Sg^{-1})^2(\bmV)^{-1}\bmV\Sg\bmU^T\\
+		&=\bmV\Sg^{-1}\bmU^T
+	\end{align*}
+	
+	Now, for $\bmA\in\RR^{m\times n}$ and $\bmb\in\RR^m$, if the linear system $\bmA\bmx=\bmb$ has solutions, then $\bmx^*=\bmA^+\bmb$ is an exact solution and has the smallest possible norm, i.e. $\|\bmx^*\|\leq\|\bmx\|\, $for all $\bmx$.\\
+	
+	The proof is as follows: Since $\bmA^+$ is a generalised inverse, $\bmA^+\bmb$ must be a solution to $\bmA\bmx=\bmb$. Now, for any solution $\bmx\in\Rn$, consider its orthogonal decomposition via $\bmA^+\bmA\in\RR^{n\times n}$:
+	$$\bmx=(\bmA^+\bmA)\bmx+(\bmI-\bmA^+\bmA)\bmx=\bmA^+\bmb+(\bmI-\bmA^+\bmA)\bmx.$$
+	Then by the Pythagorean theorem, we have
+	$$\|\bmx\|^2=\|\bmA^+\bmb\|^2+\|(\bmI-\bmA^+\bmA)\bmx\|^2\geq \|\bmA^+\bmb\|^2.$$
+	Hence $\|\bmx\|\geq\|\bmA^+\bmb\|$.
+	
+	%%------------------------------------------------
+	% bibliography
+	\bibliographystyle{plain}
+	\bibliography{bayesref}  % reference informations are contained in references.bib 
 	
 \end{document}
