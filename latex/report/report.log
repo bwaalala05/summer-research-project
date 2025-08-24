@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  23 AUG 2025 23:12
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  24 AUG 2025 22:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1528,12 +1528,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 95--96
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 98--100
+Underfull \hbox (badness 10000) in paragraph at lines 97--98
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--102
+Underfull \hbox (badness 10000) in paragraph at lines 100--102
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--104
 
  []
 
@@ -1567,17 +1572,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 137--138
 
  []
 
-
+[6]
 Underfull \hbox (badness 10000) in paragraph at lines 139--140
 
  []
 
-[6]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <14.4> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 147.
- [7]
+[7]
 Underfull \hbox (badness 10000) in paragraph at lines 178--179
 
+ []
+
+
+Overfull \hbox (12.1024pt too wide) in paragraph at lines 180--181
+[]\TU/TimesNewRoman(0)/m/n/12 When two predictors have perfect correlation, we 
+have what is known as perfect collinear-
  []
 
 
@@ -1585,12 +1595,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 180--181
 
  []
 
-
+[8]
 Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
  []
 
-[8]
+
 Underfull \hbox (badness 10000) in paragraph at lines 191--192
 
  []
@@ -1600,12 +1610,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 197--198
 
  []
 
-
+[9]
 Underfull \hbox (badness 10000) in paragraph at lines 199--200
 
  []
 
-[9] [10]
+[10]
 Underfull \hbox (badness 10000) in paragraph at lines 242--244
 
  []
@@ -1630,8 +1640,13 @@ n(0)/m/n/12 calculates the $\OML/npxmi/m/it/12 Z$\TU/TimesNewRoman(0)/m/n/12 -s
 core of each
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 285--286
+
+ []
+
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 294--295
+Underfull \hbox (badness 10000) in paragraph at lines 296--297
 
  []
 
@@ -1652,10 +1667,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Here is how much of TeX's memory you used:
  37590 strings out of 474773
  795057 string characters out of 5757725
- 1941839 words of memory out of 5000000
+ 1942839 words of memory out of 5000000
  59060 multiletter control sequences out of 15000+600000
  579090 words of font info for 114 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 106i,18n,110p,1047b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 106i,18n,110p,1047b,444s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on report.pdf (13 pages).

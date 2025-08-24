@@ -92,30 +92,30 @@
 	
 	\section{Methodology}
 	
-	We narrow our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we have randomly generated several sets of artificial data from a uniform distribution using three regressors where only one pair is correlated, each with 100 samples. The degree of collinearity was varied between high and perfect to observe differences in output. The pseudoinverse of the data matrix was also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates and the results were compared. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined, and that the degree of correlation and noise in the data can be manually specified. Note that the distribution used in data generation is irrelevant for our topic of study.\\
+	We narrowed our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we randomly generated several sets of artificial data using three regressors where only one pair is correlated, each with 100 samples. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined, and that the degree of correlation and noise in the data can be manually specified. Note that the distribution used in data generation is irrelevant for our topic of study.\\
 	
-	The true relationship to which the artificial data was generated is 
+	The data ranges from 0 to 100 and is uniformly distributed. The degree of collinearity was then varied between perfect and moderate to observe differences in output. The pseudoinverse of the data matrix was also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates. Then, these results were compared with those given by the least squares solver function to confirm whether these functions use the pseudoinverse of the data matrix to estimate the least squares coefficients as suggested by documentation.\\
+	
+	The true underlying relationship to which the artificial data was generated was set to be 
 	$$Y=X_1+2X_2+3X_3,$$
-	where $X_1$ and $X_2$ are correlated with $X_2=2X_1$. The train-test ratio chosen for splitting the dataset into training and testing sets is 80-20. Metrics such as the (adjusted) multiple coefficient of determination $R^2$ and mean squared error were used to evaluate model performance in terms of prediction.\\
+	where $X_1$ and $X_2$ are correlated with $X_2=2X_1$. We then vary the amount of uniformly distributed noise added to different generated sets: from no noise (perfect collinearity) to some number sampled from intervals [-25,25], [-50,50], and [-100,100]. The train-test ratio chosen for splitting the dataset into training and testing sets is fixed at 80-20. Lastly, to evaluate prediction performance, metrics such as the (adjusted) multiple coefficient of determination $R^2$ and mean squared error were used.\\
 	
-	The scaling effect of \texttt{scikit\_learn}'s \texttt{StandardScaler} on the model ws also given attention by reading standard documentation as well as testing it using artificially generated data. For data with and without high multicollinearity present respectively, we fitted two models each: one with predictors scaled by \texttt{StandardScaler} and one without, and the output was examined and compared. \\
+	The scaling effect of \texttt{scikit\_learn}'s \texttt{StandardScaler} on the model was also given attention by referring to standard documentation as well as by testing it using artificially generated data. For data with and without high multicollinearity present respectively, we fitted two models each: one with predictors scaled by \texttt{StandardScaler} and one without. The output was then compared. \\
 	
-	We have also performed regression analysis on built-in datasets such as California housing in \texttt{scikit-learn} and applied methods to address collinearity using \texttt{statsmodel}. Subsequently, ridge regression models and lasso models were also used to examine its effectiveness in decreasing the standard errors of these models.
+	We have also performed regression analysis on California housing and applied methods to address collinearity using \texttt{statsmodel}. Subsequently, ridge regression models and lasso models were also used to examine its effectiveness in decreasing the standard errors of these models.
 	
 	\subsection{Methods to detect collinearity}
 	
 	One simple way to detect collinearity is through a test for correlation, where we test the hypothesis
 	$$H_0: \rho=0 \quad\quad\text{ vs. }\quad\quad H_1: \rho\neq 0,$$
 	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method.
-	\begin{enumerate}
-		\item As the number of predictors included in the model increases, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs. 
-		\item More importantly, even if we find that every pair of predictors has no significant correlation, we cannot make the same conclusion about predictors amongst groups of other numbers. 
-	\end{enumerate}
+	
+	Firstly, as the number of predictors included in the model increases, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs. More importantly, even if we find that every pair of predictors has no significant correlation, we cannot make the same conclusion about predictors amongst groups of other numbers. 
 	
 	\subsubsection{Variance inflation factor (VIF)}
-	Therefore, in this project, we turn to a more commonly-used method of identifying highly correlated predictors: the variance inflation factor (VIF), the formula for which is given by
+	A commonly used method for identifying highly correlated predictors is by using the variance inflation factor (VIF), given by
 	$$\vif_k=\frac{1}{1-R_{k}^2},$$
-	where $R^2_k$ is the multiple coefficient of determination of the $k^{\text{th}}$ predictor regressed against the other predictors, assuming that it has zero mean. Intuitively, a higher value of $R^2_k$ indicates a good fit, hence a strong correlation between the $k^{\text{th}}$ regressor and some of the other regressors. (Uncorrelated regressors would simply have a coefficient close to zero.) \\
+	where $R^2_k$ is the multiple coefficient of determination of the $k^{\text{th}}$ predictor regressed against the other predictors, assuming that it has zero mean. Intuitively, a higher value of $R^2_k$ indicates a good fit, hence a strong correlation between the $k^{\text{th}}$ regressor and some of the other regressors. Note that uncorrelated regressors would simply have a coefficient close to zero. \\
 	
 	The motivation behind the formulation of the VIF is to calculate the ratio between the variance of a coefficient estimate if it was uncorrelated with the other regressors (baseline case), and the actual variance. For example, a coefficient estimate having a VIF of 4 corresponds to its variance being 4 times of what it would have been if it was uncorrelated with every other predictor. In other words, VIF measures the factor by which the variance of the regression coefficients is inflated above what it would have been if $R_k^2=0$, hence its name. \\
 	
@@ -177,9 +177,9 @@
 	
 	High multicollinearity mainly poses a major problem to model interpretation. Notably, it inflates the variance and covariances of least squares estimates and causes estimates and their variance to become sensitive to minor changes in data. As a result, we may obtain different results when performing variable selection after removing or adding samples from the dataset, or obtain incorrect signs of cofficients estimates. Another curious effect is that the $t$-values of correlated predictors may be insignificant yet removing these predictors from the model results in a lower $R^2$ value. Although this seems contradictory by intuition, it is actually reasonable behaviour, as the prediction is contributed by both variables while the $t$-values indicate the contribution of one variable after accounting for the others.\\
 	
-	In the special case of perfect collinearity, the matrix $\bmX^T\bmX$ is singular (see \hyperref[sec:append1]{Appendix section 7.1}), and its inverse does not exist, leading to us unable to compute $\boldsymbol{\gbh}$ (see \hyperref[eq1]{Equation 1}). However, \texttt{statsmodel}'s and \texttt{scikit\_learn}'s least square solvers computes the pseudoinverse of $\bmX^T\bmX$ when estimating the regression coefficients, giving the least norm approximated solution (which is interpretable) when $\bmX$ is rank-deficient. However, the aforementioned impacts of high collinearity still apply should hence it should be addressed.\\
+	When two predictors have perfect correlation, we have what is known as perfect collinearity. In such a case, at least one of the columns of the data matrix $\bmX$ is a linear combination of the other columns. This causes the matrix $\bmX^T\bmX$ to be singular (see \hyperref[sec:append1]{Appendix section 7.1}), consequently causing $\boldsymbol{\gbh}$ unable to be computed (see \hyperref[eq1]{Equation 1}). However, \texttt{statsmodel}'s and \texttt{scikit\_learn}'s least square solvers compute the pseudoinverse of $\bmX^T\bmX$ when estimating the regression coefficients, giving the least norm approximated solution (which is interpretable) when $\bmX$ is rank-deficient. However, the aforementioned impacts of high collinearity still apply hence it should be addressed.\\
 	
-	It is important to note that collinearity does not, in any way, impact predictions or its precision. Hence, if the model is not expected to be interpreted, multicollinearity is no issue of concern and may be ignored. Moreover, even for more statistically-oriented analysts, there may also not be a need to address high collinearity provided that it does not inflate standard errors to a problematic extent (see "A caution regarding rules of thumb for variance inflation factors" by O'Brien), as there are many other factors which can suppress the inflation effect of standard errors, one of which is the sample size. Quoting the words of O'Brien, collinearity does not hurt as long as it does not bite.
+	It is important to note that collinearity does not, in any way, impact predictions or its precision. Hence, if the model is not expected to be interpreted, multicollinearity is no issue of concern and may be ignored. Moreover, even for more statistically-oriented analysts, there may also not be a need to address high collinearity provided that it does not inflate standard errors to a problematic extent (see "A caution regarding rules of thumb for variance inflation factors" by O'Brien), as there are many other factors which can suppress the inflation effect of standard errors, one of which is the sample size. Quoting the words of O'Brien, "collinearity does not hurt as long as it does not bite".
 	
 	
 	
@@ -282,7 +282,9 @@
 	$$u_{i1}=\frac{x_{i1}-\bar{x_1}}{s_1}\quad\quad\text{ and }\quad \quad u_{i2}=\frac{x_{i2}-\bar{x_2}}{s_2}=\frac{kx_{i1}-k\bar{x_1}}{ks_1}=\frac{x_{i1}-\bar{x_1}}{s_1}=u_{i1}.$$
 	
 	\section{Minimum norm approximation using pseudoinverse\label{sec:append3}}
-	We can compute the pseudoinverse of $\bmX^T\bmX$ using its SVD as follows: Let $\bmA=\bmX^T\bmX$. If the SVD of $\bmA=\bmU\Sg\bmV^T$, then the pseudoinverse of $\bmA$, $\bmA^+$, is given by
+	We can compute the pseudoinverse of $\bmX^T\bmX$ using its SVD as follows.\\
+	
+	Let $\bmA=\bmX^T\bmX$. If the SVD of $\bmA=\bmU\Sg\bmV^T$, then the pseudoinverse of $\bmA$, $\bmA^+$, is given by
 	\begin{align*}
 		\bmA^+&=((\bmU\Sg\bmV^T)^T()\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
 		&=(\bmV\Sg\bmU^T\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
