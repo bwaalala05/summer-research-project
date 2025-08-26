@@ -5,20 +5,20 @@
 \contentsline {subsubsection}{\numberline {3.1.1}Variance inflation factor (VIF)}{5}{subsubsection.3.1.1}%
 \contentsline {subsubsection}{\numberline {3.1.2}Condition numbers}{6}{subsubsection.3.1.2}%
 \contentsline {subsection}{\numberline {3.2}Methods to address collinearity}{6}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Results and discussion}{7}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Python's \texttt {scikit-learn} library}{7}{subsection.4.1}%
+\contentsline {section}{\numberline {4}Results and discussion}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Python's \texttt {scikit-learn} library}{8}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Python's \texttt {statsmodel} library}{8}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}R's \texttt {lm} function}{8}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Impact of multicollinearity}{8}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Confounding variables}{9}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.3}R's \texttt {lm} function}{9}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Impact of multicollinearity}{9}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Confounding variables}{10}{subsection.4.5}%
 \contentsline {section}{\numberline {5}Conclusion}{10}{section.5}%
-\contentsline {section}{\numberline {6}Future recommendations}{10}{section.6}%
-\contentsline {section}{\numberline {A}Singular value decomposition}{11}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}Prerequisites}{11}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Singular value decomposition}{11}{subsection.A.2}%
-\contentsline {subsection}{\numberline {A.3}Computation of the SVD}{13}{subsection.A.3}%
-\contentsline {section}{\numberline {B}Referenced results}{13}{appendix.B}%
-\contentsline {subsection}{\numberline {B.1}Fitting the OLS model}{13}{subsection.B.1}%
-\contentsline {subsection}{\numberline {B.2}Minimum norm approximation using pseudoinverse}{13}{subsection.B.2}%
-\contentsline {subsection}{\numberline {B.3}Singularity due to perfect collinearity }{14}{subsection.B.3}%
-\contentsline {subsection}{\numberline {B.4}Effect of \texttt {StandardScaler} on collinear columns in data matrix }{16}{subsection.B.4}%
+\contentsline {section}{\numberline {6}Future recommendations}{11}{section.6}%
+\contentsline {section}{\numberline {A}Singular value decomposition}{12}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}Prerequisites}{12}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Singular value decomposition}{12}{subsection.A.2}%
+\contentsline {subsection}{\numberline {A.3}Computing of the SVD}{14}{subsection.A.3}%
+\contentsline {section}{\numberline {B}Referenced results}{14}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}Fitting the OLS model}{14}{subsection.B.1}%
+\contentsline {subsection}{\numberline {B.2}Minimum norm approximation using pseudoinverse}{14}{subsection.B.2}%
+\contentsline {subsection}{\numberline {B.3}Singularity due to perfect collinearity }{15}{subsection.B.3}%
+\contentsline {subsection}{\numberline {B.4}Effect of \texttt {StandardScaler} on collinear columns in data matrix }{17}{subsection.B.4}%
