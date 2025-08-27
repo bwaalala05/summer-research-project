@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  26 AUG 2025 22:50
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  27 AUG 2025 18:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1345,58 +1345,58 @@ File: lstlang1.sty 2024/02/21 1.10 listings language file
 (./report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/npxmi/m/it on input line 75.
+LaTeX Font Info:    Checking defaults for OML/npxmi/m/it on input line 77.
 LaTeX Font Info:    Trying to load font information for OML+npxmi on input line
- 75.
+ 77.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/omlnpxmi.fd
 File: omlnpxmi.fd 2013/03/21 Fontinst v1.933 font definitions for OML/npxmi.
 )
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 77.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 7
-5.
+7.
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for U/npxexa/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for U/npxexa/m/n on input line 77.
 LaTeX Font Info:    Trying to load font information for U+npxexa on input line 
-75.
+77.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/unpxexa.fd
 File: unpxexa.fd 2013/03/24 Fontinst v1.933 font definitions for U/npxexa.
 )
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for LMS/npxsy/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for LMS/npxsy/m/n on input line 77.
 LaTeX Font Info:    Trying to load font information for LMS+npxsy on input line
- 75.
+ 77.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/lmsnpxsy.fd
 File: lmsnpxsy.fd 2016/07/04 Fontinst v1.933 font definitions for LMS/npxsy.
 )
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for LMX/npxexx/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for LMX/npxexx/m/n on input line 77.
 LaTeX Font Info:    Trying to load font information for LMX+npxexx on input lin
-e 75.
+e 77.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/newpx/lmxnpxexx.fd
 File: lmxnpxexx.fd 2016/07/04 Fontinst v1.933 font definitions for LMX/npxexx.
 )
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
 \c@lstlisting=\count456
 
 *geometry* driver: auto-detecting
@@ -1433,9 +1433,9 @@ LaTeX Font Info:    ... okay on input line 75.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Command `\dddot' is already robust on input line 75.
-LaTeX Info: Command `\ddddot' is already robust on input line 75.
-Package hyperref Info: Link coloring ON on input line 75.
+LaTeX Info: Command `\dddot' is already robust on input line 77.
+LaTeX Info: Command `\ddddot' is already robust on input line 77.
+Package hyperref Info: Link coloring ON on input line 77.
 (/usr/local/texlive/2024/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
 
@@ -1497,208 +1497,223 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
  [1
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 83--84
+Underfull \hbox (badness 10000) in paragraph at lines 85--86
 
  []
 
 
 LaTeX Font Warning: Font shape `OT1/TimesNewRoman(0)/b/n' undefined
-(Font)              using `OT1/TimesNewRoman(0)/m/n' instead on input line 85.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 85--86
-
- []
+(Font)              using `OT1/TimesNewRoman(0)/m/n' instead on input line 87.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 89--90
+
+ []
+
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 106--107
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--113
+Underfull \hbox (badness 10000) in paragraph at lines 116--118
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 118--119
+Underfull \hbox (badness 10000) in paragraph at lines 123--124
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 120--121
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 123--125
+Underfull \hbox (badness 10000) in paragraph at lines 130--132
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--127
+Underfull \hbox (badness 10000) in paragraph at lines 133--134
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 140--142
+Underfull \hbox (badness 10000) in paragraph at lines 149--151
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 148--149
+Underfull \hbox (badness 10000) in paragraph at lines 157--158
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 151--153
+Underfull \hbox (badness 10000) in paragraph at lines 162--164
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 158--159
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 160--161
+Underfull \hbox (badness 10000) in paragraph at lines 171--172
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 162--163
+Underfull \hbox (badness 10000) in paragraph at lines 173--174
 
  []
 
 
-Overfull \hbox (25.26588pt too wide) detected at line 167
-[] \U/npxmia/m/it/12 = [] []  [] [] = [] [] \OML/npxmi/m/it/12 ;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 167--169
+Underfull \hbox (badness 10000) in paragraph at lines 184--186
 
  []
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 174.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 191.
 
-Overfull \hbox (7.04242pt too wide) in paragraph at lines 176--177
+Overfull \hbox (7.04242pt too wide) in paragraph at lines 193--194
 \TU/TimesNewRoman(0)/m/n/12 After referring to documentation, we find that the 
 least squares solver, \TU/lmtt/m/n/12 LinearRegression()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 176--177
+Underfull \hbox (badness 10000) in paragraph at lines 193--194
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 182--183
+Underfull \hbox (badness 10000) in paragraph at lines 199--200
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 205--206
+Underfull \hbox (badness 10000) in paragraph at lines 211--212
 
  []
 
 
-Overfull \hbox (12.1024pt too wide) in paragraph at lines 207--208
+Underfull \hbox (badness 10000) in paragraph at lines 228--229
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 250--251
+
+ []
+
+
+Overfull \hbox (12.1024pt too wide) in paragraph at lines 252--253
 []\TU/TimesNewRoman(0)/m/n/12 When two predictors have perfect correlation, we 
 have what is known as perfect collinear-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 207--208
+Underfull \hbox (badness 10000) in paragraph at lines 252--253
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 216--217
-
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 218--219
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 224--225
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 226--227
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
 
  []
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 232--233
+Underfull \hbox (badness 10000) in paragraph at lines 263--264
 
  []
 
-[11] [12]
+
+Underfull \hbox (badness 10000) in paragraph at lines 269--270
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--272
+
+ []
+
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 277--278
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 279--280
 
  []
 
+[12] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 326--327
 
-Underfull \hbox (badness 10000) in paragraph at lines 282--284
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--331
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 295--297
+Underfull \hbox (badness 10000) in paragraph at lines 342--344
 
  []
 
-[13]
-Overfull \hbox (1.49594pt too wide) in paragraph at lines 307--311
+[14]
+Overfull \hbox (1.49594pt too wide) in paragraph at lines 354--358
 \TU/TimesNewRoman(0)/m/n/12 tion are left singular vectors. Now all that is lef
 t is to construct $[] \U/npxmia/m/it/12 = []$
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 324--325
-
- []
-
-[14] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 376--378
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 379--380
+[15]
+Underfull \hbox (badness 10000) in paragraph at lines 389--391
 
  []
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 405--407
+Underfull \hbox (badness 10000) in paragraph at lines 394--395
+
+ []
+
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 447--448
 
  []
 
 
-Overfull \hbox (0.5025pt too wide) in paragraph at lines 413--414
+Underfull \hbox (badness 10000) in paragraph at lines 449--450
+
+ []
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 472--474
+
+ []
+
+
+Overfull \hbox (0.5025pt too wide) in paragraph at lines 476--477
 \TU/TimesNewRoman(0)/m/n/12 From the documentation, \TU/lmtt/m/n/12 scikit_lear
 n\TU/TimesNewRoman(0)/m/n/12 ’s \TU/lmtt/m/n/12 StandardScaler \TU/TimesNewRoma
 n(0)/m/n/12 calculates the $\OML/npxmi/m/it/12 Z$\TU/TimesNewRoman(0)/m/n/12 -s
 core of each
  []
 
-[17] (./report.bbl) [18] (./report.aux)
+(./report.bbl [19]) [20] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -1709,12 +1724,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 37833 strings out of 474773
- 798553 string characters out of 5757725
- 1972839 words of memory out of 5000000
- 59293 multiletter control sequences out of 15000+600000
+ 37848 strings out of 474773
+ 798625 string characters out of 5757725
+ 2066839 words of memory out of 5000000
+ 59308 multiletter control sequences out of 15000+600000
  579138 words of font info for 120 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 106i,18n,110p,1047b,1161s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 106i,18n,110p,1104b,1161s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.pdf (18 pages).
+Output written on report.pdf (20 pages).
