@@ -1,3 +1,48 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{Agresti2015}
+Alan Agresti.
+\newblock {\em Foundations of Linear and Generalized Linear Models}.
+\newblock John Wiley and Sons Inc., 2015.
+
+\bibitem{Agresti2018}
+Alan Agresti, Christine Franklin, and Bernhard Klingenberg.
+\newblock {\em Statistics : the art and science of learning from data}.
+\newblock Pearson Education Limited, 2018.
+
+\bibitem{James2023}
+Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan
+  Taylor.
+\newblock {\em Introduction to Statistical Learning with Applications in
+  Python}.
+\newblock Springer, 7 2023.
+
+\bibitem{Johnston2018}
+Ron Johnston, Kelvyn Jones, and David Manley.
+\newblock Confounding and collinearity in regression analysis: a cautionary
+  tale and an alternative procedure, illustrated by studies of british voting
+  behaviour.
+\newblock {\em Quality and Quantity}, 52:1957--1976, 7 2018.
+
+\bibitem{McClave2018}
+James McClave and Terry Sincich.
+\newblock {\em Statistics}.
+\newblock Pearson Education Limited, 13 edition, 2018.
+
+\bibitem{OBrien2007}
+Robert~M. O'Brien.
+\newblock A caution regarding rules of thumb for variance inflation factors.
+\newblock {\em Quality and Quantity}, 41:673--690, 10 2007.
+
+\bibitem{Shabuz2024}
+Zillur~R. Shabuz and Paul~H. Garthwaite.
+\newblock Examining collinearities.
+\newblock {\em Australian and New Zealand Journal of Statistics}, 66:367--388,
+  9 2024.
+
+\bibitem{Strang2019}
+Gilbert Strang.
+\newblock {\em Linear algebra and learning from data}.
+\newblock Wellesley-Cambridge Press, 2019.
 
 \end{thebibliography}
