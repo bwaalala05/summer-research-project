@@ -13,12 +13,13 @@
 \contentsline {subsection}{\numberline {4.5}Confounding variables}{11}{subsection.4.5}%
 \contentsline {section}{\numberline {5}Conclusion}{11}{section.5}%
 \contentsline {section}{\numberline {6}Future recommendations}{12}{section.6}%
-\contentsline {section}{\numberline {A}Singular value decomposition}{13}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}Prerequisites}{13}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Singular value decomposition}{13}{subsection.A.2}%
-\contentsline {subsection}{\numberline {A.3}Computing the SVD}{15}{subsection.A.3}%
-\contentsline {section}{\numberline {B}Referenced results}{16}{appendix.B}%
-\contentsline {subsection}{\numberline {B.1}Estimating the least squares coefficients}{16}{subsection.B.1}%
-\contentsline {subsection}{\numberline {B.2}Minimum norm approximation using pseudoinverse}{17}{subsection.B.2}%
-\contentsline {subsection}{\numberline {B.3}Singularity due to perfect collinearity }{18}{subsection.B.3}%
-\contentsline {subsection}{\numberline {B.4}Effect of \texttt {StandardScaler} on collinear columns in data matrix }{19}{subsection.B.4}%
+\contentsline {section}{\numberline {A}Matrix decompositions}{14}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}Prerequisites}{14}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Singular value decomposition}{15}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}Computing the SVD}{16}{subsubsection.A.2.1}%
+\contentsline {subsection}{\numberline {A.3}QR decomposition}{17}{subsection.A.3}%
+\contentsline {section}{\numberline {B}Referenced results}{19}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}Estimating the least squares coefficients}{19}{subsection.B.1}%
+\contentsline {subsection}{\numberline {B.2}Minimum norm approximation using pseudoinverse}{20}{subsection.B.2}%
+\contentsline {subsection}{\numberline {B.3}Singularity due to perfect collinearity }{21}{subsection.B.3}%
+\contentsline {subsection}{\numberline {B.4}Effect of \texttt {StandardScaler} on collinear columns in data matrix }{22}{subsection.B.4}%

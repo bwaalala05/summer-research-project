@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  27 AUG 2025 18:43
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  29 AUG 2025 01:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1502,10 +1502,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 85--86
  []
 
 
-LaTeX Font Warning: Font shape `OT1/TimesNewRoman(0)/b/n' undefined
-(Font)              using `OT1/TimesNewRoman(0)/m/n' instead on input line 87.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
@@ -1514,6 +1510,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 87--88
 Underfull \hbox (badness 10000) in paragraph at lines 89--90
 
  []
+
+
+LaTeX Font Warning: Font shape `OT1/TimesNewRoman(0)/b/n' undefined
+(Font)              using `OT1/TimesNewRoman(0)/m/n' instead on input line 91.
 
 [2]
 Underfull \hbox (badness 10000) in paragraph at lines 111--112
@@ -1614,106 +1614,131 @@ Underfull \hbox (badness 10000) in paragraph at lines 228--229
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 250--251
+Underfull \hbox (badness 10000) in paragraph at lines 237--238
 
  []
 
 
-Overfull \hbox (12.1024pt too wide) in paragraph at lines 252--253
+Underfull \hbox (badness 10000) in paragraph at lines 249--250
+
+ []
+
+
+Overfull \hbox (12.1024pt too wide) in paragraph at lines 251--252
 []\TU/TimesNewRoman(0)/m/n/12 When two predictors have perfect correlation, we 
 have what is known as perfect collinear-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 252--253
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 261--262
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
 
  []
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 263--264
+Underfull \hbox (badness 10000) in paragraph at lines 257--258
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 269--270
+Underfull \hbox (badness 10000) in paragraph at lines 259--260
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 271--272
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 277--278
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--280
-
- []
-
-[12] [13]
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
+Underfull \hbox (badness 10000) in paragraph at lines 273--274
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--331
+Underfull \hbox (badness 10000) in paragraph at lines 275--276
+
+ []
+
+[12] [13] [14]
+Underfull \hbox (badness 10000) in paragraph at lines 334--335
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 342--344
+Underfull \hbox (badness 10000) in paragraph at lines 337--339
 
  []
 
-[14]
-Overfull \hbox (1.49594pt too wide) in paragraph at lines 354--358
+[15]
+Underfull \hbox (badness 10000) in paragraph at lines 350--352
+
+ []
+
+
+Overfull \hbox (1.49594pt too wide) in paragraph at lines 362--366
 \TU/TimesNewRoman(0)/m/n/12 tion are left singular vectors. Now all that is lef
 t is to construct $[] \U/npxmia/m/it/12 = []$
  []
 
-[15]
-Underfull \hbox (badness 10000) in paragraph at lines 389--391
-
- []
-
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 394--395
-
- []
-
-[17]
-Underfull \hbox (badness 10000) in paragraph at lines 447--448
+Underfull \hbox (badness 10000) in paragraph at lines 380--381
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 449--450
-
- []
-
-[18]
-Underfull \hbox (badness 10000) in paragraph at lines 472--474
+Underfull \hbox (badness 10000) in paragraph at lines 385--387
 
  []
 
 
-Overfull \hbox (0.5025pt too wide) in paragraph at lines 476--477
+Underfull \hbox (badness 10000) in paragraph at lines 393--395
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 403--407
+
+ []
+
+[17] [18]
+Underfull \hbox (badness 10000) in paragraph at lines 460--462
+
+ []
+
+[19]
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
+
+ []
+
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 518--519
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 520--521
+
+ []
+
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 543--545
+
+ []
+
+
+Overfull \hbox (0.5025pt too wide) in paragraph at lines 547--548
 \TU/TimesNewRoman(0)/m/n/12 From the documentation, \TU/lmtt/m/n/12 scikit_lear
 n\TU/TimesNewRoman(0)/m/n/12 ’s \TU/lmtt/m/n/12 StandardScaler \TU/TimesNewRoma
 n(0)/m/n/12 calculates the $\OML/npxmi/m/it/12 Z$\TU/TimesNewRoman(0)/m/n/12 -s
 core of each
  []
 
-(./report.bbl [19]) [20] (./report.aux)
+(./report.bbl [22]) [23] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -1724,12 +1749,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 37848 strings out of 474773
- 798625 string characters out of 5757725
+ 37853 strings out of 474773
+ 798708 string characters out of 5757725
  2066839 words of memory out of 5000000
- 59308 multiletter control sequences out of 15000+600000
+ 59313 multiletter control sequences out of 15000+600000
  579138 words of font info for 120 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  106i,18n,110p,1104b,1161s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.pdf (20 pages).
+Output written on report.pdf (23 pages).
