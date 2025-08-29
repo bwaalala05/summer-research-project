@@ -8,45 +8,45 @@ I was expecting a `,' or a `}'---line 92 of file srpref.bib
  :  url = {http://joshua.smcvt.edu/linearalgebra}
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You've used 9 entries,
+You've used 12 entries,
             2118 wiz_defined-function locations,
-            560 strings with 5261 characters,
-and the built_in function-call counts, 2535 in all, are:
-= -- 232
-> -- 118
+            581 strings with 5634 characters,
+and the built_in function-call counts, 3396 in all, are:
+= -- 309
+> -- 166
 < -- 0
-+ -- 48
-- -- 38
-* -- 161
-:= -- 445
-add.period$ -- 27
-call.type$ -- 9
-change.case$ -- 42
++ -- 67
+- -- 54
+* -- 215
+:= -- 599
+add.period$ -- 36
+call.type$ -- 12
+change.case$ -- 57
 chr.to.int$ -- 0
-cite$ -- 9
-duplicate$ -- 105
-empty$ -- 213
-format.name$ -- 38
-if$ -- 525
+cite$ -- 12
+duplicate$ -- 140
+empty$ -- 281
+format.name$ -- 54
+if$ -- 702
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 15
-newline$ -- 48
-num.names$ -- 18
-pop$ -- 62
+int.to.str$ -- 12
+missing$ -- 20
+newline$ -- 63
+num.names$ -- 24
+pop$ -- 85
 preamble$ -- 1
-purify$ -- 37
+purify$ -- 51
 quote$ -- 0
-skip$ -- 59
+skip$ -- 77
 stack$ -- 0
-substring$ -- 115
-swap$ -- 9
+substring$ -- 145
+swap$ -- 12
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 24
+type$ -- 32
 warning$ -- 0
-while$ -- 21
-width$ -- 10
-write$ -- 97
+while$ -- 28
+width$ -- 14
+write$ -- 128
 (There was 1 error message)
