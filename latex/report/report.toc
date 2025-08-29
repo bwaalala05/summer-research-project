@@ -1,25 +1,27 @@
 \contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
 \contentsline {section}{\numberline {2}Objectives}{3}{section.2}%
 \contentsline {section}{\numberline {3}Methodology}{4}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Methods to detect collinearity}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.1}Multicollinearity diagnostics}{5}{subsection.3.1}%
 \contentsline {subsubsection}{\numberline {3.1.1}Variance inflation factor (VIF)}{5}{subsubsection.3.1.1}%
 \contentsline {subsubsection}{\numberline {3.1.2}Condition numbers}{6}{subsubsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.2}Methods to address collinearity}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.2}Remedies to multicollinearity}{7}{subsection.3.2}%
 \contentsline {section}{\numberline {4}Results and discussion}{8}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Python's \texttt {scikit-learn} library}{8}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Python's \texttt {statsmodel} library}{8}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}R's \texttt {lm} function}{9}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Impact of multicollinearity}{10}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Confounding variables}{11}{subsection.4.5}%
-\contentsline {section}{\numberline {5}Conclusion}{11}{section.5}%
-\contentsline {section}{\numberline {6}Future recommendations}{12}{section.6}%
-\contentsline {section}{\numberline {A}Matrix decompositions}{14}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}Prerequisites}{14}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Singular value decomposition}{15}{subsection.A.2}%
-\contentsline {subsubsection}{\numberline {A.2.1}Computing the SVD}{16}{subsubsection.A.2.1}%
-\contentsline {subsection}{\numberline {A.3}QR decomposition}{17}{subsection.A.3}%
-\contentsline {section}{\numberline {B}Referenced results}{19}{appendix.B}%
-\contentsline {subsection}{\numberline {B.1}Estimating the least squares coefficients}{19}{subsection.B.1}%
-\contentsline {subsection}{\numberline {B.2}Minimum norm approximation using pseudoinverse}{20}{subsection.B.2}%
-\contentsline {subsection}{\numberline {B.3}Singularity due to perfect collinearity }{21}{subsection.B.3}%
-\contentsline {subsection}{\numberline {B.4}Effect of \texttt {StandardScaler} on collinear columns in data matrix }{22}{subsection.B.4}%
+\contentsline {subsection}{\numberline {4.4}Example: California housing}{10}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Impact of multicollinearity}{12}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Confounding variables}{13}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Conclusion}{14}{section.5}%
+\contentsline {section}{\numberline {6}Future recommendations}{15}{section.6}%
+\contentsline {section}{\numberline {A}Matrix decompositions}{16}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}Prerequisites}{16}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Singular value decomposition}{17}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}Computing the SVD}{18}{subsubsection.A.2.1}%
+\contentsline {subsection}{\numberline {A.3}QR decomposition}{19}{subsection.A.3}%
+\contentsline {subsubsection}{\numberline {A.3.1}Application in least squares regression}{21}{subsubsection.A.3.1}%
+\contentsline {section}{\numberline {B}Referenced results}{22}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}Estimating the least squares coefficients}{22}{subsection.B.1}%
+\contentsline {subsection}{\numberline {B.2}Minimum norm approximation using pseudoinverse}{23}{subsection.B.2}%
+\contentsline {subsection}{\numberline {B.3}Singularity due to perfect collinearity }{24}{subsection.B.3}%
+\contentsline {subsection}{\numberline {B.4}Effect of \texttt {StandardScaler} on collinear columns in data matrix }{25}{subsection.B.4}%

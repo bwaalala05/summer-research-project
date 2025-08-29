@@ -84,15 +84,15 @@
 	
 	Multiple linear regression is widely used in many applications to model linear relationships between a set of predictors and a response. One of the more common and simpler methods of fitting such a model is known as the ordinary least squares method (OLS), which is a Best Linear Unbiased Estimator (BLUE) by the Gauss-Markov theorem. Provided that assumptions are satisfied, it gives the unbiased estimates of each regression coefficient with the lowest possible variance. Furthermore, it has a main advantage of it being easily interpretable as a parametric model as opposed to non-parametric models.\\
 	
-	\setlength\parindent{24pt} The motivation for this project arises from one of these assumptions, where none of the predictors are (nearly) perfectly correlated with each other. In cases where this is not true, perfect multicollinearity is said to exist, and OLS is unable to estimate regression parameters. To address this issue, there are several methods we can employ, whether to drop one of the correlated variables or to combine them based on the discretion of the data analyst. In this project, we investigate how two of the commonly used software for regression analysis, Python (\texttt{scikit\_learn} and \texttt{statsmodel} libraries) and R each handles perfect collinearity when fitting the model.\\
+	\setlength\parindent{24pt} The motivation for this project arises from one of these assumptions, where none of the predictors are perfectly correlated with each other. In cases where this is not true, perfect multicollinearity is said to exist, and regression parameters are unable to be estimated. To address this issue, there are several methods we can employ, whether to drop one of the correlated variables or to combine them based on the discretion of the data analyst. In this project, we investigate how two of the commonly used software for regression analysis, Python (\texttt{scikit\_learn} and \texttt{statsmodel} libraries) and R, each handles perfect collinearity when fitting the model.\\
 	
-	Furthermore, we embrace this opportunity to explore further on the topic of multicollinearity when two or more predictors are correlated to one another.\cite{McClave2018} We first examine its impact on model prediction and interpretation. Then, we explore several known methods of detecting collinearity in the data, whether through hypothesis testing, or by using measures such as the variance inflation factor (VIF) and condition number/index. In addition, we consider shrinkage methods such as ridge regression and lasso to alleviate the impact of overfitting (due to collinearity) on variance at the cost of negligible bias. We also briefly explore confounding variables which are another potential pitfall in regression analysis by examining examples of Simpson's paradox.\\
+	Furthermore, we embrace this opportunity to explore further on the topic of multicollinearity when two or more predictors are correlated to one another.\cite{McClave2018} We first examine its impact on model prediction and interpretation. Then, we explore several known methods of detecting collinearity in the data, whether through hypothesis testing, or by using measures such as the variance inflation factor (VIF) and condition number. In addition, we consider shrinkage methods such as ridge regression and LASSO to alleviate the impact of overfitting (due to collinearity) on variance at the cost of negligible bias. We also briefly explore confounding variables which are another potential pitfall in regression analysis by examining examples of Simpson's paradox.\\
 	
-	Here, we lay down the general setup for fitting a linear regression model. Given an $n\times p$ data matrix $\bmX$ ($n$ samples and $p$ predictors), corresponding to an $n\times 1$ column matrix $\bmy$ containing the observed response, we model the relationship between $p$ predictors, $X_i$  and the response variable, $Y$ as
+	Here, we lay down the general setup for fitting a linear regression model. Let $\bmX$ be an $n\times p$ data matrix ($n$ samples and $p$ predictors), corresponding to an $n\times 1$ column vector $\bmy$ containing the observed response. We model the relationship between $p$ predictors, $X_i$  and the response variable, $Y$ as
 	\begin{equation}
 		Y=\beta_0+\sum_{i=1}^{p}\beta_i X_i+\varepsilon,
 	\end{equation}
-	where $\varepsilon$ represents the random error. We fit the model to the data collected for the expected response $E[Y]$ by estimating each $\beta_i$ using the least squares method to obtain $\gbh_i$ so that we have
+	where $\varepsilon$ represents the random error. We fit the model to the data matrix $\bmX$ by estimating each $\beta_i$ using the least squares method to obtain $\gbh_i$ so that we have
 	\begin{equation}
 		E[Y]=\gbh_0+\sum_{i=1}^{p}\gbh_iX_i.
 	\end{equation}
@@ -108,73 +108,75 @@
 		\item Investigate how software deals with singularity when building linear models.
 	\end{enumerate}
 	
-	In practical settings, it is unlikely to obtain a set of perfectly correlated data due to inevitable noise. However, even near perfect collinearity leads to singularity when attempting to fit the regression model using software. We hence aim to explore how a rank-deficient data matrix can lead to singularity and the issues that arise from it. We also explore pitfalls caused by moderate to high multicollinearity in terms of interpretation and prediction. Subsequently, we look into commonly used methods to handle situations where regressors are highly correlated depending on purpose of analysis.\\
+	Perfect or near perfect collinearity leads to singularity when fitting the regression model using software. We hence aim to explore how this happens together with the issues that arise from it. We also explore pitfalls caused by moderate to high multicollinearity in terms of interpretation and prediction. Subsequently, we look into commonly used remedies to handle situations where standard errors of coefficient estimates are highly inflated due to correlated regressors.\\
 	
-	The next objective is to understand how to apply the singular value decomposition (SVD) in the computations of the least square estimates. The least squares method estimates the regression coefficients of a model with $p$ predictors by fitting it to a dataset with $n$ observations using the following equation
+	The next objective is to understand how to apply the singular value decomposition (SVD) to estimate the regression coefficients. For a model with $p$ predictors, the least squares method fits it to a dataset with $n$ observations using the following equation
 	\begin{equation}
 		\boldsymbol{\gbh}=(\bmX^T\bmX)^{-1}\bmX^T\bmy,\label{eq3}
 	\end{equation}
-	where $\boldsymbol{\gbh}$ is a $p\times 1$ column matrix containing the least square estimates, $\bmX$ is a $n\times p$ data matrix, and $\bmy$ is a $n\times 1$ column matrix containing the observed response values. The derivation of this formula is included in the appendix (\hyperref[sec:append1]{Section B.1}). With the presence of perfect collinearity, the matrix $\bmX^T\bmX$ is singular and hence $(\bmX^T\bmX)^{-1}$ does not exist. However, the least squares solver of Python uses the Moore-Penrose inverse (or pseudoinverse) of $\bmX$, $\bmX^+$, which can be used to calculate the minimum norm approximation of $(\bmX^T\bmX)^{-1}$, and can be computed using the SVD of $\bmX^T\bmX$ (see appendix \hyperref[sec:append2]{Section B.2}). A brief section in the appendix (\hyperref[sec:svd]{Section A}) is dedicated to the formulation and computation of the SVD.\\
+	where $\boldsymbol{\gbh}$ is a $p\times 1$ column vector containing the least square estimates, $\bmX$ is a $n\times p$ data matrix, and $\bmy$ is a $n\times 1$ column vector containing the observed response values. The derivation of this formula is included in the (\hyperref[sec:append1]{Section B.1}). With the presence of perfect collinearity, the matrix $\bmX^T\bmX$ is singular and hence $(\bmX^T\bmX)^{-1}$ does not exist. However, the least squares solver of \texttt{scikit\_learn} and \texttt{statsmodel} uses the pseudoinverse of $\bmX$, $\bmX^+$ to calculate the minimum norm approximation of $(\bmX^T\bmX)^{-1}$. This can be computed using the SVD of $\bmX^T\bmX$ (see appendix \hyperref[sec:append2]{Section B.2}). A brief section in the appendix (\hyperref[sec:svd]{Section A}) is dedicated to the formulation and computation of the SVD.\\
 	
-	Lastly, it is observed that there exists discrepancy between how different software handles highly correlated predictors when fitting a multiple linear regression model via OLS. In this project, we aim to understand the reason behind this difference in behaviour by referring to standard documentation and examining program output in Python and R. As an extension, methods for detecting and addressing multicollinearity using software are also explored.
+	Lastly, it is observed that there exists discrepancy between how different software handles highly correlated predictors when fitting a multiple linear regression model via OLS. In this project, we aim to understand the reason behind this difference in behaviour by referring to standard documentation and examining program output in Python and R. As an extension, we explore methods for detecting and addressing multicollinearity using software and apply them on real world datasets.
 	
 	\section{Methodology}
 	
-	We narrowed our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we randomly generated several sets of artificial data using three regressors where only one pair is correlated, each with 100 samples. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined, and that the degree of correlation and noise in the data can be manually specified. Note that the distribution used in data generation is irrelevant for our topic of study.\\
+	We narrowed our focus to three least squares solvers of interests: Python's \texttt{scikit-learn} library, Python's \texttt{statsmodel} library, and R's \texttt{lm} function. In each case, we randomly generated several sets of artificial data using three regressors where only one pair is correlated, each with 100 samples. The use of artificial data has the advantage where the true relationship between the response and predictors is known and self-determined, and that the degree of correlation and noise in the data can be specified manually. Note that the distribution used in data generation is irrelevant for our topic of study.\\
 	
-	The data ranges from 0 to 100 and is uniformly distributed. The degree of collinearity was then varied between perfect and moderate to observe differences in output. The pseudoinverse of the data matrix was also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates. Then, these results were compared with those given by the least squares solver function to confirm whether these functions use the pseudoinverse of the data matrix to estimate the least squares coefficients as suggested by documentation.\\
+	The data ranges from 0 to 100 and is uniformly distributed. The degree of collinearity was then varied between perfect and moderate to observe differences in output. The pseudoinverse of the data matrix was also computed and multiplied with the generated response to give the theoretical minimum norm solution for the coefficient estimates. Then, these results were compared with those given by the least squares solver to verify whether these functions use the pseudoinverse of the data matrix to estimate the least squares coefficients as suggested by documentation. For R, we check if it uses the QR decomposition.\\
 	
-	The true underlying relationship to which the artificial data was generated was set to be 
+	The true underlying relationship to which each set of artificial data was generated was set to be 
 	\begin{equation}
 		Y=X_1+2X_2+3X_3,
 	\end{equation}
-	where $X_1$ and $X_2$ are correlated with $X_2=2X_1$. We then vary the amount of uniformly distributed noise added to different generated sets: from no noise (perfect collinearity) to some number sampled from intervals [-25,25], [-50,50], and [-100,100]. The train-test ratio chosen for splitting the dataset into training and testing sets is fixed at 80-20. Lastly, to evaluate prediction performance, metrics such as the (adjusted) multiple coefficient of determination $R^2$ and mean squared error were used.\\
+	where $X_1$ and $X_2$ are correlated with $X_2=2X_1$. We then varied the amount of uniformly distributed noise added to different generated sets: from no noise (perfect collinearity) to some number sampled from continuous intervals [-25,25], [-50,50], and [-100,100]. The train-test ratio chosen for splitting the dataset into training and testing sets was fixed at 80-20. Lastly, to evaluate prediction performance, metrics such as the (adjusted) multiple coefficient of determination $R^2$ and mean squared error were used.\\
 	
-	The scaling effect of \texttt{scikit\_learn}'s \texttt{StandardScaler} on the ridge regression and LASSO models in the presence of collinearity was also given attention. This was done by referring to standard documentation as well as by testing it using artificially generated data. For data with and without high multicollinearity present respectively, two models were each fitted: one with predictors scaled by \texttt{StandardScaler} and one without. The output was then compared. \\
+	The scaling effect of \texttt{scikit\_learn}'s \texttt{StandardScaler} on the ridge regression and LASSO models in the presence of collinearity was also given attention. This was done by referring to standard documentation as well as by testing it using artificially generated data. For perfectly collinear data, two models were each fitted: one with predictors scaled by \texttt{StandardScaler} and one without. The results were then compared, together with the data matrix used for fitting. \\
 	
-	We have also performed regression analysis on California housing and applied methods to address collinearity using \texttt{statsmodel}. 
+	We also gave an example of assessing and addressing collinearity using \texttt{statsmodel} by using the California housing dataset. The methods used are outlined in the following sections.
 	
-	\subsection{Methods to detect collinearity\label{sec:3.1}}
+	\subsection{Multicollinearity diagnostics\label{sec:3.1}}
 	
 	One simple way to detect collinearity is through a test for correlation, where we test the hypothesis
 	$$H_0: \rho=0 \quad\quad\text{ vs. }\quad\quad H_1: \rho\neq 0,$$
-	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method.
+	where $\rho$ is the population correlation coefficient between a chosen pair of predictors. However, there are two main reasons to opt for an alternative method.\\
 	
-	Firstly, as the number of predictors included in the model increases, the number of tests required to cover every combination of pairs increases. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs. More importantly, even if we find that every pair of predictors has no significant correlation, we cannot make the same conclusion about predictors amongst groups of other numbers. 
+	Firstly, the number of tests required to cover every combination of pairs increases with the number of predictors included in the model. With large number of tests, the probability that we commit at least one error is high and hence we risk incorrectly identifying correlated pairs. More importantly, even if we find that every pair of predictors has no significant correlation, we cannot make the same conclusion about predictors amongst groups of higher numbers. 
 	
 	\subsubsection{Variance inflation factor (VIF)\label{sec:311}}
-	A commonly used method for identifying highly correlated predictors is by using the variance inflation factor (VIF), given by
+	A commonly used method for identifying highly correlated predictors is by assessing their variance inflation factors (VIF), given by
 	\begin{equation}
 		\vif_k=\frac{1}{1-R_{k}^2},
 	\end{equation}
-	where $R^2_k$ is the multiple coefficient of determination of the $k^{\text{th}}$ predictor regressed against the other predictors, assuming that it has zero mean. Intuitively, a higher value of $R^2_k$ indicates a good fit, hence a strong correlation between the $k^{\text{th}}$ regressor and some of the other regressors. Note that uncorrelated regressors would simply have a coefficient close to zero, leading to a VIF of 1.\cite{James2023}\\
+	where $R^2_k$ is the multiple coefficient of determination of the $k^{\text{th}}$ predictor regressed against the other predictors, assuming that it has zero mean. Intuitively, a higher value of $R^2_k$ indicates a good fit, hence a strong correlation between the $k^{\text{th}}$ regressor and some of the other regressors. Note that uncorrelated regressors would simply have a coefficient close to zero, leading to a VIF close to 1.\cite{James2023}\\
 	
 	The motivation behind the formulation of the VIF is to calculate the ratio between the variance of a coefficient estimate if it was uncorrelated with the other regressors (baseline case), and the actual variance. For example, a coefficient estimate having a VIF of 4 corresponds to its variance being 4 times of what it would have been if it was uncorrelated with every other predictor. In other words, VIF measures the factor by which the variance of the regression coefficients is inflated above what it would have been if $R_k^2=0$, hence its name. \\
 	
-	There are different rule of thumbs for the thresholds beyond which one may consider the VIF value of a particular predictor to be high, ranging roughly from 4 to 10.\cite{OBrien2007} There is no definitively correct answer, and we have no choice but to make decisions based on our interpretation of the VIF value. Once predictors with high VIF's are identified, we can then examine the correlation matrix to identify which the predictors which each high VIF predictor is correlated to.
+	There are different rule of thumbs for the thresholds beyond which one may consider the VIF value of a particular predictor to be high, ranging roughly from 4 to 10.\cite{OBrien2007} There is no definitively correct answer, hence we need make decisions based on our interpretation of the VIF value. Once predictors with high VIF's are identified, we can then examine the correlation matrix to identify which the predictors which each high VIF predictor is correlated to.
 	
 	\subsubsection{Condition numbers}
-	Another metric for measuring the degreee of collinearity is the condition number (condition indices) of the data matrix $\bmX$, which indicates how sensitive the response is to changes in $\bmX$. Aside from using it to determine whether a model is highly collinear, the condition number of $\bmX^T\bmX$ is used to check for a potential source of large numerical error due to collinearity when computing $(\bmX^T\bmX)^{-1}$ using software. In this case, it indicates the multiplicative factor to which round-off errors are amplified due to computer arithmetic being performed to finite precision.\\
+	Another metric for measuring the degreee of collinearity is the condition number of the data matrix $\bmX$, which indicates how sensitive the response is to changes in $\bmX$. Aside from using it to determine whether a model is highly collinear, the condition number of $\bmX^T\bmX$ is used to check for a potential source of large numerical error due to collinearity when computing $(\bmX^T\bmX)^{-1}$ using software. In this case, it indicates the multiplicative factor to which round-off errors are amplified due to computer arithmetic being performed to finite precision.\\
 	
-	The formula for the condition number of a $m\times n$ matrix $\bmA$ with rank $r\leq n$, denoted $\kappa(\bmA)$, is given by
+	The formula for the condition number of an $m\times n$ matrix $\bmA$ with rank $r\leq n$, denoted $\kappa(\bmA)$, is given by
 	\begin{equation}
 		\kappa(\bmA)=\frac{\sigma_1}{\sigma_r},
 	\end{equation}
-	where $\sigma_i$ are the singular values of $\bmA$ arranged in descending order. Note that definitions will differ for varying contexts, giving rise to different condition numbers. The point of discussion here is the condition number for inversion.\\
+	where $\sigma_i$ are the singular values of $\bmA$ arranged in descending order. Note that definitions will differ for varying contexts, giving rise to different condition numbers. Here we refer to the condition number for inversion.\\
 	
-	Similar to the case of VIF, there is no exact threshold for a condition number to be considered high, but a rule of thumb is any condition numbers exceeding 20 indicates the matrix to be ill-conditioned. 
+	Similar to the case of VIF, there is no exact threshold for a condition number to be considered high. In this case, the interpretation of the condition number depends heavily on context. Moreover, it should be noted that condition number represents the maximum potential sensitivity, and that the actual sensitivity is usually less than what is described by it \cite{Belsley2004}. Nevertheless, ill-conditioned matrices still have potential to cause problems and should still be checked and handled.  
 	
-	\subsection{Methods to address collinearity\label{sec:3.2}}
+	\subsection{Remedies to multicollinearity\label{sec:3.2}}
 	
-	We present a few commonly-used methods to address moderate to perfect collinearity. \\
+	We present a few commonly-used methods for addresssing moderate to perfect collinearity. \\
 	
 	In the case of perfect collinearity, one of the correlated predictors is completely described by the other, hence our only choice is to remove one of them. This is however not recommended for non-perfect collinearity as we are at risk of committing omitted variable bias. In such cases, we may want to either combine some of the variables \cite{James2023} or use shrinkage methods such as ridge regression or LASSO.\\
 	
-	There are many possible ways of combining correlated variables, but in most cases the simple approach of adding the columns up (such as what R does) gives sufficiently improved results. Note that it is important that we consider the context when doing this, that is, whether combining the two variables make sense in context. An example is a model predicting the salary of employees based on predictors such as years of experience, gender, test scores for course A, and test scores for course B. Obviously, any employee who does well on one test is expected to do well in the other, and so we may consider adding the two test scores together to form a single column "total test scores for course A and B", then the results obtained may be interpreted accordingly.\\
+	There are many possible ways of combining correlated variables, but in most cases the simple approach of adding the columns up (such as what R does) gives sufficiently improved results. Note that it is important that we consider the context when doing this. For example, consider a model predicting the salary of employees based on predictors such as years of experience, gender, test scores for course A, and test scores for course B. Obviously, any employee who does well on one test is expected to do well in the other, and so we may consider adding the two test scores together to form a single column "total test scores for course A and B", then the results obtained may be interpreted accordingly. In the California housing example, we formed a new predictor $\bmd$ by combining \texttt{Latitude} and \texttt{Longitude}, denoted $\bmx$ and $\bmy$ respectively. Notice that in this case, summing them up hinders our interpretation of the coefficient of $\bmd$. Instead, we used
+	\begin{equation}
+		d_i=\sqrt{(x_{i}-x_0)^2+(y_i-y_0)^2},
+	\end{equation}
+	which allowed us to interpret $\bmd$ as the distance of each block group from a point $(x_0,y_0)$. Hence, context is crucial in deciding how we want to combine correlated variables.\\
 	
-	%When analysing the California housing dataset, we identified two pairs of correlated predictors: \texttt{AveBedrms} with \texttt{AveRooms} (), and \texttt{Longitude} with \texttt{Latitude}. \\
-	
-	For ridge regression and LASSO, otherwise known as $L_2$ and $L_1$ regularisation respectively, we find that it successfully decreases coefficient standard errors at the cost of increasing the bias (and hence decreasing $R^2$ score compared to the OLS model) by a neglibible amount. This is done by including a penalty term to the expression which we minimise to obtain the ridge and LASSO coefficient estimates, given by
+	Finally, we used ridge regression and LASSO, otherwise known as $L_2$ and $L_1$ regularisation respectively, to decrease coefficient standard errors at the cost of increasing the bias by a neglibible amount, which translates to a slight decrease in the $R^2$ score. This is done by including a penalty term to the expression which we minimise to obtain the ridge and LASSO coefficient estimates, given by
 	\begin{equation}
 		\gbh_{\text{ridge}}=\argmin_{\gbh}\lt( \sum_{i=1}^{n}\lt(y_i-\hat{y_i}\rt)^2+\lm\|\gbh\|_2\rt) 
 	\end{equation}
@@ -182,21 +184,23 @@
 	\begin{equation}
 		\gbh_{\text{lasso}}=\argmin_{\gbh}\lt( \sum_{i=1}^{n}\lt(y_i-\hat{y_i}\rt)^2+\lm\|\gbh\|_1\rt)
 	\end{equation}
-	respectively, where $y_i$ is the $i^{\text{th}}$ observed response, $\hat{y_i}$ is the $i^{\text{th}}$ predicted response, $\lm$ is a parameter which determines the degree of regularisation. At $\lm=0$, we obtain the OLS model, as $\lm\rightarrow\infty$, $\bmgbh\rightarrow \bzero$, giving the null model. The penalty terms stabilises model coefficients in overfitted models by adding bias. As a result, by the bias-variance tradeoff, the variance of coefficient estimates decreases.\\
+	respectively, where $y_i$ is the $i^{\text{th}}$ observed response, $\hat{y_i}$ is the $i^{\text{th}}$ predicted response, and $\lm$ is a parameter which determines the degree of regularisation. At $\lm=0$, we obtain the OLS model, whereas as $\lm\rightarrow\infty$, $\bmgbh\rightarrow \bzero$, giving the null model. The penalty terms stabilises model coefficients in overfitted models by adding bias. As a result, by the bias-variance tradeoff, the variance of coefficient estimates decreases.\\
 
-	Before fitting the ridge or LASSO model, we standardise the predictors but applying a scaler as the ridge and LASSO coefficient estimates are not scale equivariant, contrary to OLS. Then we perform cross-validation on a range of values of $\lm$ to determine the optimal value of $\lm$ such that the test mean squared error is minimised. The range of values used is $\{0.01,0.1,1.0,10.0,100.0\}$. 
+	Before fitting the ridge or LASSO model, we standardised the predictors but applying a scaler as the ridge and LASSO coefficient estimates are not scale equivariant, contrary to OLS. Then we performed cross-validation on a range of values of $\lm$ to determine the optimal value of $\lm$ such that the test mean squared error is minimised. The range of values used was $\{0.01,0.1,1.0,10.0,100.0\}$. 
 	
 	
 	\section{Results and discussion}
 	\subsection{Python's \texttt{scikit-learn} library}
 	
-	After referring to documentation, we find that the least squares solver, \texttt{LinearRegression()} computes the coefficient estimates using the pseudoinverse of the data matrix, which we have verified. Under any degree of collinearity, we observed that model prediction is affected minimally, attributed by $R^2$ scores close to 1. However, the ridge regression or LASSO model fitted to data with perfect collinearity results in equal distributed coefficients between perfectly correlated predictors. After further investigation, we discovered that this was caused by \texttt{StandardScaler} from the same library which was used to scale predictors prior to fitting the model, which we show in \hyperref[sec:append4]{Section B.4}. Hence, this is unrelated to how \texttt{LinearRegression()} handles collinearity.\\
+	After referring to documentation, we find that the least squares solver, \texttt{LinearRegression()} computes the coefficient estimates using the pseudoinverse of the data matrix, which we have verified. Under any degree of collinearity, we observed that model prediction is affected minimally, attributed by $R^2$ scores close to 1. However, the ridge regression or LASSO model fitted to data with perfect collinearity results in equal distributed coefficients between perfectly correlated predictors. After further investigation, we discovered that this was caused by \texttt{StandardScaler} from the same library which was used to scale predictors prior to fitting the model (see \hyperref[sec:append4]{Section B.4}). Hence, this is unrelated to how \texttt{Ridge} and \texttt{Lasso} handles collinearity.\\
 	
 	We also note that the solver does not give any warnings of high collinearity when displaying results and does not apply any methods to handle highly collinear data. The library is also not equipped with functions to calculate VIF of predictors. In this case, it is the analyst's own responsibility to check for collinearity using functions from the \texttt{statsmodel} library and decide on measures to address it manually.
 	
 	\subsection{Python's \texttt{statsmodel} library}
 	
-	As with \texttt{scikit\_learn}'s \texttt{LinearRegression}, \texttt{statsmodel}'s \texttt{sm.OLS} computes the least squares coefficient by leveraging \texttt{NumPy}'s \texttt{numpy.linalg.pinv} function to calculate the pseudoinverse of the data matrix. It is hence no surprise that we obtain the exact same results for both least square solvers. One point of difference is that \texttt{statsmodel} warns us of high multicollinearity when we call \texttt{results.summary()}: \\
+	As with \texttt{scikit\_learn}'s \texttt{LinearRegression}, \texttt{statsmodel}'s \texttt{sm.OLS} computes the least squares coefficient by leveraging \texttt{NumPy}'s \texttt{numpy.linalg.pinv} function to calculate the pseudoinverse of the data matrix. It is hence no surprise that we obtain the exact same results for both least square solvers. \\
+	
+	One point of difference, however, is that \texttt{statsmodel} warns us of high multicollinearity when we call \texttt{results.summary()}: \\
 	
 	\begin{lstlisting}
 model_OLS=sm.OLS(y_train,X_train)
@@ -206,9 +210,12 @@ summarize(results_OLS)
 # Output:
 # ...[3] The smallest eigenvalue is 9.78e-26. This might indicate that there are strong multicollinearity problems or that the design matrix is singular.
 	\end{lstlisting}
-	\pagebreak
+
 	\subsection{R's \texttt{lm} function}
-	For R, the least squares solver \texttt{lm} combines perfectly collinear columns by adding them up. The first predictor replaced with the combined predictor while the other correlated variable(s) is dropped from the model. This is due to R using the QR decomposition (as opposed to the pseudoinverse previously) of the data matrix in fitting the regression model according to R's standard documentation. The computation of the QR decomposition (which involves using the Gram-Schmidt orthogonalisation process) requires linearly independent columns. Hence, when columns are collinear, the process will produce columns of zero, which explains our observation of "dropping predictors". For a rundown of the computation of the QR decomposition, see \hyperref[sec:qr]{Section A.3}. A portion of the output results is given below:\\
+	For R, the least squares solver \texttt{lm} drops predictors from the model when they are perfectly correlated to other predictors. This is due to R using the QR decomposition with column pivoting (as opposed to the pseudoinverse previously) of the data matrix in fitting the regression model according to R's standard documentation. For a rundown of the computation of the QR decomposition, see \hyperref[sec:qr]{Section A.3}. More details about column pivoting, however, can be found in \cite{CHAN198767}.\\
+	
+	A portion of the output results is given as follows:
+	\vspace{2mm}
 	\begin{lstlisting}
 model <- lm(y~x1+x2+x3, data = df)
 summary(model)
@@ -225,7 +232,8 @@ summary(model)
 	\end{lstlisting}
 	\vspace{2mm}
 	
-	One important thing to note is that aside from the message "1 not defined because of singularities", R does not give any indications or warnings of high multicollinearity. It is all left to the data analyst to recognise this as a sign of collinearity and that measures were silently taken to eliminate the problem of singularity. We may avoid any careless situations by including an extra \texttt{singular.OK = FALSE} parameter in the function, which will give the following output when there is perfect collinearity.\\
+	One important thing to note is that aside from the message "1 not defined because of singularities", R does not give any indications or warnings of high multicollinearity. It is \pagebreak all left to the data analyst to recognise this as a sign of collinearity and that measures were silently taken to eliminate the problem of singularity. We may avoid any careless situations by including an extra \texttt{singular.OK = FALSE} parameter in the function, which will give the following output when there is perfect collinearity.
+	\vspace{2mm}
 	\begin{lstlisting}
 model <- lm(y~x1+x2+x3, data = df, singular.ok = FALSE)
 
@@ -233,8 +241,8 @@ model <- lm(y~x1+x2+x3, data = df, singular.ok = FALSE)
 # Error in lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) : singular fit encountered
 	\end{lstlisting}
 	\vspace{2mm}
-	\pagebreak
-	However, for any degree of non-perfect collinearity, this warning will not be displayed, nor will it combine highly correlated predictors as with perfect correlated predictors. The data analyst must hence be aware of such a pitfall when interpreting the regression model and assess collinearity separately using the \texttt{vif} function from the \texttt{cars} package. We show an example performed on a generated dataset with noise in $X_2$ sampled from a continuous uniform distribution of $[-1,1]$.\\
+
+	However, for any degree of non-perfect collinearity, this warning will not be displayed, nor will it drop highly correlated predictors as with perfect correlated predictors. The data analyst must hence be aware of such a pitfall when interpreting the regression model and assess collinearity separately using the \texttt{vif} function from the \texttt{cars} package. We show an example performed on a generated dataset with noise in $X_2$ sampled from a continuous uniform distribution of $[-1,1]$.\\
 	
 \begin{lstlisting}
 vif(model)
@@ -244,17 +252,104 @@ vif(model)
 # 10218.852915 10220.421006     1.036177 
 \end{lstlisting}
 	
+	\subsection{Example: California housing\label{sec:4.4}}
+	We give an example of applying multicollinearity diagnostics and remedies to the California housing dataset. We use \texttt{statsmodel} for this example to observe changes reflected in standard errors of regression coefficients. \\
+	
+	The California housing dataset has 1 numerical target variable \texttt{MedHouseVal}, representing the median house value for California districts in hundreds of thousands of US dollars. Additionally, it has 8 numerical predictors: \texttt{MedInc} representing the median income in a block group in tens of thousands of US Dollars, \texttt{HouseAge} representing the median house age in a block group in years, \texttt{AveRooms} representing the average number of rooms per household, \texttt{AveBedrms} representing the average number of bedrooms per household, \texttt{Population} representing the block group population, \texttt{AveOccup} representing the average number of household members, \texttt{Latitude} representing block group latitude, and \texttt{Longitude} representing block group longitude. \\
+	
+	We first fit an OLS model using all predictors. Since we don't plan on testing the model, we use all 20640 samples for training. We omit the summary results for this model but include one note given by the solver: "\textit{(...)[3] The condition number is large, 1.03e+04. This might indicate that there are strong multicollinearity or other numerical problems.}" Additionally, we notice that the coefficient of \texttt{AveRooms} is negative yet \texttt{AveBedrms} is positive, which is contradictory since greater number of bedrooms increases the number of rooms. Hence we now compute and examine the VIF values of each predictor, summarised in \hyperref[tab:Table1]{Table 1}.
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{|l|r|}
+			\hline
+			Predictors & VIF \\[2pt]
+			\hline
+			MedInc & 11.511 \\[2pt]
+
+			HouseAge & 7.196 \\[2pt]
+
+			AveRooms & 45.994 \\[2pt]
+
+			AveBedrms & 43.590 \\[2pt]
+
+			Population & 2.936 \\[2pt]
+
+			AveOccup & 1.095 \\[2pt]
+
+			Latitude & 559.874 \\[2pt]
+
+			Longitude & 633.712 \\[2pt]
+			\hline
+		\end{tabular}
+		\label{tab:Table1}
+		\caption{VIF values for each predictor.}
+	\end{table}
+	
+	We notice that \texttt{AveRooms}, \texttt{AveBedrms}, \texttt{Latitude}, and \texttt{Longitude} have relatively larger VIF values from the other predictors. We first combine the predictors \texttt{Latitude} and \texttt{Longitude} by calculating the Euclidean distance between each housing district to Wildwood School using these two features. We name the new combined predictor \texttt{SchoolDist}. Subsequently, we drop \texttt{AveBedrms} since it carries redundant information which is already contained in \texttt{AveRooms}. After fitting the new model, we summarise the changes in standard errors of each predictor in \hyperref[tab:Table2]{Table 2}.\\
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{|l|rr|rr|}
+			\hline
+			& Initial model & & New model & \\
+			\hline
+			Predictors & Coefficients & SE & Coefficients & SE \\[2pt]
+			\hline
+			MedInc & 0.513515 &  0.004258 & 0.443898 & 0.002950 \\[2pt]
+			
+			HouseAge & 0.015651 & 0.000464 & 0.018213 &  0.000357 \\[2pt]
+			
+			AveRooms & -0.182528 &  0.006151 & -0.021973 & 0.002266  \\[2pt]
+			
+			AveBedrms & 0.865099 &  0.029906 & N/A  & N/A \\[2pt]
+			
+			Population & 0.000008  & 0.000005 & 0.000031 &  0.000005 \\[2pt]
+			
+			AveOccup & -0.004699  & 0.000523 & -0.004663 & 0.000540 \\[2pt]
+			
+			Latitude & -0.063946 & 0.003587 & N/A  & N/A \\[2pt]
+			
+			Longitude & -0.016383 & 0.001139 & N/A & N/A \\[2pt]
+			
+			SchoolDist & N/A & N/A &-0.031115 & 0.004371 \\[2pt]
+			\hline
+		\end{tabular}       
+		\label{tab:Table2}
+		\caption{Coefficient estimates and standard errors of each predictor in initial model and new model.}
+	\end{table}
+	
+	First of all, all VIF values dropped significantly as expected with the highest now being \texttt{AveRooms} at 5.846. Secondly, it should be noted that only \texttt{Population} had insignificant $p$-values in the initial model. Then, in the new model, we observe an overall decrease in standard errors with all predictors being significant, including \texttt{SchoolDist}.\\
+	
+	We now address the predictor \texttt{MedInc}, which we believe is potentially a confounding variable. We can check simply by fitting another model by excluding this variable and as expected, we obtain flipped coefficients for \texttt{AveRooms} and \texttt{SchoolDist}, as shown in \hyperref[tab:Table3]{Table 3} \\
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{|l|rr|}
+			\hline
+			Predictors & Include MedInc & Exclude MedInc \\[2pt]
+			\hline
+			AveRooms & 	-0.022000 & 0.1505 \\[2pt]
+			SchoolDist & -0.031100 & 0.0419 \\[2pt]
+			\hline
+		\end{tabular}       
+		\label{tab:Table3}
+		\caption{Examining the confounding effect.}
+	\end{table}
+	\pagebreak
+	Hence, it is important that we include \texttt{MedInc} in the model although it is a source of collinearity. One may consider other methods to further decrease the standard errors from this direction, but we stop here as we are satisfied with model obtained. We discuss more about confounding variables in \hyperref[sec:4.6]{Section 4.6}.
+	
 	\subsection{Impact of multicollinearity}
 	
-	High multicollinearity mainly poses a major problem to model interpretation. Notably, it inflates the variance and covariances of least squares estimates and causes estimates and their variance to become sensitive to minor changes in data. As a result, we may obtain different results when performing variable selection after removing or adding samples from the dataset, or obtain incorrect signs of cofficients estimates \cite{McClave2018}. Another curious effect is that the $t$-values of correlated predictors may be insignificant yet removing these predictors from the model results in a lower $R^2$ value. Although this seems contradictory by intuition, it is actually reasonable behaviour, as the prediction is contributed by both variables while the $t$-values indicate the contribution of one variable after accounting for the others.\\
+	High multicollinearity mainly affects model interpretation, as it inflates the variance and covariances of least squares estimates. Consequently, estimates and their variances become sensitive to minor changes in data. This may lead to very different results when performing variable selection and may cause incorrect signs of cofficients estimates \cite{McClave2018}. Another curious effect is that the $t$-values of correlated predictors may be insignificant yet removing these predictors from the model results in a lower $R^2$ value. Although this seems counterintuitive, it is actually reasonable behaviour, as the prediction is contributed by both variables while the $t$-values indicate the contribution of one variable after accounting for the others. Finally, it is also no longer valid to interpret the regression coefficients in the usual sense, that is, by measuring the change in the expected response after varying one predictor while holding others constant \cite{Kutner2005}. This is because when the varied predictor is correlated with other predictors, changing one causes changes in the other. \\
 	
-	When two predictors have perfect correlation, we have what is known as perfect collinearity. In such a case, at least one of the columns of the data matrix $\bmX$ is a linear combination of the other columns. This causes the matrix $\bmX^T\bmX$ to be singular (see appendix \hyperref[sec:append1]{Section B.3}), consequently causing $\boldsymbol{\gbh}$ unable to be computed (see \hyperref[eq3]{Equation (3)}). However, \texttt{statsmodel}'s and \texttt{scikit\_learn}'s least square solvers compute the pseudoinverse of $\bmX^T\bmX$ when estimating the regression coefficients, giving the least norm approximated solution (which is interpretable) when $\bmX$ is rank-deficient. However, the aforementioned impacts of high collinearity still apply hence it should be addressed.\\
+	When two predictors have perfect correlation, we have what is known as perfect collinearity. In such a case, though rare \cite{Kutner2005}, at least one of the columns of the data matrix $\bmX$ is a linear combination of the other columns. This causes the matrix $\bmX^T\bmX$ to be singular (see appendix \hyperref[sec:append1]{Section B.3}), consequently causing $\boldsymbol{\gbh}$ unable to be computed (see \hyperref[eq3]{Equation (3)}). However, \texttt{statsmodel}'s and \texttt{scikit\_learn}'s least square solvers compute the pseudoinverse of $\bmX^T\bmX$ when estimating the regression coefficients, giving the least norm approximated solution when $\bmX$ is rank-deficient. Although we still manage to obtain interpretable results, the aforementioned impacts of high collinearity still apply, and hence should be addressed.\\
 	
 	It is important to note that collinearity does not, in any way, impact predictions or its precision. Hence, if the model is not expected to be interpreted, multicollinearity is no issue of concern and may be ignored. Moreover, even for more statistically-oriented analysts, there may also not be a need to address high collinearity provided that it does not inflate standard errors to a problematic extent \cite{OBrien2007}, as there are many other factors which can suppress the inflation effect of standard errors, one of which is the sample size. Quoting the words of O'Brien, "collinearity does not hurt as long as it does not bite".\cite{OBrien2007}
 	
-	\subsection{Confounding variables}
+	\subsection{Confounding variables\label{sec:4.6}}
 	
-	In addition to the pitfall of collinearity in performing regression analysis, confounding variables, or confounders, can also severely distort our results if not given attention \cite{Johnston2018}. The concept of confounders is illustrated using Simpson's paradox, where the relationship between individual predictors and the response disappears or reverses when all predictors are included in a single model \cite{Agresti2015}. The variables which cause such occurences are referred to as confounders.\\
+	In addition to the pitfall of collinearity in performing regression analysis, confounding variables, or confounders, can also severely distort our results if not given attention \cite{Johnston2018} such as what we have observed in \hyperref[sec:4.4]{Section 4.4}. The concept of confounders is illustrated using Simpson's paradox, where the relationship between individual predictors and the response disappears or reverses when all predictors are included in a single model \cite{Agresti2015}. The variables which cause such occurences are referred to as confounders.\\
 	
 	We give the classic textbook example of the relationship between ice cream sales and shark attacks. We initially observe a positive correlation between these two variables, yet upon the inclusion of the confounder, temperature, we find that this correlation vanishes. One should avoid the confusion between confounders and correlated variables by noting that in addition to being correlated, confounders should also have a causal relationship to the variables involved in the confounding effect.\\
 	
@@ -270,7 +365,7 @@ vif(model)
 	
 	\section{Future recommendations\label{sec:future-rec}}
 	
-	The methods highlighted in \hyperref[sec:3.1]{Sections 3.1} and \hyperref[sec:3.2]{3.2} are not exhaustive. One promising approach for further exploration is the cos-max method \cite{Shabuz2024}, a recently proposed technique that provides a coherent link between identifying which regressors are correlated and determining the specific regressors involved in each collinearity. This method is also reported to yield more parsimonious results compared with existing approaches such as eigenvector analysis and variance decomposition. In addition, future research could investigate alternative strategies for addressing collinearity, such as partial least squares regression or Bayesian regression, as well as their practical implementation in Python and R.\\
+	The methods highlighted in \hyperref[sec:3.1]{Sections 3.1} and \hyperref[sec:3.2]{3.2} are not exhaustive. Another promising approach for further exploration is the cos-max method \cite{Shabuz2024}. This recently proposed technique provides a coherent link between identifying which regressors are correlated and determining the specific regressors involved in each collinearity. This method has also reported to yield more parsimonious results compared with existing approaches such as eigenvector analysis and variance decomposition. In addition, future research could investigate alternative strategies for addressing collinearity, such as partial least squares regression or Bayesian regression, as well as their practical implementation in Python and R.\\
 	
 	Expanding on the pitfalls in regression analysis, we recommend giving more attention to confounding variables and causality. Confounders can distort the estimated effects of predictors if left unaddressed, and future work could explore methods such as stratification, multivariable adjustment, or propensity score techniques to mitigate their impact. A more rigorous treatment of confounding would improve both the robustness and interpretability of regression findings.\\
 	
@@ -317,29 +412,39 @@ vif(model)
 	\subsection{Singular value decomposition}
 	\begin{prop}[Singular value decomposition]
 		Let $\bmA$ be an $n\times p$ matrix with rank $r$, where $1\leq r\leq \min(n,p)$. Then there exists an $n\times r$ matrix $\bmU=\{\bmu_1,\ldots,\bmu_r\}$, an $p\times r$ matrix $\bmV=\{\bmv_1,\ldots,\bmv_r\}$, and an $r\times r$ matrix $\boldsymbol{\Sg}=\diag\{\sigma_1,\ldots,\sigma_r\}$, such that
-		$$\bmA=\bmU\boldsymbol{\Sg}\bmV^T=\sum_{i=1}^{r}\sigma_i\bmu_i\bmv_i^T,$$
+		\begin{equation}\label{eqn9}
+			\bmA=\bmU\boldsymbol{\Sg}\bmV^T=\sum_{i=1}^{r}\sigma_i\bmu_i\bmv_i^T,
+		\end{equation}
 		where $\bmU\bmU^T=\bmI_r=\bmV\bmV^T$, and $\sigma_1\geq\ldots\geq\sigma_r>0$.
 	\end{prop}
 	
 	The form given above is called the compact SVD. The non-compact form is given by
-	$$\bmA=\bmU\boldsymbol{\Sg}\bmV^T,$$
-	where $\bmU$ is an $n\times n$ orthogonal matrix, $\bmV$ is a $p\times p$ orthogonal matrix and $\Sg$ is a $n\times p$ diagonal matrix, leaving the remaining diagonals after the $r^{\text{th}}$ entry zero.
+	\begin{equation}
+		\bmA=\bmU\boldsymbol{\Sg}\bmV^T,
+	\end{equation}
+	where $\bmU$ is an $n\times n$ orthogonal matrix, $\bmV$ is a $p\times p$ orthogonal matrix and $\boldsymbol{\Sg}$ is a $n\times p$ diagonal matrix, leaving the remaining diagonals after the $r^{\text{th}}$ entry zero. For columns in $\bmU$ and $\bmV$ beyond the $r^{\text{th}}$ column, we simply choose vectors from the null space of $\bmU_{n\times r}$ and $\bmV_{p\times r}$ respectively. Then we normalise them so that $\bmU$ and $\bmV$ maintain orthonormal columns. These "extra" columns do not affect the numerical results since they end up being multiplied with zero rows or zero columns in $\boldsymbol{\Sg}$.
 
 	\begin{prop}
 		Let $\bmA$ be an $n\times p$ matrix with rank $r$, then 
-		$$\rank(\bmA^T\bmA)=\rank(\bmA)=r.$$
+		\begin{equation}
+			\rank(\bmA^T\bmA)=\rank(\bmA)=r.
+		\end{equation}
 	\end{prop}
 	
 	\begin{proof}
-		To prove this, we show that $\bmA$ and $\bmA^T\bmA$ have the same null space and hence the same nullity. We do this by proving that $\nul(\bmA)\subseteq\nul(\bmA^T\bmA)$ and $\nul(\bmA^T\bmA)\subseteq\nul(\bmA)$ separately.\\
+		To prove this, we show that $\bmA$ and $\bmA^T\bmA$ have the same null space and hence the same nullity. We do this by showing that $\nul(\bmA)\subseteq\nul(\bmA^T\bmA)$ and $\nul(\bmA^T\bmA)\subseteq\nul(\bmA)$ separately.\\
 		
-		For the first case, let $\bmx\in\RR^p$ such that $\bmA\bmx=\bzero_n$. Then, $\bmA^T\bmA\bmx=\bmA^T(\bzero_n)=\bzero_r$. So $\nul(\bmA)\subseteq\nul(\bmA^T\bmA)$. For the second case, $\bmx\in\RR^p$ such that $\bmA^T\bmA\bmx=\bzero$. Left multiplying both sides by $\bmx^T$, we have
-		$$\bmx^T\bmA^T\bmA\bmx=(\bmA\bmx)^T(\bmA\bmx)=\|\bmA\bmx\|^2=\bzero,$$
+		For the first case, suppose that $\bmx\in\RR^p$ such that $\bmA\bmx=\bzero_n$. Then, $\bmA^T\bmA\bmx=\bmA^T(\bzero_n)=\bzero_r$. So $\nul(\bmA)\subseteq\nul(\bmA^T\bmA)$.\\
+		
+		For the second case, suppose that $\bmx\in\RR^p$ such that $\bmA^T\bmA\bmx=\bzero_p$. Left multiplying both sides by $\bmx^T$, we have
+		\begin{equation}
+			\bmx^T\bmA^T\bmA\bmx=(\bmA\bmx)^T(\bmA\bmx)=\|\bmA\bmx\|^2=\bzero,
+		\end{equation}
 		which implies that $\bmA\bmx=\bzero$, so $\nul(\bmA^T\bmA)\subseteq\nul(\bmA)$.\\
 
-		Then since the dimension of the domain of $\bmA^T\bmA$ and $\bmA$ are both $p$, by the rank-nullity formula, they have the same rank.
+		Combining both cases, $\nul(\bmA^T\bmA)=\nul(\bmA)$. Then since the dimension of the domain of $\bmA^T\bmA$ and $\bmA$ are both $p$, by the rank-nullity formula, they have the same rank.
 	\end{proof}
-	
+	\pagebreak
 	\begin{prop}\label{prop1}
 		Let $\bmA$ be an $n\times p$ matrix of rank $r$. Then the non-zero eigenvalues of both $\bmA\bmA^T$ and $\bmA^T\bmA$ are $\sigma_1^2,\ldots,\sigma_r^2$.
 		Furthermore, the corresponding unit eigenvectors of $\bmA\bmA^T$ and $\bmA^T\bmA$ are given by the columns of $\bmU$ and $\bmV$ respectively.
@@ -347,34 +452,44 @@ vif(model)
 	
 	\begin{proof}
 		We prove this result by first noting that $\bmA^T\bmA$ is a $p\times p$ symmetric matrix, so we can write its spectral decomposition as
-		$$\bmA^T\bmA=\bmV\boldsymbol{\Lambda}\bmV^T$$
-		where $\bmV$ is a $p\times r$ {semi-orthogonal} matrix containing the orthonormal eigenvectors of $\bmA^T\bmA$ (and hence its columns $\bmv_i$ are orthonormal) and $\boldsymbol{\Lambda}=\diag(\lm_1,\ldots,\lm_r)$ is a diagonal matrix with its diagonals containing eigenvalues $\lm_1\geq\ldots\geq\lm_r>0$. Note that we know that there are $r$ eigenvalues by \hyperref[prop1]{Proposition A.3}. \\
+		\begin{equation}
+			\bmA^T\bmA=\bmV\boldsymbol{\Lambda}\bmV^T
+		\end{equation}
+		where $\bmV$ is a $p\times r$ {semi-orthogonal} matrix containing the orthonormal eigenvectors of $\bmA^T\bmA$ and $\boldsymbol{\Lambda}=\diag(\lm_1,\ldots,\lm_r)$ is a diagonal matrix with its diagonals containing eigenvalues $\lm_1\geq\ldots\geq\lm_r>0$. Note that we know that there are $r$ eigenvalues by \hyperref[prop1]{Proposition A.3}. \\
 		
 		Now, we let each $\sigma_i=\sqrt{\lm_i}$ and $\bmu_i=\frac{1}{\sigma_i}\bmA\bmv_i$ for $i=1,\ldots,r$. We then show that the vectors $\bmu_i$ are orthonormal and subsequently, $\bmu_i$ and $\bmv_i$ are left and right singular vectors corresponding to singular values $\sigma_i$ as follows:
-		\begin{align*}
+		\begin{align}
 			\bmu_i^T\bmu_j
 			=\frac{1}{\sigma_i\sigma_j}\bmv_i^T{\bmA^T\bmA\bmv_j}
 			=\frac{1}{\sigma_i\sigma_j}\bmv_i^T({\lm_j\bmv_j})
 			=\frac{\sigma_j^2}{\sigma_i\sigma_j}\bmv_i^T\bmv_j
 			=\frac{\sigma_j^2}{\sigma_i\sigma_j}\bmv_i\cdot\bmv_j.
-		\end{align*}
+		\end{align}
 		Notice that if $i=j$, then the expression simplifies to just $\|\bmv_i\|^2=1$ since the vectors $\bmv_i$ are orthonormal. If $i\neq j$, then the dot product equals to zero, implying that the vectors $\bmu_i$ are orthonormal. Now, following the definition of singular vectors, we consider
-		$$\bmA^T{\bmu_i}={\frac{1}{\sigma_i}}(\bmA^T{\bmA\bmv_i})=\frac{{\sigma_i^2}}{\sigma_i}{\bmv_i}=\sigma_i\bmv_i,$$
+		\begin{equation}
+			\bmA^T{\bmu_i}={\frac{1}{\sigma_i}}(\bmA^T{\bmA\bmv_i})=\frac{{\sigma_i^2}}{\sigma_i}{\bmv_i}=\sigma_i\bmv_i,
+		\end{equation}
 		so $\bmv_i$ are right singular vectors corresponding to singular values $\sigma_i$ while $\bmu_i$ by our formulation are left singular vectors. Now all that is left is to construct $\bmU=\begin{pmatrix}
 			\bmu_1 & \ldots & \bmu_r & \ldots & \bmu_n
 		\end{pmatrix}$ and $\boldsymbol{\Sg}=\diag\{\sigma_1,\ldots,\sigma_r,0,\ldots,0\}$. 
 	\end{proof}
 	
 	\subsubsection{Computing the SVD}
-	Let $\bmA$ be any $m\times n$ matrix. To compute the SVD of $\bmA$, we first solve for eigenvalues $\lm$ of $\bmA\bmA^T$ or $\bmA^T\bmA$ depending on which results in a matrix of smaller size. Then we take the singular values $\sigma=\sqrt{\lm}$ and construct $\boldsymbol{\Sg}$. Since in regression modelling, we often have more samples than predictors (which translates to more rows than columns), we choose $\bmA^T\bmA$. Now, we solve for right singular vectors by using its definition:
-	$$(\bmA^T\bmA-\lm I)\bmv=\bzero.$$
+	Let $\bmA$ be any $m\times n$ matrix. To compute the SVD of $\bmA$, we first solve for eigenvalues $\lm$ of $\bmA\bmA^T$ or $\bmA^T\bmA$ depending on which results in a matrix of smaller size. Then we take the singular values $\sigma=\sqrt{\lm}$ (\hyperref[prop1]{Proposition A.4}) and construct $\boldsymbol{\Sg}$. Since in regression modelling, we often have more samples than predictors (which translates to more rows than columns), we choose $\bmA^T\bmA$. Now, we solve for right singular vectors by using its definition:
+	\pagebreak
+	\begin{equation}
+		(\bmA^T\bmA-\lm I)\bmv=\bzero.
+	\end{equation}
 	Then, we convert the right singular vectors to unit vectors (so that $\bmU$ is orthogonal) and construct matrix $\bmU$. Compute $\bmv_i$ by using the definition of right singular vectors and construct $\bmV$:
-	$$\sigma_i\bmv_i=\bmA^T\bmu_i.$$
+	\begin{equation}
+		\sigma_i\bmv_i=\bmA^T\bmu_i.
+	\end{equation}
+	Hence we can now write the SVD of $\bmA$ in full as in \hyperref[eqn9]{Equation (9)}.
 	\subsection{QR decomposition\label{sec:qr}}
-	\begin{prop}[QR decomposition]
+	\begin{prop}[QR decomposition\label{prop:qr}]
 		Let $\bmX$ be a $n\times p$ matrix. If the columns of $\bmX$ are linearly independent, then $\bmX$ can be written as
 		$$\bmX=\bmQ\bmR,$$
-		where $\bmQ$ is a $n\times p$ matrix with orthonormal columns and $\bmR$ is a triangular matrix with positive diagonal entries.
+		where $\bmQ$ is a $n\times p$ matrix with orthonormal columns and $\bmR$ is an upper triangular matrix with positive diagonal entries.
 	\end{prop}
 	\begin{proof}
 		We use the Gram-Schmidt orthogonalisation process \cite{Hefferson2020} to show this. This process takes any set of linearly independent vectors and transforms them into mutually orthonormal vectors.\\
@@ -421,7 +536,7 @@ vif(model)
 			\bmx_1\cdot\bmq_1\\ \vdots \\ \bmx_{i-1}\cdot\bmq_{i-1} \\ \|\bmx_i^{\perp}\| \\ 0 \\ \vdots \\ 0
 			\end{pmatrix}.
 		\end{equation}
-		Since this holds for each $1\leq 1\leq p$, we can express $\bmX$ as a product of a matrix with orthonormal columns $\bmQ$ and a triangular matrix $\bmR$ as follows:
+		Since this holds for each $1\leq 1\leq p$, we can express $\bmX$ as a product of a matrix with orthonormal columns $\bmQ$ and an upper triangular matrix $\bmR$ as follows:
 		\begin{equation}
 			\bmX=\begin{pmatrix}
 				\vline &  & \vline \\ \bmq_1 & \ldots & \bmq_p \\ \vline & & \vline
@@ -433,11 +548,34 @@ vif(model)
 				0 & 0 & 0 & \ldots & \|\bmx_p^{\perp}\|
 			\end{pmatrix}.
 		\end{equation}
+		Each diagonal entry is positive since norms are non-negative and because our assumption of linear independent columns guarantees that $\bmx_i^{\perp}\neq \bzero$ for all $i$.
 	\end{proof}
+	\pagebreak
+	\subsubsection{Application in least squares regression}
+	Let $\bmX$ be an $n\times p$ data matrix, $\bmy$ be a $n\times 1$ column matrix containing the observed response, and $\bmgb$ be the regression coefficients such that
+	\begin{equation}
+		\bmy=\bmX\bmgb.
+	\end{equation}
+	To estimate $\bmgb$, 
+	\begin{equation}
+		\bmgbh=(\bmX^T\bmX)^{-1}\bmX^T\bmy.
+	\end{equation}
+	Then, by taking $\bmX=\bmQ\bmR$ where $\bmQ$ is an $n\times p$ matrix with orthonormal columns and $\bmR$ is a triangular matrix,
+	\begin{align}
+		\bmgbh&=[(\bmQ\bmR)^T\bmQ\bmR]^{-1}(\bmQ\bmR)^T\bmy\\
+		&=(\bmR^T\bmQ^T\bmQ\bmR)^{-1}\bmR^T\bmQ^T\bmy\\
+		&=(\bmR^T\bmR)^{-1}\bmR^T\bmQ^T\bmy\\
+		\bmR^T\bmR\bmgbh&=\bmR^T\bmQ^T\bmy\\
+		(\bmR^T)^{-1}\bmR^T\bmR\bmgbh&=(\bmR^T)^{-1}\bmR^T\bmQ^T\bmy\\
+		\bmR\bmgbh&=\bmQ^T\bmy\\
+		\bmgbh&=\bmR^{-1}\bmQ^T\bmy
+	\end{align}
+	Note that it is more efficient to use Equation (25) to compute $\bmgbh$ via back substitution.
+	
 	\pagebreak
 	\section{Referenced results}
 	\subsection{Estimating the least squares coefficients\label{sec:append1}}
-	Let the $n\times p$ data matrix containing $n$ observations of $p$ predictors be $\bmX$, and the corresponding $n\times 1$ column vector of observed responses be $\bmy$. We state the model representing the relationship between the $\bmy$ and $\bmX$ to be
+	Let the $n\times p$ data matrix containing $n$ observations of $p$ predictors be $\bmX$, and the corresponding $n\times 1$ column vector of observed responses be $\bmy$. We state the model representing the relationship between $\bmy$ and $\bmX$ to be
 	$$\bmy=\bmX\bmgb+\bmge,$$
 	where $\bmge$ is a $n\times 1$ column vector containing the corresponding regression errors. The least squares method estimates $\bmgb$ by minimising the sum of squared errors, i.e.
 	\begin{equation}
@@ -445,33 +583,36 @@ vif(model)
 	\end{equation}
 	
 	We show the derivation of the closed form solution to this problem via vector calculus, where we find the derivative the sum of squared errors with respect to $\bmgb$ and set it to zero:
-	 \begin{align*}
-	 	0=\frac{d}{d\bmgb}\|\bmy-\bmX\bmgb\|_2^2&=\frac{d}{d\bmgb}(\bmy-\bmX\bmgb)^T(\bmy-\bmX\bmgb)\\
+	 \begin{align}
+	 	0&=\frac{d}{d\bmgb}\|\bmy-\bmX\bmgb\|_2^2\\
+	 	&=\frac{d}{d\bmgb}(\bmy-\bmX\bmgb)^T(\bmy-\bmX\bmgb)\\
 	 	&=\frac{d}{d\bmgb}\lt(\bmy^T\bmy-(\bmgb^T\bmX^T)\bmy-\bmy^T(\bmX\bmgb)+(\bmX\bmgb)^T(\bmX\bmgb)\rt)\\
 	 	&=\frac{d}{d\bmgb}\lt(\bmy\bmy^T-2\bmgb^T\bmX^T\bmy+\bmgb^T\bmX^T\bmX\bmgb\rt)\\
 	 	0&=0-2\bmX^T\bmy+2\bmX^T\bmX\bmgb\\
 	 	\bmX^T\bmy&=\bmX^T\bmX\bmgbh\\
 	 	\bmgbh&=(\bmX^T\bmX)^{-1}\bmX^T\bmy
-	 \end{align*}
+	 \end{align}
 	 
 	So when $\bmge$ is minimised, we have
 	\begin{equation}
 		\hat{\bmy}=\bmX\bmgbh=\bmX(\bmX^T\bmX)^{-1}\bmX^T\bmy,
 	\end{equation}
 	i.e. $\bmX(\bmX^T\bmX)^{-1}\bmX^T$ projects the observed response $\bmy$ onto the model space (or estimation space), that is, the set of all possible $\hat{\bmy}$ for which there exists a value of $\bmgb$ such that $\hat{\bmy}=\bmX\bmgb$. More importantly, the projection is orthogonal, which has the geometric interpretation that the $\hat{\bmy}$ obtained by OLS is the closest vector in the model space to $\bmy$ \cite{Agresti2015}. This is consistent with the motivation of OLS.\\
+	\pagebreak
 	
 	In fact, we can derive the exact same formula from a geometrical standpoint by considering the orthogonal decomposition of $\bmy$ into a sum of one vector in the model space and one vector in the orthogonal subspace of the model space: the error space. Now, the OLS problem is rephrased as a matter of finding the orthogonal projection of $\bmy$ onto the model space so that the error component is minimised.
 	\subsection{Minimum norm approximation using pseudoinverse\label{sec:append2}}
 	We can compute the pseudoinverse of $\bmX^T\bmX$ using its SVD as follows.\\
 	
 	Let $\bmA=\bmX^T\bmX$. If the SVD of $\bmA=\bmU\Sg\bmV^T$, then the pseudoinverse of $\bmA$, $\bmA^+$, is given by
-	\begin{align*}
-		\bmA^+&=(\bmU\Sg\bmV^T)^T(\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
-		&=(\bmV\Sg\bmU^T\bmU\Sg\bmV^T)^{-1}(\bmU\Sg\bmV^T)^T\\
-		&=(\bmV\Sg^2\bmV^T)^{-1}(\bmV\Sg\bmU^T)\\
-		&=(\bmV^T)^{-1}(\Sg^{-1})^2(\bmV)^{-1}\bmV\Sg\bmU^T\\
+	\begin{align}
+		\bmA^+&=(\bmA^T\bmA)^{-1}\bmA^T\\
+		&=\lt[\lt(\bmU\Sg\bmV^T\rt)^T\bmU\Sg\bmV^T\rt]^{-1}\lt(\bmU\Sg\bmV^T\rt)^T\\
+		&=\lt(\bmV\Sg\bmU^T\bmU\Sg\bmV^T\rt)^{-1}\lt(\bmU\Sg\bmV^T\rt)^T\\
+		&=\lt(\bmV\Sg^2\bmV^T\rt)^{-1}\lt(\bmV\Sg\bmU^T\rt)\\
+		&=\lt(\bmV^T\rt)^{-1}\lt(\Sg^{-1}\rt)^2\lt(\bmV\rt)^{-1}\bmV\Sg\bmU^T\\
 		&=\bmV\Sg^{-1}\bmU^T.
-	\end{align*}
+	\end{align}
 	
 	\begin{prop}
 		For $\bmA\in\RR^{m\times n}$ and $\bmb\in\RR^m$, if the linear system $\bmA\bmx=\bmb$ has solutions, then $\bmx^*=\bmA^+\bmb$ is an exact solution and has the smallest possible norm, i.e. $\|\bmx^*\|\leq\|\bmx\|\, $for all $\bmx$.
@@ -519,7 +660,7 @@ vif(model)
 	
 	By writing matrix-matrix products in this form, each term in the sum is a rank-1 matrix. However, under no collinearity, the rows in every term will not necessarily be dependent on some other rows \textbf{by the same factor}. In the formulation above, the third row differs from the first row by a multiplicative factor of $v_i/u_i$ (this is consistent with the case of collinear columns since $ku_i/u_i=k$), which is a constant under no collinearity. This fraction will differ for varying $i$, thus after adding each term up, there is no common factor between the two rows.\\
 	
-	Alternatively for a simpler and less analytical approach, we look at each entry in the product matrix as multiplying rows with columns:
+	Alternatively for a simpler and less analytical approach, we look at each entry in the product matrix as a product between rows and columns:
 	$$\bmX^T\bmX=\begin{pmatrix}
 		\bmu\cdot\bmu & \bmu\cdot(k\bmu) & \bmu\cdot\bmv\\
 		(k\bmu)\cdot\bmu & (k\bmu)\cdot(k\bmu) & (k\bmu)\cdot\bmv \\
@@ -541,7 +682,7 @@ vif(model)
 		&=\dfrac{\bmv\cdot\bmu}{\|\bmu\|^2}\|\bmu\|\\
 		\bmv&=\dfrac{\bmv\cdot\bmu}{\|\bmu\|^2}\bmu
 	\end{align*}
-	i.e. $\bmv$ is its own orthogonal projection on vector $\bmu$, implying that they are collinear, which is a contradiction. Hence the third row is linearly independent of the first two rows. \\
+	so $\bmv$ is its own orthogonal projection on vector $\bmu$. This impies that first and third rows of $\bmX$ are collinear, which is a contradiction. Hence the third row of is linearly independent of the first two rows in $\bmX^T\bmX$. 
 	
 	\subsection{Effect of \texttt{StandardScaler} on collinear columns in data matrix \label{sec:append4}}
 	From the documentation, \texttt{scikit\_learn}'s \texttt{StandardScaler} calculates the $Z$-score of each entry by subtracting each entry by the mean of its column and dividing by the standard deviation of its column. Suppose that the true relationship between regressors $\bmx_1$ and $\bmx_2$ is $\bmx_2=k\bmx_1$. Then we have

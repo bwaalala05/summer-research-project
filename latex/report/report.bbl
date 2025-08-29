@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Agresti2015}
 Alan Agresti.
@@ -9,6 +9,16 @@ Alan Agresti.
 Alan Agresti, Christine Franklin, and Bernhard Klingenberg.
 \newblock {\em Statistics : the art and science of learning from data}.
 \newblock Pearson Education Limited, 2018.
+
+\bibitem{Belsley2004}
+David Belsley, Edwin Kuh, and Roy Welsch.
+\newblock {\em Regression Diagnostics}.
+\newblock John Wiley \& Sons, Inc., 2004.
+
+\bibitem{CHAN198767}
+Tony~F. Chan.
+\newblock Rank revealing qr factorizations.
+\newblock {\em Linear Algebra and its Applications}, 88-89:67--82, 1987.
 
 \bibitem{Hefferson2020}
 Jim Hefferon.
@@ -28,6 +38,11 @@ Ron Johnston, Kelvyn Jones, and David Manley.
   tale and an alternative procedure, illustrated by studies of british voting
   behaviour.
 \newblock {\em Quality and Quantity}, 52:1957--1976, 7 2018.
+
+\bibitem{Kutner2005}
+Michael~H. Kutner, Chris Nachtsheim, John Neter, and William Li.
+\newblock {\em Applied linear statistical models}.
+\newblock McGraw-Hill/Irwin, 2005.
 
 \bibitem{McClave2018}
 James McClave and Terry Sincich.
